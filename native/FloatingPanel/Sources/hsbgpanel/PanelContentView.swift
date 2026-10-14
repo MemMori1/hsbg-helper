@@ -21,6 +21,7 @@ struct PanelContentState {
     var health: Int = 0
     var tavernTier: Int = 0
     var shop: [ShopRow] = []
+    var spells: [SpellRow] = []
     var board: [MinionRow] = []
     var hand: [String] = []
     var opponents: [OpponentRow] = []
@@ -58,6 +59,18 @@ struct PanelContentState {
         var golden: Bool = false
         var taunt: Bool = false
         var divineShield: Bool = false
+    }
+
+    /// 酒馆法术：和随从分开——没有攻/血，买价也不是 3
+    struct SpellRow {
+        var index: Int = 0
+        var name: String = ""
+        var cost: Int = 0
+        var techLevel: Int = 0
+        var score: Double = 0
+        var action: String = ""
+        var reasons: [String] = []
+        var text: String = ""
     }
 
     struct OpponentRow {
@@ -196,6 +209,9 @@ final class PanelContentView: NSView {
         if !state.trinkets.isEmpty {
             h += sectionGap + lineHeight * CGFloat(state.trinkets.count)
         }
+        if !state.spells.isEmpty {
+            h += sectionGap + headingHeight + lineHeight * CGFloat(state.spells.count) * 2
+        }
         if !state.warnings.isEmpty { h += sectionGap + lineHeight * CGFloat(state.warnings.count) }
         if !state.modelAnswers.isEmpty {
             h += sectionGap + headingHeight + lineHeight * CGFloat(1 + state.modelAnswers.count)
@@ -229,6 +245,7 @@ final class PanelContentView: NSView {
         var y = padding
         y = drawHeadline(at: y)
         y = drawShop(from: y)
+        y = drawSpells(from: y)
         y = drawBoard(from: y)
         y = drawMisc(from: y)
         y = drawModel(from: y)
@@ -355,6 +372,35 @@ final class PanelContentView: NSView {
             let detail = ([row.action, kw] + rest).filter { !$0.isEmpty }.joined(separator: "；")
             y = line("    " + detail, at: padding, y,
                      color: NSColor(calibratedWhite: 0.58, alpha: 1))
+        }
+        return y
+    }
+
+    /// 酒馆法术：单独一段。没有攻/血，所以展示「N金 + 星级 + 分数」和卡文。
+    private func drawSpells(from y0: CGFloat) -> CGFloat {
+        guard !state.spells.isEmpty else { return y0 }
+        var y = y0 + sectionGap
+        y = line("法术（\(state.spells.count) 张）", at: padding, y,
+                 color: NSColor(calibratedWhite: 0.55, alpha: 1))
+        for row in state.spells {
+            var text = "\(row.index). \(row.name)  \(row.cost)金"
+            if row.techLevel > 0 { text += "  \(row.techLevel)星" }
+            if row.score != 0 { text += String(format: "  %.1f分", row.score) }
+            draw(text, at: padding, y,
+                 color: row.action == "买"
+                     ? NSColor(calibratedRed: 0.5, green: 0.95, blue: 0.6, alpha: 1)
+                     : NSColor(calibratedWhite: 0.88, alpha: 1))
+            y += lineHeight
+            let kw = row.reasons.filter { !$0.hasPrefix("关键词：") }
+            let detail = ([row.action] + kw).filter { !$0.isEmpty }.joined(separator: "；")
+            if !detail.isEmpty {
+                y = line("    " + detail, at: padding, y,
+                         color: NSColor(calibratedWhite: 0.58, alpha: 1))
+            }
+            if !row.text.isEmpty {
+                y = line("    " + row.text, at: padding, y,
+                         color: NSColor(calibratedWhite: 0.50, alpha: 1))
+            }
         }
         return y
     }

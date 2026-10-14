@@ -254,7 +254,11 @@ def cmd_check(args: argparse.Namespace) -> int:
     from .config import POWER_LOG_NAME
     from .logs import list_sessions
 
-    root = args.log_root
+    # ⚠️ `--log-root` 的默认值是 `str(DEFAULT_LOG_ROOT)`，这里必须先转成
+    # `Path` —— 否则下面 `root / POWER_LOG_NAME` 会抛
+    # `TypeError: unsupported operand type(s) for /: 'str' and 'str'`，
+    # 而且只在「完全不给路径参数」时才触发（给了 path 的分支会自己转）。
+    root = Path(args.log_root)
     explicit = getattr(args, "path", None)
     if explicit and Path(explicit).is_dir():
         # 给的是目录（日志根目录或某个会话目录）→ 当成 log_root 处理，
@@ -699,6 +703,21 @@ def _render_advice(adv, st, resolver, color: bool = True) -> str:
         if len(rep.shop) > 3:
             lines.append(r.dim("  （其余 %d 张分数更低，已省略）"
                                % (len(rep.shop) - 3)))
+        lines.append("")
+
+    # 规则：酒馆法术 —— 单独一段（没有攻/血，买价也不是 3）
+    if getattr(rep, "spells", None):
+        lines.append(r.bold("法术"))
+        for it in rep.spells:
+            tag = {"买": r.good("买"), "考虑": r.warn("考虑"),
+                   "跳过": r.dim("跳过")}.get(it.action, it.action)
+            cost = "%d金" % it.cost if it.cost is not None else "?金"
+            reason = ("；".join(it.reasons)) if it.reasons else ""
+            lines.append("  %s %s  %s  %d星  %.1f分  %s"
+                         % (tag, it.name, cost, it.tech_level or 0, it.score,
+                            r.dim(reason)))
+            if it.text:
+                lines.append(r.dim("      " + it.text))
         lines.append("")
 
     # 规则：待选（饰品四选一 / 黑赐三选一）—— 放在最前面，不做决定会卡住回合

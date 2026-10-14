@@ -353,7 +353,7 @@ def test_unaffordable_tech_up_is_not_advised():
     """
     st = _state(tier=2, gold=2, tech_up_cost=7)
     adv = _eng().evaluate(st).level
-    assert adv.action == "攒钱", (adv.action, adv.score)
+    assert adv.action == "升不起", (adv.action, adv.score)
     assert any("金币不足" in r for r in adv.reasons)
 
 
@@ -947,12 +947,112 @@ def test_decision_levels_when_the_curve_says_so():
     assert box.off_curve is False
 
 
-def test_decision_saves_gold_when_level_is_unaffordable():
+def test_decision_spends_gold_instead_of_hoarding_when_level_is_unaffordable():
+    """升不起本的时候**不能**说「攒钱」。
+
+    ⚠️ 酒馆战棋的金币**不跨回合保留** —— 实测 `RESOURCES` 每回合重置成回合值
+    （3/4/5/…/10），不是累加。"这回合不花、下回合升"根本不成立，
+    所以决策框必须让玩家把金币花掉（买牌或刷新），而不是攒着。
+    """
     box = _box(_state(turn=3, tier=1, gold=3, tech_up_cost=4))
-    assert box.action == "攒钱"
-    assert box.trigger == "save_for_level"
-    assert box.urgency == "wait"
+    assert box.action != "攒钱"
+    assert box.off_curve is True          # 偏离曲线要能看出原因
     assert "差 1 金" in box.reason
+
+
+def test_decision_waits_only_when_there_is_no_gold_left():
+    """金币为 0 时才允许「观望」——还有钱就一定给个动作。"""
+    box = _box(_state(turn=3, tier=4, gold=0, tech_up_cost=99))
+    assert box.action == "观望"
+
+
+def test_decision_rerolls_to_spend_leftover_gold():
+    box = _box(_state(turn=9, tier=4, gold=6, tech_up_cost=99))
+    assert box.action == "刷新"
+    assert box.trigger == "spend_gold"
+    assert "6 金" in box.reason
+
+
+def test_decision_buys_an_affordable_tavern_spell():
+    """商店里的酒馆法术不能被无视 —— 它走 `DragBuy_Spell`，不占格子。
+
+    ⚠️ 这条是回归：`_score_shop` 只遍历 `st.shop`（随从），法术存在
+    `st.spells` 里，早先版本整个漏掉，1 金的法术在建议里根本看不见。
+    """
+    st = _state(turn=9, tier=4, gold=3, tech_up_cost=99)
+    st.spells = [ShopSlot(slot_entity_id=900, minion_entity_id=901,
+                          card_id="BG_T_SPELL", cost=1, kind="spell",
+                          belongs_to_local=True)]
+    rep = _eng().evaluate(st)
+    assert rep.spells and rep.spells[0].name == "某法术"
+    assert rep.spells[0].cost == 1
+    assert rep.spells[0].kind == "spell"
+    assert rep.decision.action == "买"
+    assert rep.decision.target == "某法术"
+
+
+def test_spell_cost_falls_back_to_the_card_db():
+    """槽位上的 `COST` 还没写上来时（实测 MAIN_START 那一下是空的），用卡表费用。"""
+    st = _state(turn=9, tier=4, gold=2, tech_up_cost=99)
+    st.spells = [ShopSlot(slot_entity_id=900, minion_entity_id=901,
+                          card_id="BG_T_SPELL", kind="spell",
+                          belongs_to_local=True)]
+    rep = _eng().evaluate(st)
+    assert rep.spells[0].cost == 1
+
+
+def test_spell_that_costs_more_than_our_gold_is_skipped():
+    st = _state(turn=9, tier=4, gold=0, tech_up_cost=99)
+    st.spells = [ShopSlot(slot_entity_id=900, minion_entity_id=901,
+                          card_id="BG_T_SPELL", cost=1, kind="spell",
+                          belongs_to_local=True)]
+    rep = _eng().evaluate(st)
+    assert rep.spells[0].action == "跳过"
+    assert "金币不足" in rep.spells[0].reasons
+
+
+def test_empty_board_buys_a_body_instead_of_a_spell():
+    """回合 1 空场：先买身材，别买法术。
+
+    ⚠️ 法术打分与随从打分**不是同一把尺子**（法术起手 6 分，随从按身材算，
+    早期随从普遍 5~9 分），直接比大小会让决策框在空场时去买法术。实测原话：
+    `回合 1 · 3 金 · 空场 → 买 招募新人 2 金`。
+    """
+    st = _state(turn=1, tier=1, gold=3, board=(), shop=["BG_T_BEAST1"],
+                tech_up_cost=99)
+    st.spells = [ShopSlot(slot_entity_id=900, minion_entity_id=901,
+                          card_id="BG_T_SPELL", cost=1, kind="spell",
+                          belongs_to_local=True)]
+    rep = _eng().evaluate(st)
+    assert rep.decision.action == "买"
+    assert rep.decision.target == "野兽一号", rep.decision.target
+    assert rep.decision.trigger == "thin_board"
+
+
+def test_placeholder_entity_name_falls_back_to_the_card_db():
+    """实体名是 `UNKNOWN ENTITY [cardType=INVALID]` 时必须用卡表名。
+
+    ⚠️ 实测 `BG31_881` 的日志名是 UNKNOWN ENTITY，卡表里却是「时间管理」；
+    不排掉占位名，决策框会输出"买 UNKNOWN ENTITY [cardType=INVALID]"。
+    """
+    st = _state(turn=9, tier=4, gold=6, tech_up_cost=99)
+    st.spells = [ShopSlot(slot_entity_id=900, minion_entity_id=901,
+                          card_id="BG_T_SPELL", name="UNKNOWN ENTITY [cardType=INVALID]",
+                          cost=1, kind="spell", belongs_to_local=True)]
+    rep = _eng().evaluate(st)
+    assert rep.spells[0].name == "某法术", rep.spells[0].name
+    assert "UNKNOWN" not in rep.decision.target
+
+
+def test_full_board_makes_a_spell_more_attractive():
+    """场面满 7 只时随从买不了，但法术照买 —— 所以要给它加分。"""
+    st = _state(turn=9, tier=4, gold=9, tech_up_cost=99)
+    st.board = [_minion(200 + i, "BG_T_AVENGE", atk=1, hp=3) for i in range(7)]
+    st.spells = [ShopSlot(slot_entity_id=900, minion_entity_id=901,
+                          card_id="BG_T_SPELL", cost=1, kind="spell",
+                          belongs_to_local=True)]
+    rep = _eng().evaluate(st)
+    assert any("不占格子" in r for r in rep.spells[0].reasons)
 
 
 def test_decision_guard_blocks_expensive_level_with_thin_board():
@@ -1026,7 +1126,11 @@ def test_decision_waits_during_the_combat_phase():
 
 
 def test_decision_asks_for_the_refresh_when_it_is_free():
-    st = _state(turn=5, tier=2, gold=5, shop=["BG_T_BEAST1"])
+    """⚠️ 场面必须先撑起来：场空时「先买身材」优先于免费刷新（见 `_decision` 分支 4）。
+    场上用 5 张**互不相同**的牌，免得触发「凑三连/凑对子」分支。"""
+    st = _state(turn=5, tier=2, gold=5, shop=["BG_T_BEAST1"],
+                board=["BG_T_BEAST2", "BG_T_BEAST3", "BG_T_MECH1",
+                       "BG_T_MECH2", "BG_T_FIRE0"])
     e = Entity(entity_id=555, card_id="Bacon_Free_Refresh_Player_Ench")
     e.tags["BACON_FREE_REFRESH_COUNT"] = "1"
     st.entities[555] = e

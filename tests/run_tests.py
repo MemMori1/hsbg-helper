@@ -64,6 +64,15 @@ def main() -> int:
             t0 = time.time()
             try:
                 fn()
+            except SystemExit as exc:
+                # ⚠️ `SystemExit` 不是 `Exception` 的子类。不单独接住的话，一个
+                # 测试里的 `SystemExit`（典型来源：argparse 参数写错位置）会
+                # **把整个运行器带崩** —— 退出码 2、连"通过 N 失败 N"都不打印，
+                # 看起来像"测试没跑完"而不是"有测试失败"。
+                failed += 1
+                failures.append((path.name, name, "SystemExit(%r)\n%s" % (
+                    exc.code, traceback.format_exc())))
+                print(f"{label} … \033[31mFAIL\033[0m")
             except Exception:
                 failed += 1
                 failures.append((path.name, name, traceback.format_exc()))

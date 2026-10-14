@@ -23,7 +23,7 @@ cd hsbg-helper
 ./hsbg advise          # 规则建议 + JevK5 模型意见
 ./hsbg serve start   # 拉起 JevK5 本地推理服务（llama-server）
 ./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行）
-./run-tests            # 跑单元测试（282 个）
+./run-tests            # 跑单元测试（291 个）
 ```
 
 **零依赖**：纯 Python 标准库，跑在本机自带的 `/usr/bin/python3`（3.9.6），不需要 venv、
@@ -115,7 +115,7 @@ cd hsbg-helper
 | `tools/winlist.swift` | 打印所有在屏窗口的矩形/owner（调窗口几何时用） |
 | `tools/trace_decisions.py` | **逐回合打印决策框**，用来对照大神的运营节奏复盘规则 |
 | `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表） |
-| `tests/` | 零依赖测试运行器 + 282 个测试 |
+| `tests/` | 零依赖测试运行器 + 291 个测试 |
 
 ---
 
@@ -448,6 +448,38 @@ evidence 会让 2B 模型基本读不懂。早期实测：evidence 里「商店�
 `RulesEngine._is_known_name()` 负责过滤（⚠️ 用 `startswith` 判前缀，不要用 `==`，
 实测形态带后缀）。
 
+⚠️ 光过滤还不够：**卡表里其实有名字**。实测 `BG31_881` 的日志名是
+`UNKNOWN ENTITY [cardType=INVALID]`，卡表里是「时间管理」。所以
+`_best_name()` 的择优顺序是「日志名 **且** 不是占位名 **且** 不像 CardID → 日志名，
+否则卡表名」，不是简单的"日志名优先"。
+
+### 酒馆法术（Tavern Spells）走的是另一条购买路径
+
+**最容易整个漏掉的一节** —— 法术**不在 `st.shop` 里**，也不是 `zone=PLAY` 的普通随从：
+
+| 项 | 随从 | 酒馆法术 |
+|---|---|---|
+| 槽位宿主 CardID | `TB_BaconShop_DragBuy` | **`TB_BaconShop_DragBuy_Spell`** |
+| 指向实体的标签 | `tag=2442` | **同样 `tag=2442`** |
+| 买价 | 恒 3 金 | **`COST` 0~4 金**（也有免费法术） |
+| 卡表 type | `MINION` | `BATTLEGROUND_SPELL` |
+| 占不占场面格子 | 占 | **不占** |
+
+只认 `TB_BaconShop_DragBuy` 会让整个建议里看不到那张 1 金的法术
+（实测一局里有「主厨甄选 2 金 / 酒馆币 1 金 / 联盟旗帜 1 金 / 时间管理 4 金」）。
+`StateBuilder._refresh_shop()` 现在两种宿主都收，放进 `GameState.spells`
+（`shop_spells` 是同名的兼容别名），`RulesEngine._score_spells()` 单独打分
+（法术与随从**不是同一把尺子**，不能直接比大小）。
+
+⚠️ 两条由此而来的坑：
+
+1. **法术与随从的分数不能直接比**：法术起手 6 分、随从按身材算（早期随从普遍
+   5~9 分）。直接比大小会让决策框在**回合 1 空场时去买法术**（实测原话：
+   `回合 1 · 3 金 · 空场 → 买 招募新人 2 金`）。修法是**按类别排序**：场上不到
+   3 只时优先买身材，撑起来之后才允许买法术。
+2. **槽位可能指向还没解析出来的实体**：`card_id` 有值但名称是占位符，
+   不能进建议列表（见上一节）。
+
 ### 饰品四选一 / 黑赐三选一：选项不在 Power 流里
 
 **最容易漏的一节**。四选一的选项**完全不在 `GameState.DebugPrintPower()` 里**，
@@ -674,7 +706,7 @@ CLI 侧一直是无条件打印的，两边口径不一致。改成 `if row.scor
 ## 测试
 
 ```bash
-./run-tests          # 全部（282 个）
+./run-tests          # 全部（291 个）
 ./run-tests -v       # 逐个打印
 ./run-tests -k tag   # 只跑名字含 "tag" 的
 ```

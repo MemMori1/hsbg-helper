@@ -151,6 +151,28 @@ def build_evidence(st: GameState, db: Optional[CardDB] = None,
                                        s.golden, mechanics,
                                        _race_en(db, s.card_id))))
 
+    # 酒馆法术：和随从分开列 —— 它们没有攻/血，买价也不是 3。
+    # 不写进去的话模型看不到商店里那张 1 金法术，等于让它漏掉一个选项。
+    spells = [s for s in st.spells if s.belongs_to_local and not s.empty]
+    if spells:
+        lines.append("Tavern spells (%d, buyable this turn):" % len(spells))
+        for i, s in enumerate(spells, 1):
+            card = db.get(s.card_id) if (db is not None and s.card_id) else None
+            card_en = (db_en.get(s.card_id)
+                       if (db_en is not None and s.card_id) else None)
+            name = ((card_en.name if card_en is not None else "")
+                    or (card.name if card is not None else "")
+                    or s.name or s.card_id)
+            cost = s.cost
+            if cost is None and card is not None:
+                cost = card.cost
+            text = _flatten((card_en.text if card_en is not None else "")
+                            or (card.text if card is not None else ""))
+            line = "  %d. %s (%s gold)" % (i, name, cost if cost is not None else "?")
+            if text:
+                line += " — " + text
+            lines.append(line)
+
     lines.append("My board (%d minions):" % len(st.board))
     for i, e in enumerate(st.board, 1):
         lines.append("  " + _entity_line(db, resolver, e, i, db_en=db_en))

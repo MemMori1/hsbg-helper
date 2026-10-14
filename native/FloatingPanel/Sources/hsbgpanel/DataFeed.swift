@@ -209,6 +209,19 @@ extension PanelContentState {
             shop.append(row)
         }
 
+        for raw in (json["spells"] as? [[String: Any]]) ?? [] {
+            var row = SpellRow()
+            row.index = raw["display_index"] as? Int ?? 0
+            row.name = raw["name"] as? String ?? ""
+            row.cost = raw["cost"] as? Int ?? 0
+            row.techLevel = raw["tech_level"] as? Int ?? 0
+            row.score = raw["score"] as? Double ?? 0
+            row.action = raw["action"] as? String ?? ""
+            row.reasons = (raw["reasons"] as? [String]) ?? []
+            row.text = raw["text"] as? String ?? ""
+            spells.append(row)
+        }
+
         for raw in (json["board"] as? [[String: Any]]) ?? [] {
             var row = MinionRow()
             row.name = raw["name"] as? String ?? ""

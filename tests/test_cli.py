@@ -61,6 +61,26 @@ def test_check_accepts_a_directory_that_holds_a_power_log():
         assert rc in (0, 1)          # 内容不足会不合格，但不能崩、也不能说"找不到"
 
 
+def test_check_without_any_path_uses_the_log_root():
+    """⚠️ 回归：`./hsbg check`（不给任何路径）曾崩在
+
+        TypeError: unsupported operand type(s) for /: 'str' and 'str'
+
+    因为 `--log-root` 的默认值是字符串，而代码直接写了 `root / POWER_LOG_NAME`。
+    只在完全不给路径时才触发 —— 给了 path 的分支会自己转 `Path`，所以之前的
+    用例全都没覆盖到。
+    """
+    with tempfile.TemporaryDirectory() as d:
+        session = Path(d) / "Hearthstone_2026_01_01_00_00_00"
+        session.mkdir()
+        (session / "Power.log").write_text(_HEAD + "CREATE_GAME\n", encoding="utf-8")
+        # ⚠️ `--log-root` 是**顶层**参数，必须写在子命令**前面**；写在后面
+        # argparse 会抛 SystemExit(2)（unrecognized arguments），把测试运行器
+        # 整个带崩（退出码 2、连"通过 N 失败 N"都不打印）。
+        rc = _quiet(["--log-root", d, "check"])
+        assert rc in (0, 1)          # 内容不足会不合格，但**不能**崩
+
+
 def test_parse_limit_runs_on_a_small_log():
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "Power.log"

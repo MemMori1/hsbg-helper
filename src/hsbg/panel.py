@@ -165,6 +165,8 @@ class PanelFrame:
     tavern_tier: int = 0
     headline: str = ""
     shop: List[Dict[str, Any]] = field(default_factory=list)
+    #: 酒馆法术（`TB_BaconShop_DragBuy_Spell`）—— 和随从分开，它们没有攻/血
+    spells: List[Dict[str, Any]] = field(default_factory=list)
     board: List[Dict[str, Any]] = field(default_factory=list)
     hand: List[str] = field(default_factory=list)
     opponents: List[Dict[str, Any]] = field(default_factory=list)
@@ -194,6 +196,7 @@ class PanelFrame:
             "tavern_tier": self.tavern_tier,
             "headline": self.headline,
             "shop": self.shop,
+            "spells": self.spells,
             "board": self.board,
             "hand": self.hand,
             "opponents": self.opponents,
@@ -406,9 +409,24 @@ def build_frame(st: GameState,
             "model_buy_probability": (round(float(prob), 4) if prob is not None else None),
         })
 
+    # 酒馆法术：单独一段（没有攻/血，展示卡文更有用）
+    for i, item in enumerate(
+            sorted(report.spells, key=lambda it: it.slot_entity_id), start=1):
+        frame.spells.append({
+            "display_index": i,
+            "slot_entity_id": item.slot_entity_id,
+            "name": item.name,
+            "cost": item.cost,
+            "tech_level": item.tech_level or 0,
+            "score": round(float(item.score or 0.0), 2),
+            "action": item.action,
+            "reasons": list(item.reasons),
+            "keywords": list(item.keywords),
+            "text": item.text,
+        })
+
     for e in st.board:
         frame.board.append(_minion_row(e, resolver))
-
     for e in st.hand:
         frame.hand.append(resolver.name_of(e.card_id) if resolver else (e.card_id or "?"))
 

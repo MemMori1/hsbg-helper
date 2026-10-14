@@ -231,6 +231,10 @@ class ShopItem:
     race: str = ""
     #: 中文关键词标签（剧毒/圣盾/嘲讽/发动/进击…），供面板显示
     keywords: List[str] = field(default_factory=list)
+    #: `"minion"` 或 `"spell"` —— 法术没有攻/血，费用也是自己的
+    kind: str = "minion"
+    #: 法术卡文（已压平标签），供面板/模型看
+    text: str = ""
 
     def describe(self) -> str:
         return f"{self.name} {self.score:.1f}分 {self.action}"
@@ -304,8 +308,8 @@ class DecisionBox:
             return f"升本 {self.target}" if self.target else "升本"
         if self.action == "选择":
             return "先选牌"
-        if self.action == "攒钱":
-            return "攒钱"
+        if self.action == "升不起":
+            return "升不起"
         if self.action == "刷新":
             return "刷新"
         return self.action or "观望"
@@ -498,6 +502,8 @@ class AdviceReport:
     board_size: int = 0
     hand_size: int = 0
     shop: List[ShopItem] = field(default_factory=list)
+    #: 酒馆法术槽位（和 `shop` 分开：没有攻/血，费用也不一样）
+    spells: List[ShopItem] = field(default_factory=list)
     triples: List[TripleCandidate] = field(default_factory=list)
     level: Optional[LevelAdvice] = None
     warnings: List[Warning] = field(default_factory=list)
@@ -583,8 +589,14 @@ class RulesEngine:
 
         优先用实体名（英雄皮肤等日志名比卡表名短，玩家更认），但**当实体名
         看起来就是 CardID 时改用卡表名**——否则会把 CardID 当卡名显示出去。
+
+        ⚠️ 还必须排掉 `UNKNOWN ENTITY [cardType=INVALID]` / `N0NAME` 这类占位名：
+        实体还没解析出来时日志给的就是它，而**卡表里其实有名字**
+        （实测 `BG31_881` → 「时间管理」，日志名却是 UNKNOWN ENTITY）。
+        不排掉的话决策框会输出"买 UNKNOWN ENTITY [cardType=INVALID]"。
         """
-        if entity_name and not self._looks_like_card_id(entity_name):
+        if (entity_name and self._is_known_name(entity_name)
+                and not self._looks_like_card_id(entity_name)):
             return entity_name
         return self._display_name(card_id, fallback=entity_name)
 
@@ -663,6 +675,7 @@ class RulesEngine:
         owned = self._owned_counts(st)
         rep.triples = self._find_triples(st, owned)
         rep.shop = self._score_shop(st, owned)
+        rep.spells = self._score_spells(st)
         rep.level = self._advise_level(st, seat, rep.shop)
         # ⚠️ 黑暗之赐必须在 `_warnings` **之前**算：预警里要提醒"能点了，别忘拿"，
         # 而预警读的是 `rep.dark_gift`。反过来写的话这个提醒永远不出现（踩过）。
@@ -1019,6 +1032,101 @@ class RulesEngine:
         items.sort(key=lambda it: -it.score)
         return items
 
+    def _score_spells(self, st: GameState) -> List[ShopItem]:
+        """给酒馆法术打分。
+
+        ⚠️ 法术**不在 `st.shop` 里**（它走 `TB_BaconShop_DragBuy_Spell`，
+        没有攻/血、买价也不是 3），所以必须单独算一遍 —— 否则整个建议里
+        看不到商店里那张 1 金法术。
+
+        打分口径（刻意保守，法术强弱高度依赖卡文，样本不够时不硬猜）：
+          · 起手 5 分（法术是"即用即走"的灵活资源）
+          · 费用越高越难用（每金 −1，且逐金边际递减）
+          · 星级越高越强（+1.5/星）
+          · 关键词照 `MECHANIC_WEIGHT` 加权
+          · ⭐ **场面已满时加分**：法术不占格子，此时它比随从更值
+        """
+        cfg = self.config
+        gold = st.local_seat.gold if st.local_seat else None
+        board_full = len(st.board) >= cfg.board_limit
+        items: List[ShopItem] = []
+
+        for i, slot in enumerate(st.shop_spells, 1):
+            # ⚠️ 槽位可能指向一个还没解析出来的实体（实测会出现
+            # `UNKNOWN ENTITY [cardType=INVALID]`），这种不能进建议列表，
+            # 否则决策框会输出"买 UNKNOWN ENTITY [cardType=INVALID]"。
+            if not slot.card_id:
+                continue
+            card = self._card(slot.card_id)
+            name = self._best_name(slot.card_id, slot.name)
+            if not self._is_known_name(name) and card is None:
+                continue
+            cost = slot.cost
+            if cost is None and card is not None:
+                cost = card.cost
+            if cost is None:
+                cost = 1                      # 卡表也查不到时按最便宜算
+            text = self._strip_tags(card.text) if card is not None else ""
+
+            score = 6.0
+            reasons: List[str] = []
+            if cost:
+                score -= cost * 1.0
+            if cost >= 3:
+                reasons.append(f"要 {cost} 金")
+
+            tl = card.tech_level if card is not None else None
+            if tl:
+                score += tl * 1.5
+
+            keywords = self._keyword_labels(slot.card_id)
+            kw_score = 0.0
+            for m in self._mechanics(slot.card_id):
+                kw_score += MECHANIC_WEIGHT.get(m, 0.0)
+            if kw_score:
+                score += kw_score
+                if keywords:
+                    reasons.append("关键词：" + "/".join(keywords))
+
+            if board_full:
+                score += 3.0
+                reasons.append("场面已满（法术不占格子）")
+
+            affordable = gold is None or gold >= cost
+            if not affordable:
+                score -= 10.0
+                reasons.append("金币不足")
+
+            if not affordable:
+                action = "跳过"
+            elif score >= 9.0:
+                action = "买"
+            elif score >= 4.5:
+                action = "考虑"
+            else:
+                action = "跳过"
+
+            items.append(ShopItem(
+                index=i,
+                slot_entity_id=slot.slot_entity_id,
+                card_id=slot.card_id,
+                name=name,
+                tech_level=tl,
+                attack=None,
+                health=None,
+                golden=False,
+                cost=cost,
+                score=round(score, 1),
+                action=action,
+                reasons=reasons,
+                keywords=keywords,
+                kind="spell",
+                text=text,
+            ))
+
+        items.sort(key=lambda it: -it.score)
+        return items
+
     # -- 升本建议 -------------------------------------------------------
 
     def tech_up_cost(self, st: GameState) -> Tuple[Optional[int], Optional[int]]:
@@ -1108,7 +1216,9 @@ class RulesEngine:
 
         adv.score = round(score, 1)
         if not adv.affordable:
-            adv.action = "攒钱"
+            # ⚠️ 不叫「攒钱」——酒馆战棋金币**不跨回合**（已实测 RESOURCES 每回合
+            # 重置），这个动作只表示"这一回合付不起升本费"。
+            adv.action = "升不起"
         elif score >= 5.0:
             adv.action = "升本"
         elif score >= 0.0:
@@ -1221,11 +1331,12 @@ class RulesEngine:
                 off_curve = blocked
                 box.off_curve = True
             else:
-                box.action = "攒钱"
-                box.cost = lv.cost
-                box.trigger, box.urgency = "save_for_level", "wait"
-                box.reason = f"升本差 {lv.cost - gold} 金"
-                return box
+                # ⚠️ 这里**不能**说「攒钱」——酒馆战棋的金币**不跨回合保留**
+                # （实测 `RESOURCES` 每回合重置成回合值：3/4/5/…/10，不是累加），
+                # 所以"这回合不花、下回合升"根本不成立。正确做法是这回合把金币
+                # 花在能提升的地方（买牌或刷新），升级等攒够的那一回合再说。
+                off_curve = f"升本差 {lv.cost - gold} 金"
+                box.off_curve = True
         elif target is not None and cur is not None and cur > target:
             # 已经超前，不用急着升
             box.off_curve = True
@@ -1247,22 +1358,56 @@ class RulesEngine:
             box.reason = off_curve or (best.reasons[0] if best.reasons else "")
             return box
 
-        # 4. 场面薄 + 血线低 → 就算只是「考虑」也先买一只撑着
-        if (rep.board_size < 5 and rep.health is not None
-                and rep.health <= self.config.low_health):
+        # 4. 场面太薄 → 就算只是「考虑」也先买一只撑着。
+        #    ⚠️ 早期（场上不到 3 只）不看血线：这时候没场面本身就是最大风险，
+        #    买身材远比买法术重要 —— 否则决策框会在回合 1 让你买法术。
+        thin = rep.board_size < 3 or (
+            rep.board_size < 5 and rep.health is not None
+            and rep.health <= self.config.low_health)
+        if thin:
             cand = next((s for s in rep.shop
                          if s.action == "考虑" and s.cost <= gold), None)
+            if cand is None and rep.board_size < 3:
+                # 场上太空时身材比什么都重要 —— 哪怕规则给了「跳过」也先占住
+                # 格子。不这样兜底的话，回合 1 空场会去**买法术**（法术打分和
+                # 随从打分不是同一把尺子，不能直接比大小，得按类别排序）。
+                cand = next((s for s in rep.shop if s.cost <= gold), None)
             if cand is not None:
                 box.action, box.target, box.cost = "买", cand.name, cand.cost
                 box.trigger, box.urgency = "thin_board", "soon"
-                box.reason = off_curve or "场面偏薄，先撑住"
+                box.reason = off_curve or ("场面太空，先买身材"
+                                           if rep.board_size < 3 else "场面偏薄，先撑住")
                 return box
+
+        # 4b. 酒馆法术：**不占格子**，而且这是最后几个能花钱的地方之一
+        #     （金币不跨回合，什么都不做等于白扔）。走到这里说明没有更值得买的
+        #     随从、也没到该升本的时候 —— 那就把法术拿了。
+        spell = next((s for s in rep.spells if s.action == "买" and s.cost <= gold),
+                     None)
+        if spell is None:
+            spell = next((s for s in rep.spells
+                          if s.action == "考虑" and s.cost <= gold), None)
+        if spell is not None:
+            box.action, box.target, box.cost = "买", spell.name, spell.cost
+            box.trigger, box.urgency = "spell", "soon"
+            box.reason = off_curve or (spell.reasons[0] if spell.reasons
+                                       else "没有更值得买的，法术不占格子")
+            return box
 
         # 5. 有免费刷新就别浪费
         if gold > 0 and (self.free_refreshes(st) or 0) > 0:
             box.action, box.cost = "刷新", 0
             box.trigger, box.urgency = "free_refresh", "soon"
             box.reason = off_curve or "有免费刷新，找更好的牌"
+            return box
+
+        # 6. 还剩金币就别留着 —— 金币不跨回合（见上面那条注释），
+        #    花 1 金刷新找更好的，比什么都不做强。
+        if gold > 0:
+            box.action, box.cost = "刷新", self.reroll_cost(st)
+            box.trigger, box.urgency = "spend_gold", "soon"
+            n = self.config.reroll_cost
+            box.reason = off_curve or f"还剩 {gold} 金（不会留到下一回合），刷新花 {n} 金"
             return box
 
         box.action, box.trigger, box.urgency = "观望", "idle", "wait"

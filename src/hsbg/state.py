@@ -32,6 +32,10 @@ def _source_ref(raw: str):
 # 商店槽位的引用 tag（`TB_BaconShop_DragBuy` 上）
 TAG_SHOP_SLOT_REF = "2442"
 CARD_DRAG_BUY = "TB_BaconShop_DragBuy"
+#: 酒馆**法术**槽位。和随从槽位是两套实体，但用同一个 `tag=2442` 指向"这一格里
+#: 真正能买的那张牌"。漏掉它整个商店就少一块 —— 实测会刷出 `酒馆币` /
+#: `主厨甄选` / `联盟旗帜` 这类 1~4 金的法术。
+CARD_DRAG_BUY_SPELL = "TB_BaconShop_DragBuy_Spell"
 CARD_BOB = "TB_BaconShopBob"
 CARD_LOCAL_PLAYER_ENCH = "TB_BaconShop_8P_PlayerE"
 
@@ -116,7 +120,7 @@ class Entity:
 
 @dataclass
 class ShopSlot:
-    """商店里的一个槽位。"""
+    """商店里的一个槽位（随从或法术）。"""
     slot_entity_id: int          # DragBuy 实体 id（槽位本身）
     minion_entity_id: Optional[int]  # 指向的随从实体；None = 已买走/空
     card_id: str = ""
@@ -126,6 +130,11 @@ class ShopSlot:
     health: Optional[int] = None
     golden: bool = False
     controller: Optional[int] = None
+    #: `"minion"` 或 `"spell"` —— 法术走 `TB_BaconShop_DragBuy_Spell`，
+    #: 没有攻/血，费用也不一定是 3。
+    kind: str = "minion"
+    #: 这张牌的购买费用。随从固定 `buy_cost`（3），法术按卡表 `cost`（0~4 实测）。
+    cost: Optional[int] = None
     # ⚠️ 默认必须是 False：`local_ctrl` 未知时不能默认算本地（战斗中会给对手生成
     # 同类 DragBuy 槽位），默认 True 会把对手的商店混进"可买"列表。
     belongs_to_local: bool = False
@@ -133,6 +142,10 @@ class ShopSlot:
     @property
     def empty(self) -> bool:
         return self.minion_entity_id is None
+
+    @property
+    def is_spell(self) -> bool:
+        return self.kind == "spell"
 
 
 @dataclass
@@ -286,6 +299,9 @@ class GameState:
     local_player_id: Optional[int] = None
     seats: Dict[int, Seat] = field(default_factory=dict)
     shop: List[ShopSlot] = field(default_factory=list)
+    #: 酒馆法术槽位（`TB_BaconShop_DragBuy_Spell`）。实测一局里 0~1 张常驻，
+    #: 和随从槽位分开存主要是因为它们**没有攻/血、费用也不是 3**。
+    spells: List[ShopSlot] = field(default_factory=list)
     board: List[Entity] = field(default_factory=list)
     hand: List[Entity] = field(default_factory=list)
     entities: Dict[int, Entity] = field(default_factory=dict)
@@ -331,6 +347,11 @@ class GameState:
     @property
     def shop_minions(self) -> List[ShopSlot]:
         return [s for s in self.shop if not s.empty and s.belongs_to_local]
+
+    @property
+    def shop_spells(self) -> List[ShopSlot]:
+        """本地玩家当前可买的酒馆法术（在售、非空）。"""
+        return [s for s in self.spells if not s.empty and s.belongs_to_local]
 
     @property
     def opponents(self) -> List[Seat]:
@@ -846,16 +867,22 @@ class StateBuilder:
     # 派生快照
     # ------------------------------------------------------------------
     def _refresh_shop(self) -> bool:
-        slots = []
         # 座位数变了说明本轮刷新改动了别的视图，`_refresh` 要再跑一轮收敛。
         before = len(self._state.seats)
+        minions: List[ShopSlot] = []
+        spells: List[ShopSlot] = []
         for e in self._state.entities.values():
-            if e.card_id != CARD_DRAG_BUY:
+            if e.card_id == CARD_DRAG_BUY:
+                kind = "minion"
+            elif e.card_id == CARD_DRAG_BUY_SPELL:
+                kind = "spell"
+            else:
                 continue
             ref = _int(e.tags.get(TAG_SHOP_SLOT_REF))
             slot = ShopSlot(slot_entity_id=e.entity_id,
                             minion_entity_id=ref if ref else None,
-                            controller=e.controller)
+                            controller=e.controller,
+                            kind=kind)
             if ref:
                 m = self._state.entities.get(ref)
                 if m is not None:
@@ -865,18 +892,23 @@ class StateBuilder:
                     slot.attack = m.attack
                     slot.health = m.health
                     slot.golden = m.golden
-            slots.append(slot)
-        slots.sort(key=lambda s: s.slot_entity_id)
-        if slots:
-            # ⚠️ 归属必须在**同一次** `_refresh_shop` 里算完：`_refresh()` 的收敛
-            # 循环靠 `changed` 决定要不要再跑一轮，而"归属变了"不改变槽位集合、
-            # 无法表达为 changed。拆成两处（集合在 `_refresh_shop`、归属在别处/上一轮）
-            # 会永久停在错误值（实测：本地槽位 `belongs_to_local=False`）。
-            local_ctrl = self._local_controller()
-            for slot in slots:
-                slot.belongs_to_local = bool(
-                    local_ctrl is not None and slot.controller == local_ctrl)
-        self._state.shop = slots
+                    # 法术的买价：槽位实体自带 `COST`（实测 1~4）。这里只抄原始
+                    # 值，规则层有卡表时会用卡表的 `cost` 覆盖它（更权威）。
+                    if kind == "spell":
+                        slot.cost = _int(e.tags.get("COST"))
+            (spells if kind == "spell" else minions).append(slot)
+        # ⚠️ 归属必须在**同一次** `_refresh_shop` 里算完：`_refresh()` 的收敛
+        # 循环靠 `changed` 决定要不要再跑一轮，而"归属变了"不改变槽位集合、
+        # 无法表达为 changed。拆成两处（集合在 `_refresh_shop`、归属在别处/上一轮）
+        # 会永久停在错误值（实测：本地槽位 `belongs_to_local=False`）。
+        local_ctrl = self._local_controller()
+        for slot in minions + spells:
+            if local_ctrl is not None and slot.controller == local_ctrl:
+                slot.belongs_to_local = True
+        minions.sort(key=lambda s: s.slot_entity_id)
+        spells.sort(key=lambda s: s.slot_entity_id)
+        self._state.shop = minions
+        self._state.spells = spells
         return len(self._state.seats) != before
 
     def _refresh_boards(self) -> bool:
