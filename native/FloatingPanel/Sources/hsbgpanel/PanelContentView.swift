@@ -318,7 +318,11 @@ final class PanelContentView: NSView {
             if row.golden { name = "★" + name }
             var text = "\(row.index). \(name)  \(row.attack)/\(row.health)"
             if row.techLevel > 0 { text += "  \(row.techLevel)星" }
-            if row.score > 0 { text += String(format: "  %.1f分", row.score) }
+            // ⚠️ 这里原本是 `if row.score > 0`，负分被整段吞掉 —— 实测商店里
+            // 评分 -1.4 / -1.8 的行会渲染成"没有分数"，看着像规则引擎没给出意见，
+            // 而实际上它明确判定为"不值"。负分恰恰是最该让用户看到的信号。
+            // 只把 score == 0（卡表查不到、引擎没打分）当作"无意见"隐去。
+            if row.score != 0 { text += String(format: "  %.1f分", row.score) }
 
             var prob: String?
             if let p = row.modelBuyProbability {
@@ -341,9 +345,12 @@ final class PanelContentView: NSView {
             }
             y += lineHeight
 
-            // 关键词放在最前：它是"这卡凭什么值这个分"的最直接解释
+            // 关键词放在最前：它是"这卡凭什么值这个分"的最直接解释。
+            // ⚠️ 必须从 `reasons` 里剔掉同一条：规则层在关键词加分时也会 append
+            // 一句 `关键词：…`，两边都留着就会渲染成"关键词: 发动；关键词: 发动"。
             let kw = row.keywords.isEmpty ? "" : "关键词：" + row.keywords.joined(separator: "/")
-            let detail = ([row.action, kw] + row.reasons).filter { !$0.isEmpty }.joined(separator: "；")
+            let rest = row.reasons.filter { !$0.hasPrefix("关键词：") }
+            let detail = ([row.action, kw] + rest).filter { !$0.isEmpty }.joined(separator: "；")
             y = line("    " + detail, at: padding, y,
                      color: NSColor(calibratedWhite: 0.58, alpha: 1))
         }

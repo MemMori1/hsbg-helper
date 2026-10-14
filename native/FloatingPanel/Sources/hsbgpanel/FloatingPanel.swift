@@ -206,9 +206,16 @@ final class FloatingPanel: NSPanel {
     func setContentHeight(_ height: CGFloat) {
         let clamped = min(max(height, Self.minHeight), Self.maxHeight)
         guard abs(clamped - frame.height) > 0.5 else { return }
+        // ⚠️ 必须先记下旧的 maxY（AppKit 里 = 窗口**上边缘**）再改 size。
+        // 早先写成先 `f.size.height = clamped` 再 `f.origin.y = f.maxY - clamped`，
+        // 而 `f.maxY` 此时已经用的是**新高度**，整条式子退化成
+        // `origin.y = 旧 origin.y` —— 于是窗口是"底边钉死、向上长"。
+        // 实测症状：内容变多时面板一路往上爬，700pt 高时顶到屏幕最上沿
+        // （CGWindow y=30），而炉石在 y=233，完全没对齐。
+        let top = frame.maxY
         var f = frame
         f.size.height = clamped
-        f.origin.y = f.maxY - clamped // 顶部对齐，向下生长
+        f.origin.y = top - clamped // 顶部对齐，向下生长
         isProgrammaticMove = true
         setFrame(f, display: true)
         isProgrammaticMove = false

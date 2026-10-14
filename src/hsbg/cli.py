@@ -506,8 +506,11 @@ def build_parser() -> argparse.ArgumentParser:
     # ⚠️ 默认 80 轮（20s）而不是 20 轮（5s）：一帧最多问 12+2 个问题，
     # 实测"待选 + 只买一张 + 升本"三问就要 5.75s，5s 上限会稳定超时，
     # 输出一帧"模型思考中…"却没有任何意见（踩过）。
-    pn.add_argument("--model-wait", type=int, default=80,
-                    help="单帧模式下等模型的最多 0.25s 轮数（默认 80 = 20s）")
+    # 4B 档比 2B 慢约一倍（实测同一盘面 11.6s → 22.8s），而单帧模式要等
+    # 「待选 + 只买一张 + 升本 + 逐张买入」全问完，20s 会稳定差一点。
+    # 跟随模式不受这个上限影响（帧一直往外发，答案到了自动补上）。
+    pn.add_argument("--model-wait", type=int, default=160,
+                    help="单帧模式下等模型的最多 0.25s 轮数（默认 160 = 40s）")
     pn.add_argument("--limit", type=int, default=12, help="最多咨询几张商店随从")
     pn.add_argument("--no-model", action="store_true", help="只出规则建议，不问模型")
     pn.add_argument("--model-url", default=None, help="llama-server 地址")

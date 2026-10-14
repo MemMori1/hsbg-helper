@@ -23,7 +23,7 @@ cd hsbg-helper
 ./hsbg advise          # 规则建议 + JevK5 模型意见
 ./hsbg serve --start   # 拉起 JevK5 本地推理服务（llama-server）
 ./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行）
-./run-tests            # 跑单元测试（253 个）
+./run-tests            # 跑单元测试（258 个）
 ```
 
 **零依赖**：纯 Python 标准库，跑在本机自带的 `/usr/bin/python3`（3.9.6），不需要 venv、
@@ -114,7 +114,7 @@ cd hsbg-helper
 | `tools/verify_attr_rule.py` | 归属规则的语义自证（靠 `ENTITY_ID` 判对错，不靠数数） |
 | `tools/winlist.swift` | 打印所有在屏窗口的矩形/owner（调窗口几何时用） |
 | `data/` | `cards_zhCN.json`（1.2 MB 卡表）、`names_zhCN.json`（日志自举名表） |
-| `tests/` | 零依赖测试运行器 + 253 个测试 |
+| `tests/` | 零依赖测试运行器 + 258 个测试 |
 
 ---
 
@@ -218,12 +218,13 @@ JevK5 的置信度全靠**答案位置那个字母的 softmax**，所以必须�
 
 ```bash
 ~/.cache/lm-studio/extensions/backends/llama.cpp-mac-arm64-apple-metal-advsimd-2.56.0/llama-server \
-  -m ~/.cache/lm-studio/models/alibiserikbay/JevK5-GGUF/jevk5-2b-v0.2-Q8_0.gguf \
+  -m ~/.cache/lm-studio/models/alibiserikbay/JevK5-GGUF/jevk5-4b-v0.2-Q4_K_M.gguf \
   -c 8192 -ngl 99 --port 8090 --host 127.0.0.1
 ```
 
 它的 `/completion` + `n_probs` 正常返回 `completion_probabilities[0].top_logprobs`。
-`./hsbg serve --start` 就是干这个的（会先 `lms unload` 腾内存，2B Q8 约占 2 GB）。
+`./hsbg serve start` 就是干这个的（会先 `lms unload` 腾内存，4B Q4_K_M 约占 2.7 GB）。
+注意 `start` / `stop` / `status` 是**位置参数**，不是 `--start`。
 
 ### 9. ⚠️ 必须先 `/tokenize`，再把 token id 喂 `/completion`
 
@@ -242,6 +243,36 @@ POST 会 404。而且要小心 `HTTPError` 是 `URLError` 的**子类**——`ex
 官方给的各档校准温度：**2B = 1.42**、v0.2 4B = 1.532、v0.3 4B = 1.367、9B = 1.089。
 概率 = `softmax(logprob / temperature)`。字母不在 top-k 里时用
 `min(seen) - 2.0` 兜底（官方 `MISSING_MARGIN`）。
+
+⚠️ **温度要认版本号**：4B 的 v0.2 与 v0.3 差得不少（1.532 vs 1.367）。用错会让概率
+整体偏平 —— 而"偏平"恰好是最容易被误判成"模型不行"的症状。
+`model_server.size_key()` 从 GGUF 文件名解析出 `4b-v0.2`，
+`advisor_from_args()` 在没给 `--model-size` 时**从实际会被加载的那个 GGUF 反推**。
+
+### 11b. 挑模型档位：不是"越大越好"
+
+`./hsbg serve start` 会自动挑 GGUF，顺序是 **4B > 2B > 9B**，同档位内再比量化
+（Q8_0 > Q6_K > Q5_K_M > Q4_K_M）。**刻意不按文件大小排**，因为：
+
+| 档位 | JevBench v1.4 hard tier | 校准 ECE | 结论 |
+|---|---|---|---|
+| **4B** | **0.784** | **0.054** | 最好，首选 |
+| 9B | 0.730 | 0.126 | 反而更差，且更吃内存 |
+| 2B | — | — | 最快但区分度不足（实测 `P(买)` 全挤在 0.42~0.48） |
+
+实测同一盘面（`Power.log --until-line 92000`）的逐张买入意愿：
+
+```
+2B v0.2 Q8_0   0.44 / 0.42 / 0.41 / 0.41 / 0.40     ← 极差 0.04，等于没表态
+4B v0.2 Q4_K_M 0.44 / 0.40 / 0.21 / 0.20 / 0.13     ← 极差 0.31，明确表态
+```
+
+代价是慢约一倍（同一盘面 11.6 s → 22.8 s）。所以 `--model-wait` 默认给了 40 s
+（只影响 `--until-line` 单帧模式；跟随模式的帧一直往外发，答案到了自动补）。
+
+⚠️ **模型会自相矛盾**：同一次运行里"只买一张的话"答 `复映无人机`，
+而"买复映无人机吗"只给 P=0.13（全场最低）。JevK5 每个问题**独立打分**，
+不做跨问题一致性校验，所以别只看单个答案 —— 结合规则层一起看。
 
 ### 12. 题面必须是官方 JSON 形状，而且必须是英文
 
@@ -538,12 +569,36 @@ CGWindowListCopyWindowInfo([.optionOnScreenOnly, .excludeDesktopElements], kCGNu
 会让面板跑到屏幕另一头（实测 x=310，压在浏览器上）。**正确做法是贴屏幕右缘**
 （`screen.maxX - width - gap`，与游戏轻微重叠），只有屏幕右缘也放不下才考虑左侧。
 
+### 6. ⚠️ 改窗口高度时先存 `frame.maxY`，再改 `size`
+
+`setContentHeight()` 原本这么写：
+
+```swift
+var f = frame
+f.size.height = clamped
+f.origin.y = f.maxY - clamped   // ← 想"顶部对齐、向下生长"
+```
+
+但 `f.maxY` 是 `origin.y + size.height`，而 `size.height` **上一行刚被改过**，
+于是式子退化成 `origin.y = 旧的 origin.y` —— 实际效果是**底边钉死、向上生长**。
+实测症状：内容变多时面板一路往上爬，700 pt 高时顶到屏幕最上沿（y=30），
+而炉石在 y=233，完全没对齐。
+
+改成先 `let top = frame.maxY` 存下来，再改 size，就没这个问题了。
+
+### 7. 分数为负也要显示
+
+`PanelContentView` 里原本是 `if row.score > 0 { …分 }`，**负分被整段吞掉**。
+实测商店里评分 -1.4 / -1.8 的行渲染成"没有分数"，看着像规则引擎没给出意见，
+实际上它明确判定为"不值" —— 而这恰恰是最该让用户看到的信号。
+CLI 侧一直是无条件打印的，两边口径不一致。改成 `if row.score != 0`。
+
 ---
 
 ## 测试
 
 ```bash
-./run-tests          # 全部（253 个）
+./run-tests          # 全部（258 个）
 ./run-tests -v       # 逐个打印
 ./run-tests -k tag   # 只跑名字含 "tag" 的
 ```

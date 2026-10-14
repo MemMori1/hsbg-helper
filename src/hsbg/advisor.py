@@ -593,7 +593,17 @@ def advisor_from_args(args) -> Optional[Advisor]:
     """按 CLI 参数造一个 advisor；`--no-model` 或不可用时返回 None。"""
     if getattr(args, "no_model", False):
         return None
+    size = getattr(args, "model_size", None)
+    if not size:
+        # 没显式指定档位时，就从"实际会被 llama-server 加载的那个 GGUF"推出来 ——
+        # 否则 4B 模型会套用 2B 的校准温度（1.42，而 4B v0.2 应为 1.532），
+        # 概率整体偏平。而"概率偏平"恰恰是 2B 档最被诟病的地方，很容易误判成模型不行。
+        try:
+            from .model_server import find_gguf, size_key
+            size = size_key(find_gguf() or "")
+        except Exception:
+            size = ""
     return JevK5Advisor(
         url=getattr(args, "model_url", None) or "http://127.0.0.1:8090",
-        size=getattr(args, "model_size", None) or "2b",
+        size=size or "2b",
         timeout=getattr(args, "model_timeout", 60.0) or 60.0)

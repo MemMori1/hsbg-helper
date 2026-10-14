@@ -14,6 +14,7 @@ LM Studio 6324 端口**不返回 logprobs**（带 `n_probs`/`logprobs` 直接 40
 import glob
 import json
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -63,25 +64,62 @@ def find_llama_server(glob_pattern: str = DEFAULT_BACKEND_GLOB) -> Optional[str]
     return hits[0]
 
 
+def _quant_rank(low_name: str) -> int:
+    """量化档位排序值，越大越好。"""
+    tags = ("q8_0", "q6_k", "q5_k_m", "q4_k_m", "q4_0")
+    for i, tag in enumerate(tags):
+        if tag in low_name:
+            return len(tags) - i
+    return 0
+
+
+#: 参数量档位的偏好顺序 —— **不是"越大越好"**。
+#: 独立评测 JevBench v1.4 上 9B 反而不如 4B（hard tier 0.730 vs 0.784），
+#: 且 9B 校准更差（ECE 0.126 vs 0.054）；官方校准温度表也给 4B 单列了值。
+#: 2B 最弱（区分度不足，实测 P(买) 全挤在 0.42~0.48），只作 4B 缺失时的退路。
+_SIZE_PREFERENCE = ("4b", "2b", "9b")
+
+
+def _size_rank(low_name: str) -> int:
+    """按 `_SIZE_PREFERENCE` 给参数量档位打分；认不出给 0（排最后）。"""
+    for i, tag in enumerate(_SIZE_PREFERENCE):
+        if re.search(r"(?:^|[-_/])%s(?:[-_.]|$)" % tag, low_name):
+            return len(_SIZE_PREFERENCE) - i
+    return 0
+
+
+def size_key(gguf_path: str) -> str:
+    """从 GGUF 文件名推出校准温度表的档位键，如 `"4b-v0.2"`。
+
+    文件名形如 `jevk5-4b-v0.2-Q4_K_M.gguf`。版本号必须带上：4B 的 v0.2 与 v0.3
+    校准温度不同（1.532 vs 1.367），认错版本会让概率整体偏平或偏尖。
+    """
+    low = os.path.basename(gguf_path).lower()
+    m_size = re.search(r"(?:^|[-_/])(\d+b)(?:[-_.]|$)", low)
+    if not m_size:
+        return ""
+    size = m_size.group(1)
+    m_ver = re.search(r"[-_](v\d+\.\d+)", low)
+    return "%s-%s" % (size, m_ver.group(1)) if m_ver else size
+
+
 def find_gguf(glob_pattern: str = DEFAULT_GGUF_GLOB) -> Optional[str]:
-    """找 JevK5 的 GGUF；多个时挑量化最好的（Q8_0 > Q5 > Q4）。"""
+    """找 JevK5 的 GGUF。
+
+    先按参数量档位偏好（4B > 2B > 9B，见 `_SIZE_PREFERENCE` 里为什么不是越大越好），
+    同档位内再挑量化最好的（Q8_0 > Q6_K > Q5_K_M > Q4_K_M > Q4_0），最后才看文件大小。
+    """
     hits = glob.glob(glob_pattern)
     if not hits:
         return None
 
     def rank(p: str) -> Tuple:
         low = os.path.basename(p).lower()
-        pref = 0
-        for i, tag in enumerate(("q8_0", "q6_k", "q5_k_m", "q4_k_m", "q4_0")):
-            if tag in low:
-                pref = len(("q8_0", "q6_k", "q5_k_m", "q4_k_m", "q4_0")) - i
-                break
-        size = 0
         try:
             size = os.path.getsize(p)
         except OSError:
-            pass
-        return (pref, size)
+            size = 0
+        return (_size_rank(low), _quant_rank(low), size)
 
     hits.sort(key=rank, reverse=True)
     return hits[0]

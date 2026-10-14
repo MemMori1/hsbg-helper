@@ -737,6 +737,63 @@ def test_find_gguf_prefers_best_quantization():
         assert got is not None and "Q8_0" in got
 
 
+def test_find_gguf_prefers_4b_over_2b_even_with_worse_quantization():
+    """参数量档位优先于量化档位 —— 4B Q4_K_M 要赢过 2B Q8_0。
+
+    这不是笔误：JevBench v1.4 上 9B 反而不如 4B，而且 2B 的区分度实测明显不足
+    （P(买) 全挤在 0.42~0.48）。所以"量化更好"不等于"更该用"。
+    """
+    import tempfile
+    from hsbg import model_server as ms
+    with tempfile.TemporaryDirectory() as d:
+        for name in ("jevk5-2b-v0.2-Q8_0.gguf", "jevk5-4b-v0.2-Q4_K_M.gguf"):
+            with open(os.path.join(d, name), "wb") as f:
+                f.write(b"GGUF" + name.encode())
+        got = ms.find_gguf(os.path.join(d, "*.gguf"))
+        assert got is not None and "4b" in os.path.basename(got), got
+
+
+def test_find_gguf_prefers_2b_over_9b_when_no_4b_present():
+    """没有 4B 时选 2B 而不是 9B（9B 在公开评测上更差且校准更糟）。"""
+    import tempfile
+    from hsbg import model_server as ms
+    with tempfile.TemporaryDirectory() as d:
+        for name in ("jevk5-9b-Q5_K_M.gguf", "jevk5-2b-v0.2-Q4_K_M.gguf"):
+            with open(os.path.join(d, name), "wb") as f:
+                f.write(b"GGUF" + name.encode())
+        got = ms.find_gguf(os.path.join(d, "*.gguf"))
+        assert got is not None and "2b" in os.path.basename(got), got
+
+
+def test_size_key_reads_parameter_count_and_version():
+    from hsbg import model_server as ms
+    assert ms.size_key("/x/jevk5-4b-v0.2-Q4_K_M.gguf") == "4b-v0.2"
+    assert ms.size_key("/x/jevk5-2b-v0.2-Q8_0.gguf") == "2b-v0.2"
+    assert ms.size_key("/x/jevk5-9b-Q5_K_M.gguf") == "9b"
+    # `jevk5` 里的那个 5 不能被当成参数量
+    assert ms.size_key("/x/jevk5-unknown.gguf") == ""
+
+
+def test_4b_v02_gets_its_own_calibration_temperature():
+    """4B 的 v0.2 与 v0.3 校准温度不同（1.532 vs 1.367），认错会让概率偏平。"""
+    from hsbg.provider import CALIBRATION_TEMPERATURE, resolve_temperature_key
+    assert resolve_temperature_key("4b-v0.2") == "4b-v0.2"
+    assert CALIBRATION_TEMPERATURE["4b-v0.2"] == 1.532
+    assert resolve_temperature_key("4b-v0.3") == "4b"
+    # 表里没有 `2b-v0.2` 这条，要退到 `2b`
+    assert resolve_temperature_key("2b-v0.2") == "2b"
+    assert resolve_temperature_key("") == ""
+
+
+def test_client_temperature_follows_the_size_key():
+    from hsbg.provider import JevK5Client
+    assert JevK5Client(size="4b-v0.2").temperature == 1.532
+    assert JevK5Client(size="4b").temperature == 1.367
+    assert JevK5Client(size="2b").temperature == 1.42
+    # 显式 temperature 仍然优先
+    assert JevK5Client(size="4b-v0.2", temperature=2.0).temperature == 2.0
+
+
 def test_serve_command_has_placeholders_when_nothing_found():
     from hsbg import model_server as ms
     cmd = ms.serve_command(server="S", model="M")

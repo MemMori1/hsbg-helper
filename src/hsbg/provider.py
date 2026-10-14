@@ -64,6 +64,24 @@ CALIBRATION_TEMPERATURE = {
 #: 字母不在 top-k 里时的兜底扣分（官方 MISSING_MARGIN）
 MISSING_MARGIN = 2.0
 
+
+def resolve_temperature_key(size: str) -> str:
+    """把模型档位字符串收敛到校准温度表里真实存在的键。
+
+    `model_server.size_key()` 会给出 `"4b-v0.2"` 这种带版本号的完整键，
+    但表里不是每个版本都单列（2B v0.2 的值就是 `"2b"` 那条）。所以先试完整键，
+    再退到不带版本号的主键，最后才交给调用方兜底。
+    """
+    if not size:
+        return ""
+    key = size.strip().lower()
+    if key in CALIBRATION_TEMPERATURE:
+        return key
+    head = key.split("-", 1)[0]
+    if head in CALIBRATION_TEMPERATURE:
+        return head
+    return key
+
 DEFAULT_URL = "http://127.0.0.1:8090"
 
 
@@ -206,7 +224,8 @@ class JevK5Client:
         self.top_k = top_k
         self.timeout = timeout
         self.temperature = (temperature if temperature is not None
-                            else CALIBRATION_TEMPERATURE.get(size, 1.42))
+                            else CALIBRATION_TEMPERATURE.get(
+                                resolve_temperature_key(size), 1.42))
         #: 有多少次提问有字母掉出 top-k（>0 说明 top_k 该调大）
         self.missing = 0
 
