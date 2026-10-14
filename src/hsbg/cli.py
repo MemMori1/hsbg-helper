@@ -251,24 +251,39 @@ def cmd_check(args: argparse.Namespace) -> int:
 
     这是 P0 的验收脚本 —— 回归时会跑它，而不是肉眼看输出。
     """
+    from .config import POWER_LOG_NAME
     from .logs import list_sessions
 
     root = args.log_root
-    if getattr(args, "path", None):
-        path = Path(args.path)
+    explicit = getattr(args, "path", None)
+    if explicit and Path(explicit).is_dir():
+        # 给的是目录（日志根目录或某个会话目录）→ 当成 log_root 处理，
+        # 不然 `parse_file` 会抛 IsADirectoryError。
+        root = Path(explicit)
+        explicit = None
+    if explicit:
+        path = Path(explicit)
         if not path.exists():
             print(_c("31", f"✗ 找不到 {path}"), file=sys.stderr)
             return 1
         print(_bold(f"自检目标  {path}  ({path.stat().st_size/1e6:.1f} MB)"))
     else:
-        sessions = [s for s in list_sessions(root) if s.has_power_log]
-        if not sessions:
+        # 目录本身就是一个会话目录（直接给了 `Hearthstone_2026_…/`）时，
+        # `list_sessions` 会在它**下面**找会话，结果是空的 —— 先认 Power.log。
+        direct = root / POWER_LOG_NAME
+        if direct.is_file():
+            path, size = direct, direct.stat().st_size / 1e6
+            print(_bold(f"自检目标  {path}  ({size:.1f} MB)"))
+            sessions = []
+        else:
+            sessions = [s for s in list_sessions(root) if s.has_power_log]
+        if not direct.is_file() and not sessions:
             print(_c("31", f"✗ 在 {root} 找不到任何带 Power.log 的会话"), file=sys.stderr)
             return 1
-
-        session = sessions[0]
-        path = session.power_log
-        print(_bold(f"自检目标  {path}  ({session.power_log_size()/1e6:.1f} MB)"))
+        if sessions:
+            session = sessions[0]
+            path = session.power_log
+            print(_bold(f"自检目标  {path}  ({session.power_log_size()/1e6:.1f} MB)"))
 
     t0 = time.time()
     events, stats = parse_file(str(path))
@@ -353,8 +368,13 @@ def cmd_check(args: argparse.Namespace) -> int:
     check("解析出中文实体名+CardID", len(cardnames) >= 20,
           f"{len(cardnames)} 条 CardID→中文名")
 
-    check("解析速度 ≥ 10 MB/s", (session.power_log_size() / dt) >= 10e6,
-          f"{session.power_log_size()/dt/1e6:.1f} MB/s（{dt:.1f}s）")
+    # ⚠️ 速度要用**实际解析的那个文件**算。早先这里写的是 `session.power_log_size()`，
+    # 而 `session` 只在"没给 path"的分支里赋值 —— 于是 `./hsbg check <某个日志>`
+    # 会在打印完前 10 项后崩在 `UnboundLocalError: local variable 'session'
+    # referenced before assignment`，看起来像"前 10 项都过了"。
+    size = path.stat().st_size
+    check("解析速度 ≥ 10 MB/s", (size / dt) >= 10e6,
+          f"{size/dt/1e6:.1f} MB/s（{dt:.1f}s）")
 
     ok = all(checks)
     print()
@@ -647,6 +667,19 @@ def _render_advice(adv, st, resolver, color: bool = True) -> str:
     lines.append(r.bold("建议") + "  " + rep.headline)
     lines.append("")
 
+    # ⭐ 决策框：把上面所有分析收敛成**一个**动作。悬浮框有独立小窗显示这段，
+    # 命令行也把它放在最前面，避免"分析一堆、结论不清"。
+    dec = getattr(rep, "decision", None)
+    if dec is not None and dec.action:
+        mark = {"now": r.good("▶"), "wait": r.dim("·")}.get(dec.urgency, "▸")
+        head = r.bold(dec.headline)
+        if dec.cost_text:
+            head += "  " + r.gold(dec.cost_text)
+        lines.append("%s %s" % (mark, head))
+        if dec.reason:
+            lines.append("   " + r.dim(dec.reason))
+        lines.append("")
+
     # 规则：商店打分
     # ⚠️ 用 `rep.shop[:3]`（已按分数降序）而不是 `top_shop(3)`：后者会**过滤掉
     # 「跳过」**，于是"整店都跳过"时这一段只剩个光秃秃的标题，看起来像解析失败。
@@ -878,7 +911,11 @@ def cmd_panel(args: argparse.Namespace) -> int:
             # 单帧模式：给模型一点时间，尽量把意见一起输出。
             # ⚠️ 不能把 `runner.note`（"模型思考中…"）当成"有答案"，
             # 否则第一轮就 break，模型永远来不及算完。
-            for _ in range(max(0, int(getattr(args, "model_wait", 20)))):
+            # ⚠️ `--no-model`（advisor 为 None）时 `maybe_refresh` 直接返回，
+            # 等下去只会白等 `model_wait × 0.25s`（实测 40s），必须跳过。
+            wait_rounds = 0 if runner.advisor is None else max(
+                0, int(getattr(args, "model_wait", 20)))
+            for _ in range(wait_rounds):
                 if runner.current(st) is not None:
                     break
                 time.sleep(0.25)

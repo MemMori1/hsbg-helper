@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(_HERE), "src"))
 
 from hsbg.cards import Card, CardDB          # noqa: E402
 from hsbg.rules import (                     # noqa: E402
-    AdviceReport, LevelAdvice, RulesConfig, RulesEngine,
+    AdviceReport, DecisionBox, LevelAdvice, RulesConfig, RulesEngine,
     evaluate_state,
 )
 from hsbg.state import (                     # noqa: E402
@@ -345,9 +345,15 @@ def test_early_tier_with_affordable_cost_advises_leveling():
 
 
 def test_unaffordable_tech_up_is_not_advised():
+    """买不起升本时给「攒钱」，**不是**「不升」。
+
+    ⚠️ 这两者的区别是 load-bearing 的：买不起只说明"这回合升不了"，
+    不代表"不该升"。早先把买不起判成「不升」并给了 -12 分，
+    结果"四费升二本"这种最标准的打法被判成不该升（真机踩过，见需求分析 §11.11）。
+    """
     st = _state(tier=2, gold=2, tech_up_cost=7)
     adv = _eng().evaluate(st).level
-    assert adv.action == "不升", (adv.action, adv.score)
+    assert adv.action == "攒钱", (adv.action, adv.score)
     assert any("金币不足" in r for r in adv.reasons)
 
 
@@ -464,6 +470,20 @@ def test_report_headline_marks_combat_phase():
     rep = _eng().evaluate(st)
     assert rep.in_recruit is False
     assert "战斗" in rep.headline, rep.headline
+
+
+def test_report_headline_does_not_repeat_the_decision_action():
+    """⚠️ 动作由**决策框**（独立小窗）单独说，分析框标题只报"现在什么情况"。
+
+    早先只有一个框时这里必须复述动作，否则标题说"建议买 X"、升本栏说"升本"
+    会互相打架；分成两块之后复述就变成同一句话出现两遍。
+    """
+    st = _state(turn=3, tier=1, gold=4, tech_up_cost=4)
+    rep = _eng().evaluate(st)
+    assert rep.decision.action == "升本"
+    assert "升本" not in rep.headline
+    assert "建议" not in rep.headline
+    assert rep.headline == "回合 3 招募 · 4 金 · 30 血"
 
 
 def test_top_shop_skips_rejected_items():
@@ -679,6 +699,36 @@ def test_panel_frame_carries_dark_gift_and_keywords():
     assert d["shop"][0]["keywords"] == ["发动"]
 
 
+def test_panel_frame_carries_the_decision_box():
+    """P6 数据契约：决策框（独立小窗）只读 `frame["decision"]`。"""
+    from hsbg.cards import CardResolver
+    from hsbg.panel import build_frame
+    frame = build_frame(_state(turn=3, tier=1, gold=4, tech_up_cost=4),
+                        CardResolver(_db()))
+    d = frame.to_dict()
+    assert d["decision"]["action"] == "升本"
+    assert d["decision"]["target"] == "2本"
+    assert d["decision"]["headline"] == "升本 2本"
+    assert d["decision"]["cost_text"] == "4 金"
+    assert d["decision"]["curve_tier"] == 2
+
+
+def test_panel_frame_always_carries_a_decision():
+    """⚠️ 决策框字段**总是**在帧里 —— `evaluate()` 无条件填 `rep.decision`。
+
+    所以 Swift 侧不能靠"字段缺失"判断"还没开局"；那要看窗口是否可见
+    （`PanelContentState.targetVisible`，由 `main.swift` 按 WindowTracker 填）。
+    """
+    from hsbg.cards import CardResolver
+    from hsbg.panel import build_frame
+    st = _state()
+    st.seats.clear()
+    st.local_player_id = None
+    d = build_frame(st, CardResolver(_db())).to_dict()
+    assert d["decision"]["action"] == "观望"
+    assert "还没有本地玩家信息" in d["decision"]["reason"]
+
+
 def test_dark_gift_ignores_the_mechanism_toggle_card():
     """`BG36_MidGameEffect_010` 是机制总开关，不是某个赐福，不能当"已知赐福"列出来。"""
     toggle = Card(card_id="BG36_MidGameEffect_010", name="酒馆战棋黑暗之赐[DNT]",
@@ -864,3 +914,171 @@ def test_choice_advice_degrades_without_card_db():
     rep = evaluate_state(_choice_state(pc), None)
     assert rep.pending_choice is not None
     assert rep.pending_choice.options[0].label == "日志名0"
+
+
+# --------------------------------------------------------------------------
+# 决策框（DecisionBox）—— "现在该做什么"，只给一个动作
+# --------------------------------------------------------------------------
+
+def _box(st, cfg=None):
+    return _eng(cfg).evaluate(st).decision
+
+
+def test_curve_tier_table_is_the_documented_one():
+    """曲线表是决策框的骨架，钉死它的取值。"""
+    f = RulesEngine._curve_tier
+    assert f(1) is None and f(2) is None
+    assert f(3) == 2 and f(6) == 2
+    assert f(7) == 3 and f(9) == 3
+    assert f(10) == 4 and f(12) == 4
+    assert f(13) == 5 and f(15) == 5
+    assert f(16) == 6 and f(30) == 6
+
+
+def test_decision_levels_when_the_curve_says_so():
+    """四费升二本 —— 实测真机在回合 3 付 4 金升 2 本，与曲线完全一致。"""
+    box = _box(_state(turn=3, tier=1, gold=4, tech_up_cost=4))
+    assert box.action == "升本"
+    assert box.target == "2本"
+    assert box.cost == 4
+    assert box.trigger == "curve"
+    assert box.urgency == "soon"
+    assert box.curve_tier == 2
+    assert box.off_curve is False
+
+
+def test_decision_saves_gold_when_level_is_unaffordable():
+    box = _box(_state(turn=3, tier=1, gold=3, tech_up_cost=4))
+    assert box.action == "攒钱"
+    assert box.trigger == "save_for_level"
+    assert box.urgency == "wait"
+    assert "差 1 金" in box.reason
+
+
+def test_decision_guard_blocks_expensive_level_with_thin_board():
+    """第四定理：3 本以上、升完只剩不到 2 金、场面又薄 → 别贸然升。
+
+    实测真机在回合 9/11 有 7~8 金、场面 6~7 只时并没有升 4 本，
+    而是等到回合 12/13；旧逻辑在这两回合都劝升（偏早 2~3 回合）。
+    """
+    box = _box(_state(turn=13, tier=3, gold=8, tech_up_cost=7, board=[]))
+    assert box.action != "升本"
+    assert box.off_curve is True
+    assert "先补场面" in box.reason
+
+
+def test_decision_guard_is_skipped_below_tier_three():
+    """⚠️ 低本阶段场面本来就小（四费升二本时常常一只都没有），守卫不能拦。"""
+    box = _box(_state(turn=3, tier=1, gold=4, tech_up_cost=4, board=[]))
+    assert box.action == "升本"
+
+
+def test_decision_marks_off_curve_when_already_ahead():
+    box = _box(_state(turn=15, tier=6, gold=0))
+    assert box.off_curve is True
+    assert box.curve_tier == 5
+
+
+def test_decision_buys_the_triple_before_anything_else():
+    st = _state(turn=5, tier=2, gold=10,
+                board=["BG_T_BEAST1", "BG_T_BEAST1"],
+                shop=["BG_T_MECH2", "BG_T_BEAST1"])
+    box = _box(st)
+    assert box.action == "买"
+    assert box.target == "野兽一号"
+    assert box.trigger == "triple"
+
+
+def test_decision_buys_the_minion_the_rules_call_a_buy():
+    """同族加成把机械二号推到 18 分以上 → 决策框给出「买」。
+
+    ⚠️ 商店项的攻/血来自**槽位随从实体**的 ATK/HEALTH（夹具里是 2/3），
+    不是卡表里的 8/8 —— 所以只靠卡表身材堆不到阈值。
+    """
+    st = _state(turn=5, tier=2, gold=10,
+                board=["BG_T_MECH1"] * 3, shop=["BG_T_MECH2"])
+    box = _box(st)
+    assert box.action == "买"
+    assert box.target == "机械二号"
+    assert box.trigger == "shop"
+
+
+def test_decision_observes_when_nothing_is_worth_buying():
+    box = _box(_state(turn=5, tier=2, gold=0, shop=["BG_T_BEAST1"]))
+    assert box.action == "观望"
+    assert box.trigger == "idle"
+    assert box.urgency == "wait"
+
+
+def test_decision_waits_by_default_without_a_local_seat():
+    st = _state()
+    st.seats.clear()
+    st.local_player_id = None
+    box = _box(st)
+    assert box.action == "观望"
+    assert "还没有本地玩家信息" in box.reason
+
+
+def test_decision_waits_during_the_combat_phase():
+    box = _box(_state(turn=5, tier=2, gold=10, step="MAIN_COMBAT"))
+    assert box.action == "观望"
+    assert "战斗阶段" in box.reason
+
+
+def test_decision_asks_for_the_refresh_when_it_is_free():
+    st = _state(turn=5, tier=2, gold=5, shop=["BG_T_BEAST1"])
+    e = Entity(entity_id=555, card_id="Bacon_Free_Refresh_Player_Ench")
+    e.tags["BACON_FREE_REFRESH_COUNT"] = "1"
+    st.entities[555] = e
+    box = _box(st)
+    assert box.action == "刷新"
+    assert box.trigger == "free_refresh"
+
+
+def test_decision_puts_the_pending_choice_first():
+    """⚠️ 待选会**卡住回合**，比买牌/升本都紧急，必须排第一。"""
+    st = _choice_state(_trinket_pc(["BG_T_BEAST1"]))
+    st.shop = _state(turn=5, tier=2, gold=10, shop=["BG_T_MECH2"]).shop
+    box = _box(st)
+    assert box.action == "选择"
+    assert box.target == "小饰品四选一"
+    assert box.urgency == "now"
+    assert box.trigger == "pending_choice"
+
+
+def test_dark_gift_does_not_preempt_buying_but_is_mentioned():
+    """⚠️「黑暗发现可点」的 flag 实测连续亮 4 个回合（T5→T9），所以它**不能**
+    抢在买牌前面当主动作；退成理由行的一句话。"""
+    st = _state(turn=5, tier=2, gold=10,
+                board=["BG_T_MECH1"] * 3, shop=["BG_T_MECH2"])
+    st.entities[302] = _gift_button(vfx="1")
+    box = _box(st)
+    assert box.action == "买"
+    assert box.trigger == "shop"
+    assert "黑暗发现可点" in box.reason
+
+
+def test_dark_gift_becomes_the_action_when_there_is_nothing_else():
+    st = _state(turn=5, tier=2, gold=0, shop=["BG_T_BEAST1"])
+    st.entities[302] = _gift_button(vfx="1")
+    box = _box(st)
+    assert box.action == "选择"
+    assert box.target == "黑暗发现"
+    assert box.trigger == "dark_gift"
+    assert box.urgency == "now"
+
+
+def test_pending_choice_reason_is_not_cluttered_by_the_dark_gift():
+    st = _choice_state(_trinket_pc(["BG_T_BEAST1"]))
+    st.entities[302] = _gift_button(vfx="1")
+    box = _box(st)
+    assert box.trigger == "pending_choice"
+    assert "黑暗发现" not in box.reason
+
+
+def test_decision_headline_reads_naturally():
+    assert DecisionBox(action="升本", target="3本").headline == "升本 3本"
+    assert DecisionBox(action="买", target="野兽一号").headline == "买 野兽一号"
+    assert DecisionBox(action="选择").headline == "先选牌"
+    assert DecisionBox(action="观望").headline == "观望"
+    assert DecisionBox(action="升格", target="").headline == "升格"

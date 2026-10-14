@@ -177,6 +177,8 @@ class PanelFrame:
     trinkets: List[Dict[str, Any]] = field(default_factory=list)
     #: 本局黑赐用过几次、分别给了谁
     dark_gift_uses: List[Dict[str, Any]] = field(default_factory=list)
+    #: ⭐ 决策框：一个动作 + 关键数值 + 一行理由（独立小窗用）
+    decision: Optional[Dict[str, Any]] = None
     level_advice: Optional[Dict[str, Any]] = None
     model_answers: List[Dict[str, Any]] = field(default_factory=list)
     model_note: str = ""
@@ -208,6 +210,8 @@ class PanelFrame:
             out["trinkets"] = self.trinkets
         if self.dark_gift_uses:
             out["dark_gift_uses"] = self.dark_gift_uses
+        if self.decision is not None:
+            out["decision"] = self.decision
         if self.level_advice is not None:
             out["level_advice"] = self.level_advice
         if self.error:
@@ -340,6 +344,23 @@ def build_frame(st: GameState,
             "minion_card_id": g.minion_card_id,
             "minion_entity_id": g.minion_entity_id,
         })
+
+    # ⭐ 决策框：一个动作 + 关键数值 + 一行理由。独立小窗只读这一段。
+    dec = getattr(report, "decision", None)
+    if dec is not None:
+        frame.decision = {
+            "action": dec.action,
+            "target": dec.target,
+            "headline": dec.headline,
+            "cost": dec.cost,
+            "cost_text": dec.cost_text,
+            "gold": dec.gold,
+            "reason": dec.reason,
+            "urgency": dec.urgency,
+            "curve_tier": dec.curve_tier,
+            "off_curve": dec.off_curve,
+            "trigger": dec.trigger,
+        }
 
     # 模型对每个槽位的 P(买)。键是槽位实体 id。
     buy_probs: Dict[int, float] = {}

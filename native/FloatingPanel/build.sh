@@ -55,9 +55,9 @@ set -e
 
 grep -v "xcrun_db-" "$LOG" | sed '/^[[:space:]]*$/d' || true
 
-if [ "$STATUS" -ne 0 ]; then
-    echo "!! 编译失败（退出码 $STATUS）。完整日志：$LOG"
-    exit "$STATUS"
+if [ "${STATUS:-1}" -ne 0 ]; then
+    echo "!! 编译失败（退出码 ${STATUS:-?}）。完整日志：$LOG"
+    exit "${STATUS:-1}"
 fi
 
 echo "==> 写入 Info.plist"

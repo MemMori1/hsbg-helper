@@ -286,6 +286,10 @@ extension PanelContentState {
             levelAdvice = row
         }
 
+        if let raw = json["decision"] as? [String: Any] {
+            decision = DecisionState(json: raw)
+        }
+
         for raw in (json["model_answers"] as? [[String: Any]]) ?? [] {
             var row = ModelAnswerRow()
             row.question = raw["question"] as? String ?? ""

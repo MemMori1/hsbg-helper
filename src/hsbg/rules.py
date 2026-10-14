@@ -49,6 +49,19 @@ DARK_GIFT_BUTTON_CARD = "BG36_Button_DarkGift"
 #: 随从身上的「有黑暗之赐」标 / 指向赐福实体的引用标
 DARK_GIFT_TAGS = ("HAS_DARK_GIFT", "DARK_GIFT_ENTITY")
 
+#: ⭐ 基准升本曲线：(回合, 这个回合**应该**已经到的酒馆等级)。
+#:
+#: 依据公开的升节奏打法：**四费升二本**是绝对主流（约七成对局），
+#: 之后按本数递进（三本 → 四本 → 五本 → 六本）。
+#: 这条曲线是**决策框的默认答案**：到点就劝升，只有明确理由才偏离，
+#: 而且偏离时必须在 `DecisionBox.reason` 里说清为什么（见 `_level_guard`）。
+#:
+#: ⚠️ 曲线刻意比最激进的打法晚一轮 —— 真机对局里达标的玩家在 3 本停到回合 12
+#: 才升 4 本，硬曲线会让提示一直和玩家实际选择相反。
+LEVEL_CURVE: Tuple[Tuple[int, int], ...] = (
+    (3, 2), (7, 3), (10, 4), (13, 5), (16, 6),
+)
+
 #: 随从的"关键词价值"权重（用于场面强度打分）。
 #: ⚠️ 毒、圣盾、嘲讽这类价值高；风怒/复生次之。数值是启发式，不是官方数据。
 MECHANIC_WEIGHT: Dict[str, float] = {
@@ -256,6 +269,55 @@ class Warning:
 
 
 @dataclass
+class DecisionBox:
+    """「现在该做什么」—— **一个**动作 + 关键数值 + 一行理由。
+
+    设计意图：商店打分、升本建议、预警这些都是**分析**，玩家还是得自己权衡。
+    决策框把分析收敛成**决定**，让玩家不用自己判断。所以这里只给一个动作，
+    理由最多一行。
+
+    动作取值：`选择` / `升本` / `买` / `刷新` / `攒钱` / `观望`。
+    """
+    action: str = ""
+    #: 动作的对象：升本是 `"3本"`，买牌是卡名，选择是题面
+    target: str = ""
+    #: 这个动作要花的金币（`选择` 是 0，`观望` 是 None）
+    cost: Optional[int] = None
+    gold: Optional[int] = None
+    reason: str = ""
+    #: `now` = 现在立刻做（免费收益，别忘）；`soon` = 这回合内做；`wait` = 先别花
+    urgency: str = "soon"
+    #: 曲线在这个回合要求的目标本数（没有就是 None）
+    curve_tier: Optional[int] = None
+    #: 是否偏离了 `LEVEL_CURVE`
+    off_curve: bool = False
+    #: 触发原因（机器可读）：pending_choice / dark_gift / curve / curve_blocked /
+    #: triple / shop / thin_board / save_for_level / free_refresh / idle
+    trigger: str = ""
+
+    @property
+    def headline(self) -> str:
+        """面板大字用的短标题。"""
+        if self.action == "买" and self.target:
+            return f"买 {self.target}"
+        if self.action == "升本":
+            return f"升本 {self.target}" if self.target else "升本"
+        if self.action == "选择":
+            return "先选牌"
+        if self.action == "攒钱":
+            return "攒钱"
+        if self.action == "刷新":
+            return "刷新"
+        return self.action or "观望"
+
+    @property
+    def cost_text(self) -> str:
+        if self.cost is None:
+            return ""
+        return f"{self.cost} 金"
+
+
+@dataclass
 class DarkGift:
     """「黑暗之赐」的一次可用状态。
 
@@ -447,6 +509,8 @@ class AdviceReport:
     trinkets: List[TrinketInfo] = field(default_factory=list)
     #: 本局黑赐用过几次、分别给了谁
     dark_gift_uses: List[DarkGiftUse] = field(default_factory=list)
+    #: ⭐ 决策框：把上面的分析收敛成**一个**动作（悬浮框独立小窗用这个）
+    decision: Optional[DecisionBox] = None
     #: 一句话总结（悬浮框顶部用）
     headline: str = ""
 
@@ -611,6 +675,9 @@ class RulesEngine:
             DarkGiftUse(g.minion_name, g.minion_card_id, g.minion_entity_id)
             for g in getattr(st, "dark_gifts", [])
         ]
+        # ⭐ 决策框：把上面这些分析收敛成一个动作。放在预警之前，
+        # 因为预警要能引用决策（"曲线说该升了但你升不了"这类）。
+        rep.decision = self._decision(st, seat, rep)
         rep.warnings = self._warnings(st, seat, rep)
         rep.headline = self._headline(rep)
         return rep
@@ -1018,9 +1085,11 @@ class RulesEngine:
         elif cur is not None and cur >= 5:
             score -= 4.0
             adv.reasons.append(f"{cur} 本升本收益递减")
-        # 买不起就大幅降权
+        # 买不起**不是**"不该升"，只是"这回合升不了"。
+        # ⚠️ 早先这里给 -12，分值大到把「低本早升收益大 +6」整个压过去，
+        # 于是"四费升二本"这种最标准的打法会被判成"不升"（真机踩过，见 §11.11）。
         if not adv.affordable:
-            score -= 12.0
+            score -= 4.0
             adv.reasons.append(f"金币不足（要 {cost}，只有 {gold}）")
         # 商店里有三连就别升本了
         if any(s.completes_triple for s in shop):
@@ -1038,13 +1107,167 @@ class RulesEngine:
             adv.reasons.append("场面偏薄")
 
         adv.score = round(score, 1)
-        if adv.affordable and score >= 5.0:
+        if not adv.affordable:
+            adv.action = "攒钱"
+        elif score >= 5.0:
             adv.action = "升本"
-        elif adv.affordable and score >= 0.0:
+        elif score >= 0.0:
             adv.action = "观望"
         else:
             adv.action = "不升"
         return adv
+
+    # -- 决策框（把上面这些分析收敛成**一个**动作） ---------------------
+
+    @staticmethod
+    def _curve_tier(turn: int) -> Optional[int]:
+        """按 `LEVEL_CURVE`，这个回合**应该**已经到的酒馆等级。"""
+        tier: Optional[int] = None
+        for t, level in LEVEL_CURVE:
+            if turn >= t:
+                tier = level
+            else:
+                break
+        return tier
+
+    def _level_guard(self, st: GameState, seat: Seat,
+                     lv: LevelAdvice) -> Optional[str]:
+        """返回一个「现在不该升本」的理由；没有就返回 None。
+
+        ⚠️ **只在 3 本及以上才拦**：低本阶段场面本来就小，
+        「四费升二本」的时候场上常常一只随从都没有 —— 那时按曲线升才是标准打法。
+        这条守卫对应的是"别在不该升的时候大代价贸然升本"：
+        把钱一次性砸进升本、升完一分不剩、场面又薄，接下来几回合既没战力也没钱补。
+        """
+        cur = lv.current_tier
+        if cur is None or cur < 3:
+            return None
+        gold, cost = seat.gold, lv.cost
+        if gold is None or cost is None:
+            return None
+        board = len(st.board)
+        if cost >= max(0, gold - 2) and board < 5:
+            return (f"升完只剩 {max(0, gold - cost)} 金、场上只有 {board} 只，"
+                    f"先补场面")
+        return None
+
+    def _decision(self, st: GameState, seat: Optional[Seat],
+                  rep: AdviceReport) -> DecisionBox:
+        """把 `rep` 里的分析收敛成**一个**动作。
+
+        这里只做一件事：给「黑暗发现可点」降级。它的判据是按钮上的
+        `BACON_DARK_GIFT_PRESSABLE_VFX`，而实测这个 flag **会连续亮 4 个回合**
+        （T5 `MAIN_START_TRIGGERS` 亮 → T9 `MAIN_ACTION` 灭），如果把它放在
+        买牌/升本前面，决策框会连续 4 回合只说"先选牌"，把真正的建议全挡住。
+        所以它只在"本来没事干"时才升级成主动作，否则退成理由行的一句话。
+        """
+        box = self._decision_core(st, seat, rep)
+        gift = rep.dark_gift
+        if gift is None or not gift.available:
+            return box
+        if box.action == "观望":
+            box.action, box.target, box.cost = "选择", "黑暗发现", 0
+            box.trigger, box.urgency = "dark_gift", "now"
+            box.reason = "「黑暗发现」能点了，免费三选一"
+            return box
+        # 已经弹出的模态选一比它更急，别再往上堆字
+        if box.trigger != "pending_choice":
+            extra = "（黑暗发现可点）"
+            box.reason = (box.reason + extra) if box.reason else extra.strip("（）")
+        return box
+
+    def _decision_core(self, st: GameState, seat: Optional[Seat],
+                       rep: AdviceReport) -> DecisionBox:
+        box = DecisionBox(gold=rep.gold, curve_tier=self._curve_tier(rep.turn))
+        if seat is None:
+            box.action, box.trigger, box.urgency = "观望", "idle", "wait"
+            box.reason = "还没有本地玩家信息"
+            return box
+        if not rep.in_recruit:
+            box.action, box.trigger, box.urgency = "观望", "idle", "wait"
+            box.reason = "战斗阶段，等结算"
+            return box
+
+        # 0. 已经弹出的选一永远排第一 —— 模态框卡着回合，不点就没法继续
+        if rep.pending_choice is not None:
+            box.action, box.target, box.cost = "选择", rep.pending_choice.display_title, 0
+            box.trigger, box.urgency = "pending_choice", "now"
+            box.reason = "免费收益，先点开挑一个"
+            return box
+
+        gold = rep.gold or 0
+        cur = seat.tech_level
+        target = box.curve_tier
+        lv = rep.level
+        off_curve = ""
+
+        # 1. 曲线说该升了 —— 这是默认答案，只有守卫反对才偏离
+        if (target is not None and cur is not None and cur < target
+                and lv is not None and lv.next_tier is not None
+                and lv.cost is not None):
+            if gold >= lv.cost:
+                blocked = self._level_guard(st, seat, lv)
+                if blocked is None:
+                    box.action = "升本"
+                    box.target = f"{lv.next_tier}本"
+                    box.cost = lv.cost
+                    box.trigger, box.urgency = "curve", "soon"
+                    if lv.next_tier < target:
+                        box.reason = (f"曲线：{rep.turn} 回合目标 {target} 本，"
+                                      f"先上 {lv.next_tier} 本")
+                    else:
+                        box.reason = f"曲线：{rep.turn} 回合该到 {target} 本"
+                    return box
+                off_curve = blocked
+                box.off_curve = True
+            else:
+                box.action = "攒钱"
+                box.cost = lv.cost
+                box.trigger, box.urgency = "save_for_level", "wait"
+                box.reason = f"升本差 {lv.cost - gold} 金"
+                return box
+        elif target is not None and cur is not None and cur > target:
+            # 已经超前，不用急着升
+            box.off_curve = True
+
+        # 2. 能凑三连就先凑（三连的收益比单张买牌大得多）
+        triple = next((s for s in rep.shop
+                       if s.completes_triple and s.cost <= gold), None)
+        if triple is not None:
+            box.action, box.target, box.cost = "买", triple.name, triple.cost
+            box.trigger, box.urgency = "triple", "soon"
+            box.reason = off_curve or "凑三连"
+            return box
+
+        # 3. 规则明确说「买」的
+        best = next((s for s in rep.shop if s.action == "买" and s.cost <= gold), None)
+        if best is not None:
+            box.action, box.target, box.cost = "买", best.name, best.cost
+            box.trigger, box.urgency = "shop", "soon"
+            box.reason = off_curve or (best.reasons[0] if best.reasons else "")
+            return box
+
+        # 4. 场面薄 + 血线低 → 就算只是「考虑」也先买一只撑着
+        if (rep.board_size < 5 and rep.health is not None
+                and rep.health <= self.config.low_health):
+            cand = next((s for s in rep.shop
+                         if s.action == "考虑" and s.cost <= gold), None)
+            if cand is not None:
+                box.action, box.target, box.cost = "买", cand.name, cand.cost
+                box.trigger, box.urgency = "thin_board", "soon"
+                box.reason = off_curve or "场面偏薄，先撑住"
+                return box
+
+        # 5. 有免费刷新就别浪费
+        if gold > 0 and (self.free_refreshes(st) or 0) > 0:
+            box.action, box.cost = "刷新", 0
+            box.trigger, box.urgency = "free_refresh", "soon"
+            box.reason = off_curve or "有免费刷新，找更好的牌"
+            return box
+
+        box.action, box.trigger, box.urgency = "观望", "idle", "wait"
+        box.reason = off_curve or "没有值得花的钱"
+        return box
 
     # -- 血线 / 其他预警 ------------------------------------------------
 
@@ -1107,11 +1330,10 @@ class RulesEngine:
             parts.append(f"{rep.gold} 金")
         if rep.health is not None:
             parts.append(f"{rep.health} 血")
-        buy = rep.top_shop(1)
-        if buy:
-            parts.append(f"建议买「{buy[0].name}」")
-        elif rep.level and rep.level.action == "升本":
-            parts.append(f"建议升 {rep.level.next_tier} 本")
+        # ⚠️ 标题**不再**重复动作：动作由决策框（独立小窗）单独说。
+        # 早先只有一个框时，这里必须和决策框说同一件事，否则同一屏里标题说
+        # "建议买 X"、升本栏说"升本"，两个结论互相打架；现在两块分工明确
+        # ——决策框说"做什么"，这里只说"现在什么情况"。
         return " · ".join(parts)
 
 

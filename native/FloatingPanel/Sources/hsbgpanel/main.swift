@@ -12,6 +12,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate,
                          FloatingPanelDelegate {
 
     private var panel: FloatingPanel!
+    /// ⭐ 「做什么」的极简决策框，独立小窗贴在分析框上方。
+    private var decisionPanel: DecisionPanel!
     private var tracker: WindowTracker!
     private var feed: DataFeed!
 
@@ -31,6 +33,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate,
         panel.panelDelegate = self
         panel.placeInitial(screen: screenFrame)
         panel.orderFrontRegardless()   // 不用 makeKeyAndOrderFront：那会抢焦点
+
+        decisionPanel = DecisionPanel()
+        decisionPanel.setFrameOrigin(CGPoint(x: screenFrame.maxX - DecisionPanel.panelWidth,
+                                             y: screenFrame.maxY - 60))
+        decisionPanel.orderFrontRegardless()
 
         tracker = WindowTracker()
         tracker.delegate = self
@@ -56,13 +63,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate,
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false
     }
-
     // MARK: - WindowTrackerDelegate
 
     func windowTracker(_ tracker: WindowTracker, didUpdate target: TargetWindow?) {
         lastTarget = target?.rect
-        panel.reposition(target: target?.rect)
+        layout()
         syncForegroundState()
+    }
+
+    /// 决策框贴游戏顶边，分析框排在它正下方（靠 `topInset` 预留高度）。
+    /// ⚠️ 顺序不能反：分析框的 inset 依赖决策框**当前**高度。
+    private func layout() {
+        let screen = panel.currentScreenFrame
+        let gameTop = min(lastTarget?.maxY ?? screen.maxY, screen.maxY)
+        decisionPanel.dock(target: lastTarget, screen: screen, top: gameTop)
+        let inset = decisionPanel.frame.height + DockGeometry.gap
+        panel.reposition(target: lastTarget, topInset: inset)
     }
 
     /// 炉石不在前台（或被最小化）时把悬浮框淡出，不干扰别的应用。
@@ -73,7 +89,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate,
             frontName.localizedCaseInsensitiveContains($0)
         }
         let hasWindow = lastTarget != nil
-        panel.setGameActive(isGame && hasWindow)
+        let active = isGame && hasWindow
+        panel.setGameActive(active)
+        decisionPanel.setGameActive(active)
     }
 
     // MARK: - DataFeedDelegate
@@ -82,7 +100,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate,
         var s = state
         s.targetVisible = lastTarget != nil
         s.source = tracker.lastSource.rawValue
+        // ⚠️ Python 侧**总是**填 `decision`（哪怕还没开局，只是「观望/还没有本地玩家信息」），
+        // 所以"等炉石"这个状态只能靠窗口可见性判断，不能靠字段缺失。
+        // `HSBG_PANEL_FORCE_SHOW=1` 时一并放行，否则调试时决策框永远只显示占位文案，
+        // 看不到"动作 + 理由"那两行的真实渲染。
+        let showDecision = s.targetVisible || FloatingPanel.forceShow
+        decisionPanel.apply(showDecision ? (s.decision ?? DecisionState()) : DecisionState())
         panel.update(contentState: s)
+        layout()
     }
 
     func dataFeed(_ feed: DataFeed, didFail message: String) {
@@ -90,14 +115,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate,
         s.error = message
         s.headline = "数据源未就绪"
         s.modelNote = message
+        decisionPanel.apply(DecisionState())
         panel.update(contentState: s)
+        layout()
     }
 
     // MARK: - FloatingPanelDelegate
 
     func floatingPanelDidChangeOffset(_ panel: FloatingPanel, offset: DockGeometry.Offset) {
         self.offset = offset
-        panel.reposition(target: lastTarget)
+        layout()
     }
 
     func floatingPanelDidRequestAccessibility(_ panel: FloatingPanel) {

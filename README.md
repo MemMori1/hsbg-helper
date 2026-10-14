@@ -21,16 +21,16 @@ cd hsbg-helper
 ./hsbg parse --limit 20   # 解析最新日志的前 20 行事件
 ./hsbg state --until-line 92000   # 看第 92000 行时的完整盘面
 ./hsbg advise          # 规则建议 + JevK5 模型意见
-./hsbg serve --start   # 拉起 JevK5 本地推理服务（llama-server）
+./hsbg serve start   # 拉起 JevK5 本地推理服务（llama-server）
 ./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行）
-./run-tests            # 跑单元测试（258 个）
+./run-tests            # 跑单元测试（282 个）
 ```
 
 **零依赖**：纯 Python 标准库，跑在本机自带的 `/usr/bin/python3`（3.9.6），不需要 venv、
 不需要 pip install。`./hsbg` 和 `./run-tests` 是包了 `PYTHONPATH=src` 的 bash 包装器。
 
 **模型层可选**：`./hsbg advise` 不启动模型时自动降级为「只有规则建议」，不会报错。
-只有在你想要 JevK5 的第二意见时才需要 `./hsbg serve --start`。
+只有在你想要 JevK5 的第二意见时才需要 `./hsbg serve start`。
 
 ---
 
@@ -113,8 +113,9 @@ cd hsbg-helper
 | `src/hsbg/cli.py` | 十个子命令 |
 | `tools/verify_attr_rule.py` | 归属规则的语义自证（靠 `ENTITY_ID` 判对错，不靠数数） |
 | `tools/winlist.swift` | 打印所有在屏窗口的矩形/owner（调窗口几何时用） |
-| `data/` | `cards_zhCN.json`（1.2 MB 卡表）、`names_zhCN.json`（日志自举名表） |
-| `tests/` | 零依赖测试运行器 + 258 个测试 |
+| `tools/trace_decisions.py` | **逐回合打印决策框**，用来对照大神的运营节奏复盘规则 |
+| `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表） |
+| `tests/` | 零依赖测试运行器 + 282 个测试 |
 
 ---
 
@@ -498,6 +499,81 @@ D 21:49:26 GameState.DebugPrintEntityChoices() - id=3 Player=测试玩家#1234 T
 
 ---
 
+## 决策框（P11）：两块分工，各自只干一件事
+
+悬浮框是**两个窗口**：
+
+- **决策框**（上方，矮）——只回答"**现在该做什么**"：一个大字动作 + 右侧费用 + 一行理由。
+- **分析框**（下方，高）——回答"**为什么**"：商店打分、模型概率、场面、血线、预警。
+
+分工的直接后果：**分析框的标题不再复述动作**。早先只有一个窗口时，标题必须
+说"建议买 X"，否则会和下面的升本栏打架；分成两块后还复述就变成同一句话出现两遍。
+
+### 决策框的优先级
+
+| 顺序 | 动作 | 触发 | 说明 |
+|---|---|---|---|
+| 0 | 选择 | `pending_choice` | **已经弹出的模态选一**（饰品四选一 / 黑赐三选一）。卡着回合，不点没法继续 |
+| 1 | 升本 | `curve` | 基准曲线说该升了（见下表） |
+| 2 | 攒钱 | `save_for_level` | 曲线说要升、但金币不够，且差的不多 |
+| 3 | 买 | `triple` | 能凑三连 |
+| 4 | 买 | `shop` | 规则引擎打了「买」（≥18 分） |
+| 5 | 买 | `thin_board` | 场面 <5、血线 ≤15，挑个「考虑」的撑着 |
+| 6 | 刷新 | `free_refresh` | 有免费刷新次数 |
+| 7 | 选择 | `dark_gift` | 没别的事干时，才升级成主动作 |
+| 8 | 观望 | `idle` | |
+
+### 基准曲线（来自水神 Waterloo 那套公式化打法）
+
+| 回合 | 目标本数 |
+|---|---|
+| 1–2 | 不要求 |
+| 3–6 | 2 本（**四费升二本约占 75% 对局**，是最主流的一条） |
+| 7–9 | 3 本 |
+| 10–12 | 4 本 |
+| 13–15 | 5 本 |
+| 16+ | 6 本 |
+
+偏离曲线时决策框会标 `off_curve`，并把"为什么偏离"写进理由行。
+
+### 两条踩过的坑
+
+**① 升本守卫不能拦低本阶段。** 第四定理说"切勿在不该升本时大代价贸然升本"，
+但四费升二本时场上常常**一只随从都没有**。所以守卫的条件是「3 本以上 + 升完
+只剩不到 2 金 + 场面 <5」，低于 3 本一律不拦。
+
+**② 「黑暗发现可点」不能当主动作。** 它的判据是按钮上的
+`BACON_DARK_GIFT_PRESSABLE_VFX`，而实测这个 flag **连续亮 4 个回合**
+（T5 `MAIN_START_TRIGGERS` 亮 → T9 `MAIN_ACTION` 灭）。放在最前面的话，决策框
+会连续 4 回合只说"先选牌"，把买牌/升本的建议全挡住。现在它只在"本来没事干"
+（本该「观望」）时才升级成主动作，否则退成理由行末尾的一句"（黑暗发现可点）"。
+
+### 复盘工具
+
+`./tools/trace_decisions.py <Power.log>` 逐回合打印决策框，可以直接和真人的
+运营节奏对照（实测在 96 MB 日志上 2.5 秒跑完）：
+
+```
+回合    满金    本    场面   决策框            触发              店最高       理由
+3     4     1    1     升本 2本  4 金     curve           11.1 欢悦   曲线：3 回合该到 2 本
+7     6     2    2     升本 3本  5 金     curve           7.1 心灵泥魔  曲线：7 回合该到 3 本（黑暗发现可点）
+13    9     3    6     升本 4本  5 金     curve           10.3 木乃伊工匠 曲线：13 回合目标 5 本，先上 4 本（黑暗发现可点）
+```
+
+⚠️ 取样必须在**事件流**里判回合/阶段（`TAG_CHANGE GameEntity tag=TURN` 与
+`tag=STEP`），**不能**每个事件都读 `builder.state` —— 读一次就触发一次全量惰性
+刷新，整局会从 2 秒退化成 2 分钟（实测踩过）。
+
+**调试开关**：`HSBG_PANEL_FORCE_SHOW=1` 让面板无视"炉石是否在前台"始终可见。
+⚠️ 必须**直接跑二进制**，别用 `open` —— `open` 走 LaunchServices，不传环境变量：
+
+```bash
+pkill -f hsbgpanel; rm -f /tmp/hsbgpanel.log; touch /tmp/hsbgpanel.log; chmod 666 /tmp/hsbgpanel.log
+HSBG_PANEL_FORCE_SHOW=1 ./native/FloatingPanel/build/hsbgpanel.app/Contents/MacOS/hsbgpanel &
+```
+
+---
+
 ## 悬浮框（Swift）：踩过的坑
 
 `native/FloatingPanel/` 是一个 AppKit 悬浮面板，吸附在炉石窗口右侧，数据来自
@@ -598,7 +674,7 @@ CLI 侧一直是无条件打印的，两边口径不一致。改成 `if row.scor
 ## 测试
 
 ```bash
-./run-tests          # 全部（258 个）
+./run-tests          # 全部（282 个）
 ./run-tests -v       # 逐个打印
 ./run-tests -k tag   # 只跑名字含 "tag" 的
 ```

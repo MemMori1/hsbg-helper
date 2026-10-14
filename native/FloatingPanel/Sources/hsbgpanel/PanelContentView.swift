@@ -29,6 +29,8 @@ struct PanelContentState {
     var pendingChoice: ChoiceRow?
     var trinkets: [TrinketRow] = []
     var levelAdvice: LevelRow?
+    /// ⭐ 决策框的数据（独立小窗 `DecisionPanel` 读这个）
+    var decision: DecisionState?
     var modelNote: String = ""
     var modelAnswers: [ModelAnswerRow] = []
     var stale: Bool = false           // 数据是否过期（游戏没在写日志）

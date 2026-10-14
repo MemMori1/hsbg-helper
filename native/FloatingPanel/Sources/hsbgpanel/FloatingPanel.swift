@@ -30,14 +30,18 @@ enum DockGeometry {
     static func dock(panelSize: CGSize,
                      target: CGRect?,
                      screen: CGRect,
-                     offset: Offset = Offset()) -> (origin: CGPoint, side: Side) {
+                     offset: Offset = Offset(),
+                     topInset: CGFloat = 0) -> (origin: CGPoint, side: Side) {
         guard let target = target else {
-            // 没有目标：贴屏幕右缘，垂直居中。
-            return (CGPoint(x: screen.maxX - panelSize.width - gap,
-                            y: screen.midY - panelSize.height / 2 + offset.dy), .right)
+            // 没有目标：贴屏幕右缘；有决策框时紧接着排在上方那块的正下方
+            // （原来是无条件垂直居中，两块会分开，看着像掉了）。
+            let x = screen.maxX - panelSize.width - gap
+            let top = screen.maxY - topInset
+            return (CGPoint(x: x, y: max(screen.minY, top - panelSize.height)), .right)
         }
 
-        let topAlignedY = target.maxY - panelSize.height
+        // ⚠️ `topInset` 让上面的决策框占位：分析框整体下移，两块不重叠。
+        let topAlignedY = target.maxY - panelSize.height - topInset
         let rightOrigin = CGPoint(x: target.maxX + gap, y: topAlignedY)
         let fitsRight = rightOrigin.x + panelSize.width <= screen.maxX
 
@@ -159,16 +163,29 @@ final class FloatingPanel: NSPanel {
     }
 
     /// 把面板贴回炉石右侧（或降级到左/屏幕右缘）。
-    /// - Parameter target: 炉石窗口矩形；nil 表示炉石不在前台/没找到。
-    func reposition(target: CGRect? = nil) {
+    /// - Parameters:
+    ///   - target: 炉石窗口矩形；nil 表示炉石不在前台/没找到。
+    ///   - topInset: 上方要预留的高度（决策框占的位置），让两块不重叠。
+    func reposition(target: CGRect? = nil, topInset: CGFloat = 0) {
         let screen = screenFor(target: target)
         let size = frame.size
         let docked = DockGeometry.dock(panelSize: size, target: target,
-                                       screen: screen, offset: userOffset)
+                                       screen: screen, offset: userOffset,
+                                       topInset: topInset)
         isProgrammaticMove = true
         setFrameOrigin(docked.origin)
         isProgrammaticMove = false
         content.setSide(docked.side, targetVisible: target != nil)
+    }
+
+    /// 内容按宽度算出来的自然高度（决策框对齐时要用）。
+    var contentHeight: CGFloat {
+        content.fittingHeight(width: frame.width)
+    }
+
+    /// 当前所在屏幕的可见区域。
+    var currentScreenFrame: CGRect {
+        screenFor(target: nil)
     }
 
     private func screenFor(target: CGRect?) -> CGRect {
