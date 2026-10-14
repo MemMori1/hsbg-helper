@@ -1,0 +1,1135 @@
+#!/usr/bin/env python3
+"""P3：规则引擎（硬指标）——**完全不依赖任何模型**。
+
+设计原则（ADR-2）：能用规则算的绝不用模型，模型只做无法量化的判断题。
+这一层是质量地基，所以每个规则都必须能**离线单测**：喂 `GameState` → 断言打分。
+
+分层职责::
+
+    GameState（state.py）  +  CardDB（cards.py）
+                    ↓
+              RulesEngine.evaluate()
+                    ↓
+              AdviceReport（结构化，可 JSON）
+
+产出的是**建议**不是动作：本项目红线是"只看不动"（需求文档 §2.3），
+这一层连执行接口都不留。
+
+数据来源全部实测（见 docs/需求分析.md §11）：
+
+- 升本费用：**直接读 `TB_BaconShopTechUp0X_Button` 的 `COST`**，这比任何硬编码
+  的表都准。实测同一档位在不同对局/不同回合是 5/6/7、9/10/11 不等（提前升本会
+  便宜、上回合输了会打折），只有按钮上的数字是当前真值。
+  ⚠️ 取按钮时必须限定 `ZONE=PLAY`：`SETASIDE`/`REMOVEDFROMGAME` 里的是陈旧值。
+- 刷新费用：`TB_BaconShop_8p_Reroll_Button` 的 `COST`（0 = 本回合有免费刷新）。
+- 免费刷新次数：`Bacon_Free_Refresh_Player_Ench` 的 `BACON_FREE_REFRESH_COUNT`。
+- 三连：自家场面 + 手牌的 `CardID` 重复度；场上已有金色随从则不再提示。
+- 血量：`Seat.effective_health`（英雄 `HEALTH` − `DAMAGE`）。
+"""
+from dataclasses import dataclass, field
+import re
+from typing import Dict, List, Optional, Sequence, Tuple
+
+from .cards import Card, CardDB
+from .state import Entity, GameState, Seat, ShopSlot
+# ---------------------------------------------------------------------------
+# 常量
+# ---------------------------------------------------------------------------
+
+#: 升本按钮的 CardID 前缀（`TB_BaconShopTechUp02_Button` → 升到 2 本）
+TECHUP_BUTTON_PREFIX = "TB_BaconShopTechUp"
+REROLL_BUTTON_CARD = "TB_BaconShop_8p_Reroll_Button"
+FREE_REFRESH_ENCH = "Bacon_Free_Refresh_Player_Ench"
+TRINKET_CARDS = ("BG30_Trinket_1st", "BG30_Trinket_2nd")
+#: 「黑暗发现」按钮（`BG36_Button_DarkGift`）——点它能三选一拿一个「黑暗之赐」。
+#: 实测这个机制**有日志可判**：按钮上 `BACON_DARK_GIFT_PRESSABLE_VFX=1` 表示现在可点，
+#: 拿到赐福的随从带 `HAS_DARK_GIFT=1`，`DARK_GIFT_ENTITY` 指向赐福本体
+#: （`BG36_MidGameEffect_000tNN`，如 t13=鹰身人之爪、t18=不断复制、t11=双重幻象）。
+DARK_GIFT_BUTTON_CARD = "BG36_Button_DarkGift"
+#: 随从身上的「有黑暗之赐」标 / 指向赐福实体的引用标
+DARK_GIFT_TAGS = ("HAS_DARK_GIFT", "DARK_GIFT_ENTITY")
+
+#: 随从的"关键词价值"权重（用于场面强度打分）。
+#: ⚠️ 毒、圣盾、嘲讽这类价值高；风怒/复生次之。数值是启发式，不是官方数据。
+MECHANIC_WEIGHT: Dict[str, float] = {
+    "POISONOUS": 3.0, "VENOMOUS": 3.0, "DIVINE_SHIELD": 2.0,
+    "TAUNT": 0.5, "REBORN": 1.5, "WINDFURY": 1.5,
+    "DEATHRATTLE": 0.8, "BATTLECRY": 0.6, "AVENGE": 1.0,
+    "SPELLCRAFT": 0.8, "WINDFURY_ATTACK": 1.0,
+    # 「进击」（BACON_RALLY）实测有 146 张卡带这个 mechanics 标，但之前漏了。
+    "BACON_RALLY": 1.2,
+    # 「发动」——**不在 mechanics 字段里**，只能从卡牌正文的模板文字抠出来。
+    # 见 `parse_text_keywords()`；费用越低越强，所以按费用分档给权重。
+    "发动(0)": 1.6, "发动(1)": 1.2, "发动(2)": 0.9,
+    #: 兜底：卡文里有「发动」但抠不出费用时
+    "发动": 1.0,
+    # 「塑造法术」在卡表里是作弊字段 `BACON_SPELLCRAFT_ID`（值是数字 id），
+    # 不是 mechanics 标，这里同样按卡文兜底。
+    "塑造法术": 0.8,
+}
+
+#: 只认这几种"家族"标，避免把 `BACON_xxx_ID` 这类数字作弊字段当成关键词。
+_KEYWORD_MECHANICS = ("POISONOUS", "VENOMOUS", "DIVINE_SHIELD", "TAUNT",
+                      "REBORN", "WINDFURY", "DEATHRATTLE", "BATTLECRY",
+                      "AVENGE", "SPELLCRAFT", "BACON_RALLY")
+
+#: 卡文里带费用参数的模板关键词。
+#: ⚠️ 必须是**白名单**。实测卡文里 `随从消耗(1)`、`出售获得(0)`、`铸币减少(2)`
+#: 这类文字也长得跟"关键词（数字）"一模一样，用宽松的 `[\u4e00-\u9fff]{2,4}[（(]\d+[）)]`
+#: 会一口气捞进 100 张风马牛不相及的卡（异变、英雄技能、饰品…），把商店打分带歪。
+_TEXT_KEYWORDS_WITH_COST = ("发动", "复仇", "塑造法术")
+
+#: `发动（2）：` 这种"关键词（费用）"。全角括号是实测形态，半角一并容忍。
+_TEXT_KEYWORD_RE = re.compile(
+    r"(" + "|".join(_TEXT_KEYWORDS_WITH_COST) + r")\s*[（(](\d+)[）)]")
+
+#: 卡文里没有费用参数的关键词（整词匹配）。
+#: ⚠️ 同样只放"确定是机制名"的词；`黑暗之赐` 是由另外的卡赋予的，不在随从卡文里。
+_TEXT_KEYWORDS = ("进击",)
+
+#: 关键词的中文显示名（面板/CLI 用）。
+MECHANIC_ZH: Dict[str, str] = {
+    "POISONOUS": "剧毒", "VENOMOUS": "烈毒", "DIVINE_SHIELD": "圣盾",
+    "TAUNT": "嘲讽", "REBORN": "复生", "WINDFURY": "风怒",
+    "DEATHRATTLE": "亡语", "BATTLECRY": "战吼", "AVENGE": "复仇",
+    "SPELLCRAFT": "塑造法术", "BACON_RALLY": "进击",
+    # 卡文模板关键词（`mechanics` 字段里没有）
+    "发动": "发动", "进击": "进击", "复仇": "复仇",
+}
+
+
+#: 中文模板关键词 → 等价的英文 mechanics 标。
+#: ⚠️ 必须去重，否则同一机制会进两次分：实测 `BG21_001`（苍鳞鳄鱼）既有
+#: `mechanics: ["AVENGE", ...]`，正文又写 `复仇（2）`，不去重就是 1.0 + 1.2 = 2.2。
+_TEXT_TO_MECHANIC: Dict[str, str] = {
+    "复仇": "AVENGE", "进击": "BACON_RALLY", "塑造法术": "SPELLCRAFT",
+}
+
+#: ⚠️ 卡表 `mechanics` 里塞了大量**内部占位符**，绝不能直接喂给模型或参与打分。
+#: 实测 5,787 张战棋卡里 `TRIGGER_VISUAL` 有 **1,410 张**（占 24%！），
+#: 它只表示"这张卡有别的东西要触发"，不是游戏机制；`ENCHANTMENT_INVISIBLE`、
+#: `InvisibleDeathrattle`、`TAG_ONE_TURN_EFFECT` 同理。早期 `advisor.py` 的
+#: evidence 直接用了原始 `card.mechanics` → 模型看到的商店里全是 `TRIGGER_VISUAL`，
+#: 而规则层用的是白名单，两边对同一张卡的描述不一致。
+_MECHANIC_NOISE = frozenset((
+    "TRIGGER_VISUAL", "ENCHANTMENT_INVISIBLE", "InvisibleDeathrattle",
+    "TAG_ONE_TURN_EFFECT",
+))
+
+
+def clean_mechanics(mechanics: Sequence[str]) -> Tuple[str, ...]:
+    """把卡表原始 `mechanics` 过滤成"真的能影响决策"的那些。
+
+    ⚠️ 这是 `advisor.py`（喂模型）与 `rules.py`（打分）的**共同口径**，
+    两边必须一致 —— 否则同一张卡在题面里和在打分理由里描述得不一样。
+    """
+    out: List[str] = []
+    for m in mechanics or ():
+        if not m or m in _MECHANIC_NOISE:
+            continue
+        if m not in out:
+            out.append(m)
+    return tuple(out)
+
+
+def parse_text_keywords(text: str) -> List[str]:
+    """从卡牌正文里抠出 `mechanics` 字段**没有**的机制关键词。
+
+    为什么需要这个：实测 `BG36_099`（蚀脑怪）的 `mechanics` 是 `None`，但正文写着
+    `<b>发动（0）：</b>弃掉一张牌…` —— 「发动」根本不是 mechanics 标，只存在于模板
+    文字里。全库 50 张卡（含金色版）都是这个形态，靠 `mechanics` 一律扫不到。
+
+    返回形如 `["发动(0)"]` 的键（费用越低越强，所以在键里带上费用），
+    也接受 `["进击"]` 这种没有费用的。
+    """
+    if not text:
+        return []
+    out: List[str] = []
+    parameterized: List[str] = []
+    for kw, cost in _TEXT_KEYWORD_RE.findall(text):
+        key = f"{kw}({cost})"
+        if key not in out:
+            out.append(key)
+        parameterized.append(kw)
+    for kw in _TEXT_KEYWORDS:
+        # 已经带参数抠到过（如 `复仇(3)`）就不再补一个裸词，否则同一机制进两次分
+        if kw in text and kw not in out and kw not in parameterized:
+            out.append(kw)
+    return out
+
+#: 血量低于这个值就报"危险"
+LOW_HEALTH_THRESHOLD = 15
+#: 血量低于这个值算"濒死"
+CRITICAL_HEALTH_THRESHOLD = 8
+
+#: 卡牌类型里不算"随从"的
+NON_MINION_TYPES = ("SPELL", "HERO", "HERO_POWER", "ENCHANTMENT",
+                    "BATTLEGROUND_TRINKET", "GAME", "PLAYER")
+
+
+# ---------------------------------------------------------------------------
+# 配置
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class RulesConfig:
+    """可调参数。默认值尽量取实测/社区共识值，但不保证与官方一致。"""
+    #: 升本费用兜底表（tier → 费用）。**优先用按钮上的实时 `COST`**，这里只在
+    #: 按钮缺失（日志不全 / 手搓状态测试）时兜底。
+    tech_up_costs: Dict[int, int] = field(default_factory=lambda: {
+        2: 5, 3: 7, 4: 8, 5: 9, 6: 10, 7: 11,
+    })
+    #: 买一个随从的基准费用（战棋固定 3 金）
+    buy_cost: int = 3
+    #: 刷新费用
+    reroll_cost: int = 1
+    #: 场面随从数上限（不算金色召唤物），超过就提示"该卖了"
+    board_limit: int = 7
+    #: 手牌上限
+    hand_limit: int = 10
+    #: 低于这个血量开始报血线预警
+    low_health: int = LOW_HEALTH_THRESHOLD
+    critical_health: int = CRITICAL_HEALTH_THRESHOLD
+    #: 战斗伤害上限（会从盘面的 `BACON_COMBAT_DAMAGE_CAP` 覆盖）
+    combat_damage_cap: Optional[int] = None
+
+
+# ---------------------------------------------------------------------------
+# 输出结构
+# ---------------------------------------------------------------------------
+
+@dataclass
+class ShopItem:
+    """一个商店槽位的打分结果。"""
+    index: int                   # 在列表里的序号（1 起）
+    slot_entity_id: int
+    card_id: str
+    name: str
+    tech_level: Optional[int]
+    attack: Optional[int]
+    health: Optional[int]
+    golden: bool
+    cost: int
+    score: float
+    action: str                  # 买 / 考虑 / 跳过
+    reasons: List[str] = field(default_factory=list)
+    completes_triple: bool = False
+    makes_pair: bool = False
+    race: str = ""
+    #: 中文关键词标签（剧毒/圣盾/嘲讽/发动/进击…），供面板显示
+    keywords: List[str] = field(default_factory=list)
+
+    def describe(self) -> str:
+        return f"{self.name} {self.score:.1f}分 {self.action}"
+
+
+@dataclass
+class TripleCandidate:
+    """差一张就三连的候选。"""
+    card_id: str
+    name: str
+    owned: int                   # 已有张数（场面 + 手牌）
+    in_shop: bool = False        # 商店里能直接买到
+    tech_level: Optional[int] = None
+
+    @property
+    def needed(self) -> int:
+        return max(0, 3 - self.owned)
+
+
+@dataclass
+class LevelAdvice:
+    """升本建议。"""
+    current_tier: Optional[int]
+    next_tier: Optional[int]
+    cost: Optional[int]
+    affordable: bool
+    score: float
+    action: str                  # 升本 / 观望 / 不升
+    reasons: List[str] = field(default_factory=list)
+
+
+@dataclass
+class Warning:
+    level: str                   # info / warn / danger
+    text: str
+
+
+@dataclass
+class DarkGift:
+    """「黑暗之赐」的一次可用状态。
+
+    实测机制：`黑暗发现` 按钮带 `BACON_DARK_GIFT_PRESSABLE_VFX=1` 时表示现在能点，
+    点了之后三选一。赐福本身是卡（`BG36_MidGameEffect_000tNN`），会挂在随从上
+    （随从侧 `HAS_DARK_GIFT=1` + `DARK_GIFT_ENTITY=<赐福实体 id>`）。
+    """
+    available: bool = False          # 现在能点「黑暗发现」吗
+    button_entity_id: Optional[int] = None
+    #: 场上带黑暗之赐的自家随从名（`HAS_DARK_GIFT=1` 的那些）
+    granted: List[str] = field(default_factory=list)
+    #: 已知赐福名（从 `DARK_GIFT_ENTITY` 指向的实体卡表名解析）
+    known_effects: List[str] = field(default_factory=list)
+
+
+def _clean_text(text: str, limit: int = 60) -> str:
+    """去掉卡文里的 `<b>` 这类标记并压平空白（赐福卡文里换行很常见）。"""
+    if not text:
+        return ""
+    text = re.sub(r"<[^>]+>", "", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text if len(text) <= limit else text[:limit - 1] + "…"
+
+
+@dataclass
+class ChoiceItem:
+    """待选列表里的一项（带卡表补出来的信息）。"""
+    index: int
+    card_id: str = ""
+    name: str = ""
+    tech_level: Optional[int] = None
+    attack: Optional[int] = None
+    health: Optional[int] = None
+    text: str = ""
+    kind: str = ""          # trinket / minion / other
+    note: str = ""          # 从卡文/身材提炼的一行特征提示（不做打分）
+    #: 英文名/英文卡文 —— 只用来喂 JevK5（ADR-4：题面与 evidence 必须英文）。
+    #: ⚠️ 不能用中文名去英文卡表里反查：中文 `雷诺·杰克逊` 对应英文
+    #: `Reno Jackson`，而日志里的皮肤短名是第三套写法，匹配不可靠。
+    #: 正解是靠 **CardID** 去英文卡表取，CardID 是语言无关的。
+    name_en: str = ""
+    text_en: str = ""
+
+    #: 黑暗之赐的**赐福**本身（另一张卡，`BG36_MidGameEffect_000tNN`）。
+    #: 黑赐三选一里选项是随从，但玩家真正在挑的是赐福 —— 同一只随从可以配
+    #: 完全不同的词条（实测 `鹰身人之爪` 给 圣盾+风怒、`防御献祭` 给 +10 血+亡语）。
+    #: ⚠️ 赐福关系写在 `DARK_GIFT_ENTITY` 标签上，而该标签**每局末态会被清 0**，
+    #: 所以必须在选项挂上盘面时抄一份（`StateBuilder._attach_gifts` 干这事）。
+    gift_card_id: str = ""
+    gift_name: str = ""
+    gift_text: str = ""
+    gift_name_en: str = ""
+    gift_text_en: str = ""
+
+    @property
+    def label(self) -> str:
+        return self.name or self.card_id or "?"
+
+    @property
+    def label_en(self) -> str:
+        """喂模型用的名字：英文卡表名 → 中文名 → CardID。"""
+        return self.name_en or self.name or self.card_id or "?"
+
+    @property
+    def gift_label(self) -> str:
+        """展示用的赐福名（中文优先）。"""
+        return self.gift_name or self.gift_card_id or ""
+
+    @property
+    def gift_label_en(self) -> str:
+        """喂模型用的赐福名（英文卡表名优先）。"""
+        return self.gift_name_en or self.gift_name or self.gift_card_id or ""
+
+    @property
+    def gift_note(self) -> str:
+        """展示用的一行赐福摘要：`鹰身人之爪（圣盾。风怒）`。"""
+        name = self.gift_label
+        if not name:
+            return ""
+        text = _clean_text(self.gift_text)
+        return "%s（%s）" % (name, text) if text else name
+
+    @property
+    def gift_note_en(self) -> str:
+        """喂模型用的一行赐福摘要（英文）。"""
+        name = self.gift_label_en
+        if not name:
+            return ""
+        text = _clean_text(self.gift_text_en or self.gift_text)
+        return "%s (%s)" % (name, text) if text else name
+
+    @property
+    def has_gift(self) -> bool:
+        return bool(self.gift_card_id or self.gift_name)
+
+    @property
+    def note_en(self) -> str:
+        """喂模型用的特征行（英文卡文优先，退回中文卡文）。
+
+        ⚠️ 黑暗之赐必须把**赐福**写进来：实测同一只随从会配不同赐福，
+        "这个选项强不强"主要看赐福给了什么（圣盾/风怒/复生/亡语…），
+        只报随从的卡文等于把最关键的那半条信息丢了。
+        """
+        bits: List[str] = []
+        gift = self.gift_note_en
+        if gift:
+            bits.append("Dark Gift: " + gift)
+        text = _clean_text(self.text_en or self.text, limit=140)
+        if text:
+            bits.append(text)
+        return "  ".join(bits)
+
+
+@dataclass
+class ChoiceAdvice:
+    """一次等待玩家做的选一（饰品四选一 / 黑赐三选一）。
+
+    ⚠️ 规则层**不打分**：饰品与赐福的强弱要真实对局样本才定得下来
+    （用户 m03172 前明确"先做展示 + 特征提示"）。这里只做三件事：
+    列清楚每个选项是什么、从卡文提炼一行特征、提示"该做决定了"。
+    """
+    kind: str = ""                  # trinket / trinket_large / dark_gift / mulligan / other
+    title: str = ""
+    source_name: str = ""
+    source_text: str = ""           # 触发这次选择的卡文（三连奖励 / 某饰品的效果等）
+    title_en: str = ""              # 英文标题（喂模型）
+    source_text_en: str = ""        # 英文触发源卡文（喂模型）""
+    is_local: bool = True
+    options: List[ChoiceItem] = field(default_factory=list)
+
+    @property
+    def display_title(self) -> str:
+        if self.kind == "trinket":
+            return "小饰品四选一"
+        if self.kind == "trinket_large":
+            return "大饰品四选一"
+        if self.kind == "dark_gift":
+            return "黑暗之赐三选一"
+        # 其余是卡牌效果触发的发现（三连奖励、饰品效果、随从战吼…）——
+        # 标题用触发源的名字更有用（实测有 `三连奖励` / `死亡护命匣` / `无限潜力`）。
+        if self.title:
+            return "选择：" + self.title
+        return "待选"
+
+
+@dataclass
+class TrinketInfo:
+    """已装备的饰品（面板/CLI 用）。"""
+    size: str = ""          # small / large
+    card_id: str = ""
+    name: str = ""
+    text: str = ""
+    tech_level: Optional[int] = None
+
+    @property
+    def label(self) -> str:
+        return self.name or self.card_id or "?"
+
+
+@dataclass
+class DarkGiftUse:
+    """一次黑赐落在了谁身上（历史记录用）。"""
+    minion_name: str = ""
+    minion_card_id: str = ""
+    minion_entity_id: Optional[int] = None
+
+
+@dataclass
+class AdviceReport:
+    """一次评估的完整结论。可直接 JSON 化给悬浮框用。"""
+    turn: int = 0
+    step: str = ""
+    in_recruit: bool = False
+    gold: Optional[int] = None
+    health: Optional[int] = None
+    max_health: Optional[int] = None
+    tavern_tier: Optional[int] = None
+    board_size: int = 0
+    hand_size: int = 0
+    shop: List[ShopItem] = field(default_factory=list)
+    triples: List[TripleCandidate] = field(default_factory=list)
+    level: Optional[LevelAdvice] = None
+    warnings: List[Warning] = field(default_factory=list)
+    #: 「黑暗之赐」状态（当前版本 BG36 的机制，见 `DarkGift`）
+    dark_gift: Optional[DarkGift] = None
+    #: 当前正在等待玩家做的选一（饰品四选一 / 黑赐三选一）
+    pending_choice: Optional[ChoiceAdvice] = None
+    #: 已装备的饰品（小/大）
+    trinkets: List[TrinketInfo] = field(default_factory=list)
+    #: 本局黑赐用过几次、分别给了谁
+    dark_gift_uses: List[DarkGiftUse] = field(default_factory=list)
+    #: 一句话总结（悬浮框顶部用）
+    headline: str = ""
+
+    def top_shop(self, n: int = 3) -> List[ShopItem]:
+        return [s for s in self.shop if s.action != "跳过"][:n]
+
+
+# ---------------------------------------------------------------------------
+# 规则引擎
+# ---------------------------------------------------------------------------
+
+class RulesEngine:
+    """把 `GameState` 评估成一堆**可解释**的建议。
+
+    用法::
+
+        engine = RulesEngine(CardDB.load("data/cards_zhCN.json"))
+        report = engine.evaluate(builder.state)
+        print(report.headline)
+    """
+
+    def __init__(self, db: Optional[CardDB] = None,
+                 config: Optional[RulesConfig] = None,
+                 db_en: Optional[CardDB] = None):
+        self.db = db
+        #: 英文卡表（只服务 `evidence`/`choice` 题面）。缺失时静默退回中文。
+        self.db_en = db_en
+        self.config = config or RulesConfig()
+        #: card_id → 关键词元组。卡表是只读的，算一次就够（否则每张商店卡都要重扫卡文）。
+        self._mech_cache: Dict[str, Tuple[str, ...]] = {}
+
+    # -- 卡表查询（CardDB 缺失时全部安全降级） --------------------------
+
+    def _card(self, card_id: str) -> Optional[Card]:
+        if self.db is None or not card_id:
+            return None
+        return self.db.get(card_id)
+
+    def _card_en(self, card_id: str) -> Optional[Card]:
+        """英文卡表查询（只喂模型用，不影响任何中文展示）。"""
+        if self.db_en is None or not card_id:
+            return None
+        return self.db_en.get(card_id)
+
+    def _display_name(self, card_id: str, fallback: str = "") -> str:
+        card = self._card(card_id)
+        if card is not None and card.display_name:
+            return card.display_name
+        return fallback or card_id or "?"
+
+    @staticmethod
+    def _looks_like_card_id(text: str) -> bool:
+        """判断一个"名字"其实是不是 CardID。
+
+        ⚠️ 日志里 `SHOW_ENTITY`/`FULL_ENTITY` 的实体名**有时就是 CardID 本身**
+        （实测商店槽位里出现过 `name == "BG36_506"`），而真名是中文（"欢悦"）。
+        不做这个判据的话会在面板上直接显示 `BG36_506`。
+        """
+        if not text:
+            return False
+        if " " in text or "·" in text or "，" in text:
+            return False          # 真名多半带空格/标点
+        has_upper = any(c.isupper() for c in text)
+        has_digit = any(c.isdigit() for c in text)
+        return has_upper and has_digit and all(
+            c.isascii() and (c.isalnum() or c == "_") for c in text)
+
+    def _best_name(self, card_id: str, entity_name: str = "") -> str:
+        """实体名与卡表名择优。
+
+        优先用实体名（英雄皮肤等日志名比卡表名短，玩家更认），但**当实体名
+        看起来就是 CardID 时改用卡表名**——否则会把 CardID 当卡名显示出去。
+        """
+        if entity_name and not self._looks_like_card_id(entity_name):
+            return entity_name
+        return self._display_name(card_id, fallback=entity_name)
+
+    def _mechanics(self, card_id: str) -> Tuple[str, ...]:
+        """卡牌的机制关键词（`mechanics` 字段 **+** 从卡文模板抠出来的）。
+
+        ⚠️ 别退回只读 `card.mechanics`：实测「发动」「塑造法术」都不在 mechanics
+        字段里（「发动」甚至在卡表里是 `mechanics: None`），只看字段会静默漏掉
+        全库 50 张「发动」卡。
+        """
+        if not card_id:
+            return ()
+        hit = self._mech_cache.get(card_id)
+        if hit is not None:
+            return hit
+        card = self._card(card_id)
+        out: List[str] = []
+        taken: set = set()
+        if card is not None:
+            for m in card.mechanics:
+                if m in _KEYWORD_MECHANICS and m not in taken:
+                    taken.add(m)
+                    out.append(m)
+            for m in parse_text_keywords(card.text):
+                # 卡文里的中文词与 mechanics 里的英文标指的是同一个机制，
+                # 去重（如 AVENGE 与 复仇(2)），否则同机制进两次分。
+                base = m.split("(")[0]
+                equiv = _TEXT_TO_MECHANIC.get(base)
+                if equiv is not None and equiv in taken:
+                    continue
+                if equiv is not None:
+                    taken.add(equiv)
+                if m not in out:
+                    out.append(m)
+        result = tuple(out)
+        self._mech_cache[card_id] = result
+        return result
+
+    def _keyword_labels(self, card_id: str) -> List[str]:
+        """给面板/CLI 用的中文关键词标签（去掉 `发动(0)` 里的费用）。
+
+        ⚠️ 标签与 `MECHANIC_WEIGHT` 的键**不是**同一套：权重键要把费用带进字符串
+        （`发动(0)` 比 `发动(2)` 值钱），标签要的是干净的中文名。
+        """
+        out: List[str] = []
+        for m in self._mechanics(card_id):
+            base = m.split("(")[0]
+            zh = MECHANIC_ZH.get(base) or MECHANIC_ZH.get(m)
+            if zh and zh not in out:
+                out.append(zh)
+        return out
+
+    def _race(self, card_id: str) -> str:
+        card = self._card(card_id)
+        if card is None:
+            return ""
+        return card.race or (card.races[0] if card.races else "")
+
+    # -- 主入口 ---------------------------------------------------------
+
+    def evaluate(self, st: GameState) -> AdviceReport:
+        seat = st.local_seat
+        rep = AdviceReport(
+            turn=st.turn,
+            step=st.step,
+            in_recruit=st.in_recruit_phase,
+            gold=seat.gold if seat else None,
+            health=seat.effective_health if seat else None,
+            max_health=seat.max_health if seat else None,
+            tavern_tier=seat.tech_level if seat else None,
+            board_size=len(st.board),
+            hand_size=len(st.hand),
+        )
+        cfg = self.config
+
+        owned = self._owned_counts(st)
+        rep.triples = self._find_triples(st, owned)
+        rep.shop = self._score_shop(st, owned)
+        rep.level = self._advise_level(st, seat, rep.shop)
+        # ⚠️ 黑暗之赐必须在 `_warnings` **之前**算：预警里要提醒"能点了，别忘拿"，
+        # 而预警读的是 `rep.dark_gift`。反过来写的话这个提醒永远不出现（踩过）。
+        rep.dark_gift = self._dark_gift(st)
+        # ⚠️ 与 `dark_gift` 同理：`_warnings` 要提醒"有选择没做"，
+        # 所以待选与饰品必须在预警之前算好。
+        rep.pending_choice = self._choice_advice(st)
+        rep.trinkets = self._trinkets(st)
+        rep.dark_gift_uses = [
+            DarkGiftUse(g.minion_name, g.minion_card_id, g.minion_entity_id)
+            for g in getattr(st, "dark_gifts", [])
+        ]
+        rep.warnings = self._warnings(st, seat, rep)
+        rep.headline = self._headline(rep)
+        return rep
+
+    # -- 待选（饰品四选一 / 黑赐三选一） --------------------------------
+
+    def _choice_advice(self, st: GameState) -> Optional[ChoiceAdvice]:
+        """把盘面上的 `pending_choice` 翻成带卡表信息的展示结构。
+
+        ⚠️ 规则层刻意**不打分**：饰品（420 张）与赐福的强弱没有足够样本，
+        凭卡文猜分数只会误导。只做"列清楚是什么 + 一行特征提示"。
+        起手换牌（MULLIGAN）直接跳过 —— 与战棋决策无关。
+        """
+        pc = getattr(st, "pending_choice", None)
+        if pc is None or not getattr(pc, "is_local", False):
+            return None
+        if getattr(pc, "kind", "") == "MULLIGAN":
+            return None
+
+        if pc.is_trinket:
+            kind = "trinket_large" if pc.trinket_size == "large" else "trinket"
+        elif pc.is_dark_gift:
+            kind = "dark_gift"
+        else:
+            kind = "other"
+
+        options: List[ChoiceItem] = []
+        for o in sorted(pc.options, key=lambda x: x.index):
+            card = self._card(o.card_id)
+            card_en = self._card_en(o.card_id)
+            item = ChoiceItem(
+                index=o.index,
+                card_id=o.card_id,
+                # 卡表名优先于日志名：饰品/赐福的日志名是 `朝圣小鬼标签` 这种
+                # 内部占位名，卡表才是玩家看到的正式名（实测差值很常见）。
+                name=(card.name if card and card.name else (o.name or o.card_id)),
+                tech_level=card.tech_level if card else None,
+                attack=card.attack if card else None,
+                health=card.health if card else None,
+                text=card.text if card else "",
+                kind="trinket" if kind.startswith("trinket") else "minion",
+                # ⚠️ 英文靠 **CardID** 取（语言无关）；用中文名反查英文卡表不可靠
+                # （中文名与英文名不是直译，日志里还有第三套皮肤短名）。
+                name_en=(card_en.name if card_en and card_en.name else ""),
+                text_en=(self._strip_tags(card_en.text) if card_en else ""),
+            )
+            self._attach_gift(item, o)
+            item.note = self._choice_note(item)
+            options.append(item)
+
+        src_card = self._card(getattr(pc, "source_card_id", ""))
+        src_card_en = self._card_en(getattr(pc, "source_card_id", ""))
+        return ChoiceAdvice(
+            kind=kind,
+            title=getattr(pc, "source_name", "") or getattr(pc, "source_card_id", ""),
+            source_name=getattr(pc, "source_name", ""),
+            source_text=self._strip_tags(src_card.text) if src_card else "",
+            title_en=(src_card_en.name if src_card_en and src_card_en.name
+                      else (getattr(pc, "source_name", "")
+                            or getattr(pc, "source_card_id", ""))),
+            source_text_en=(self._strip_tags(src_card_en.text) if src_card_en else ""),
+            is_local=True,
+            options=options,
+        )
+
+    @staticmethod
+    def _strip_tags(text: str) -> str:
+        """卡文里的 `<b>…</b>` 之类标记去掉、空白压平，只留可读文字。
+
+        ⚠️ 卡文里带换行（实测 `伦德尔标签` 正文就被折成两行），
+        不压平的话面板上会多出一条空行。
+        """
+        import re as _re
+        plain = _re.sub(r"<[^>]+>", "", text or "")
+        return _re.sub(r"\s+", " ", plain).strip()
+
+    def _attach_gift(self, item: ChoiceItem, o) -> None:
+        """把选项自带的黑暗之赐补进 `ChoiceItem`（查卡表拿名字与词条）。
+
+        ⚠️ 赐福信息是 `StateBuilder` 在选项挂上盘面时抄下来的
+        （`DARK_GIFT_ENTITY` 标签每局末态会被清 0，晚查就没了），
+        这里只负责把 CardID 翻成中英双份名字与卡文。
+        """
+        gift_id = getattr(o, "gift_card_id", "") or ""
+        if not gift_id:
+            return
+        gift = self._card(gift_id)
+        gift_en = self._card_en(gift_id)
+        item.gift_card_id = gift_id
+        item.gift_name = (gift.name if gift and gift.name
+                          else (getattr(o, "gift_name", "") or gift_id))
+        item.gift_text = gift.text if gift else ""
+        item.gift_name_en = gift_en.name if gift_en and gift_en.name else ""
+        item.gift_text_en = self._strip_tags(gift_en.text) if gift_en else ""
+
+    def _choice_note(self, item: ChoiceItem) -> str:
+        """从卡文提炼一行特征提示（纯展示，不含评分）。
+
+        ⚠️ 这里**不含**黑暗之赐的赐福 —— 赐福由 `item.gift_note` 单独给出，
+        因为它是"这个选项强不强"的主要依据，值得单独占一行高亮（面板与
+        CLI 都单独画）；塞进 note 里会被卡文挤到看不见。
+        """
+        bits: List[str] = []
+        # ⚠️ 星级/身材不是随从专属：饰品里也有带 techLevel 的（实测
+        # `BG30_Trinket_1st` 就有 TECH_LEVEL），有就显示，不给 kind 加条件。
+        if item.tech_level:
+            bits.append("%d星" % item.tech_level)
+        if item.attack is not None and item.health is not None:
+            bits.append("%d/%d" % (item.attack, item.health))
+        text = self._strip_tags(item.text)
+        if text:
+            # 卡文可能很长，截到 30 字够看
+            bits.append(text if len(text) <= 36 else text[:35] + "…")
+        return "  ".join(bits)
+
+    def _trinkets(self, st: GameState) -> List[TrinketInfo]:
+        out: List[TrinketInfo] = []
+        for t in getattr(st, "trinkets", []):
+            card = self._card(t.card_id)
+            out.append(
+                TrinketInfo(
+                    size=t.size,
+                    card_id=t.card_id,
+                    name=(card.name if card and card.name else (t.name or t.card_id)),
+                    text=self._strip_tags(card.text) if card else "",
+                    tech_level=card.tech_level if card else None,
+                )
+            )
+        return out
+
+    # -- 黑暗之赐（BG36 机制） ------------------------------------------
+
+    @staticmethod
+    def _flag_on(tag_value: Optional[str]) -> bool:
+        """日志里的布尔 tag 是字符串 `"1"`/`"0"`；`"0"` 和空串都算假。"""
+        return tag_value is not None and tag_value not in ("0", "")
+
+    @staticmethod
+    def _is_known_name(name: str) -> bool:
+        """实体名是不是真名字。
+
+        ⚠️ 日志里到处是 `UNKNOWN ENTITY [cardType=INVALID]` 和 `N0NAME`（实测前者
+        2 万多次），直接拿来显示会变成"黑暗之赐：UNKNOWN ENTITY [cardType=…]"。
+        """
+        if not name or name == "N0NAME":
+            return False
+        return not name.startswith("UNKNOWN ENTITY")
+
+    def _is_dark_gift_effect(self, card_id: str) -> bool:
+        """是不是「黑暗之赐」的赐福本体卡（`BG36_MidGameEffect_000tNN`）。
+
+        ⚠️ 不写死 `startswith("BG36_MidGameEffect_")`：那只在小卡表里成立。
+        `BG36_MidGameEffect_010`（`酒馆战棋黑暗之赐[DNT]`）是**机制总开关**不是某个
+        赐福，必须排掉，否则它会被当成"已知赐福"显示给玩家。
+        """
+        if not card_id or card_id == "BG36_MidGameEffect_010":
+            return False
+        if card_id.startswith("BG36_MidGameEffect_"):
+            return True
+        card = self._card(card_id)
+        return bool(card is not None and card_id.startswith("BG36")
+                    and card.type not in ("MINION", "HERO", "GAME", "PLAYER"))
+
+    def _dark_gift(self, st: GameState) -> DarkGift:
+        """判断「黑暗发现」现在能不能点，以及场上哪些随从已经带赐福。
+
+        ⚠️ 为什么不用 `BACON_DARK_GIFTS_ACTIVE`：实测它整局只在开局出现 2 次
+        （是个"本局启用该机制"的开关），不是"此刻可点"。真正代表可点的是
+        按钮实体上的 `BACON_DARK_GIFT_PRESSABLE_VFX`。
+        """
+        gift = DarkGift()
+        for e in st.entities.values():
+            if e.card_id == DARK_GIFT_BUTTON_CARD:
+                gift.button_entity_id = e.entity_id
+                if self._flag_on(e.tags.get("BACON_DARK_GIFT_PRESSABLE_VFX")):
+                    gift.available = True
+                continue
+            # 赐福实体本身（`BG36_MidGameEffect_000tNN`）——记下名字，好告诉玩家
+            # 场上那只随从吃的是哪个赐福。
+            if self._is_dark_gift_effect(e.card_id):
+                card = self._card(e.card_id)
+                name = card.display_name if card is not None else ""
+                if name and not name.endswith("[DNT]") and name not in gift.known_effects:
+                    gift.known_effects.append(name)
+            # 随从侧：`HAS_DARK_GIFT=1` 说明它身上挂着赐福
+            if self._flag_on(e.tags.get("HAS_DARK_GIFT")):
+                if e.card_id and self._is_minion_card(e.card_id):
+                    # ⚠️ 刚进场时实体名可能还是空的，退回卡表名，别显示成空白
+                    name = self._best_name(e.card_id, e.name)
+                    if self._is_known_name(name) and name not in gift.granted:
+                        gift.granted.append(name)
+        return gift
+
+    # -- 自家随从统计 ---------------------------------------------------
+
+    def _is_minion_card(self, card_id: str) -> bool:
+        """按卡表判断是不是随从。卡表缺失时退回"有攻血就当随从"。"""
+        card = self._card(card_id)
+        if card is not None:
+            if card.type in NON_MINION_TYPES:
+                return False
+            return card.is_minion or card.attack is not None
+        return bool(card_id) and not card_id.startswith(
+            ("TB_BaconShop", "Bacon_", "BG30_Trinket", "BG36_Button", "BG_OldGod"))
+
+    def _owned_counts(self, st: GameState) -> Dict[str, int]:
+        """自家场面 + 手牌里各 `CardID` 的张数（不含商店）。"""
+        counts: Dict[str, int] = {}
+        for e in list(st.board) + list(st.hand):
+            if e.card_id and self._is_minion_card(e.card_id):
+                counts[e.card_id] = counts.get(e.card_id, 0) + 1
+        return counts
+
+    def _find_triples(self, st: GameState, owned: Dict[str, int]) -> List[TripleCandidate]:
+        """找"再 1 张就三连"的候选。已有三张的不再提示（已经合成了）。"""
+        shop_ids = {s.card_id for s in st.shop_minions if s.card_id}
+        out: List[TripleCandidate] = []
+        for card_id, n in owned.items():
+            if n < 2 or n % 3 == 0:
+                continue
+            card = self._card(card_id)
+            out.append(TripleCandidate(
+                card_id=card_id,
+                name=self._display_name(card_id),
+                owned=n,
+                in_shop=card_id in shop_ids,
+                tech_level=card.tech_level if card else None,
+            ))
+        # 商店里能直接买的排前面
+        out.sort(key=lambda t: (not t.in_shop, -(t.tech_level or 0)))
+        return out
+
+    # -- 商店打分 -------------------------------------------------------
+
+    def _score_shop(self, st: GameState, owned: Dict[str, int]) -> List[ShopItem]:
+        cfg = self.config
+        items: List[ShopItem] = []
+        gold = st.local_seat.gold if st.local_seat else None
+        board_ids = [e.card_id for e in st.board]
+
+        for i, slot in enumerate(st.shop_minions, 1):
+            card_id = slot.card_id
+            card = self._card(card_id)
+            name = self._best_name(card_id, slot.name)
+            score = 0.0
+            reasons: List[str] = []
+
+            # --- 基础分：身材 ---
+            atk = slot.attack or 0
+            hp = slot.health or 0
+            body = atk + hp
+            score += body * 0.5
+            if body >= 10:
+                reasons.append(f"身材好 {atk}/{hp}")
+
+            # --- 星级（高星更值钱）---
+            tl = slot.tech_level or (card.tech_level if card else None) or 0
+            score += tl * 2.0
+
+            # --- 三连 / 对子（最重要）---
+            n = owned.get(card_id, 0)
+            completes = n >= 2 and n % 3 != 0
+            makes_pair = n == 1
+            if completes:
+                score += 25.0
+                reasons.append(f"凑三连（已有 {n} 张）")
+            elif makes_pair:
+                score += 6.0
+                reasons.append("凑对子")
+
+            # --- 金色（自带三连收益）---
+            if slot.golden:
+                score += 15.0
+                reasons.append("金色")
+
+            # --- 关键词（mechanics 字段 + 卡文模板，见 `_mechanics()`）---
+            keywords = self._keyword_labels(card_id)
+            kw_score = 0.0
+            for m in self._mechanics(card_id):
+                w = MECHANIC_WEIGHT.get(m, 0.0)
+                if w:
+                    kw_score += w
+            if kw_score:
+                score += kw_score
+                if keywords:
+                    reasons.append("关键词：" + "/".join(keywords))
+
+            # --- 与场面同族（走流派）---
+            race = self._race(card_id)
+            if race:
+                same = sum(1 for cid in board_ids if self._race(cid) == race)
+                if same >= 2:
+                    score += min(6.0, same * 1.5)
+                    reasons.append(f"与场面同族（{same} 只）")
+
+            # --- 买得起吗 ---
+            affordable = gold is None or gold >= cfg.buy_cost
+            if not affordable:
+                score -= 10.0
+                reasons.append("金币不足")
+
+            # --- 决策 ---
+            if not affordable:
+                action = "跳过"
+            elif completes:
+                action = "买"
+            elif score >= 18.0:
+                action = "买"
+            elif score >= 11.0 or (gold is not None and gold >= 10 and score >= 9.0):
+                action = "考虑"
+            else:
+                action = "跳过"
+
+            # 场面满了且没有三连收益，就别买了
+            if len(st.board) >= cfg.board_limit and not completes and not slot.golden:
+                if action == "买":
+                    action = "考虑"
+                reasons.append("场面已满")
+
+            items.append(ShopItem(
+                index=i,
+                slot_entity_id=slot.slot_entity_id,
+                card_id=card_id,
+                name=name,
+                tech_level=slot.tech_level or (card.tech_level if card else None),
+                attack=slot.attack,
+                health=slot.health,
+                golden=slot.golden,
+                cost=cfg.buy_cost,
+                score=round(score, 1),
+                action=action,
+                reasons=reasons,
+                completes_triple=completes,
+                makes_pair=makes_pair,
+                race=race,
+                keywords=keywords,
+            ))
+
+        items.sort(key=lambda it: -it.score)
+        return items
+
+    # -- 升本建议 -------------------------------------------------------
+
+    def tech_up_cost(self, st: GameState) -> Tuple[Optional[int], Optional[int]]:
+        """(下一档费用, 下一档等级)。优先读升本按钮的实时 `COST`。"""
+        seat = st.local_seat
+        if seat is None or seat.tech_level is None:
+            return None, None
+        next_tier = seat.tech_level + 1
+        if seat.max_tech_level is not None and next_tier > seat.max_tech_level:
+            return None, None
+        for e in st.entities.values():
+            if e.zone != "PLAY" or not e.card_id.startswith(TECHUP_BUTTON_PREFIX):
+                continue
+            tl = e.tech_level
+            if tl == next_tier:
+                cost = _cost_of(e)
+                if cost is not None:
+                    return cost, next_tier
+        return self.config.tech_up_costs.get(next_tier), next_tier
+
+    def reroll_cost(self, st: GameState) -> Optional[int]:
+        """本回合刷新费用（0 = 有免费刷新）。"""
+        for e in st.entities.values():
+            if e.zone == "PLAY" and e.card_id == REROLL_BUTTON_CARD:
+                cost = _cost_of(e)
+                if cost is not None:
+                    return cost
+        return None
+
+    def free_refreshes(self, st: GameState) -> Optional[int]:
+        for e in st.entities.values():
+            v = e.tags.get("BACON_FREE_REFRESH_COUNT")
+            if v is not None and (e.card_id == FREE_REFRESH_ENCH or "FREE_REFRESH" in e.card_id):
+                try:
+                    return int(v)
+                except (TypeError, ValueError):
+                    return None
+        return None
+
+    def _advise_level(self, st: GameState, seat: Optional[Seat],
+                      shop: List[ShopItem]) -> LevelAdvice:
+        if seat is None:
+            return LevelAdvice(None, None, None, False, 0.0, "观望",
+                               ["还没有本地玩家信息"])
+        cost, next_tier = self.tech_up_cost(st)
+        gold = seat.gold
+        cur = seat.tech_level
+        adv = LevelAdvice(current_tier=cur, next_tier=next_tier, cost=cost,
+                          affordable=bool(cost is not None and gold is not None
+                                          and gold >= cost),
+                          score=0.0, action="观望")
+        if cost is None or next_tier is None:
+            adv.action = "不升"
+            adv.reasons.append("已到最高酒馆等级"
+                               if cur is not None else "等级未知")
+            return adv
+
+        # --- 打分 ---
+        score = 0.0
+        # 早升价值高：低档位时升本收益大
+        if cur is not None and cur <= 3:
+            score += 6.0
+            adv.reasons.append(f"{cur} 本早升收益大")
+        elif cur is not None and cur >= 5:
+            score -= 4.0
+            adv.reasons.append(f"{cur} 本升本收益递减")
+        # 买不起就大幅降权
+        if not adv.affordable:
+            score -= 12.0
+            adv.reasons.append(f"金币不足（要 {cost}，只有 {gold}）")
+        # 商店里有三连就别升本了
+        if any(s.completes_triple for s in shop):
+            score -= 15.0
+            adv.reasons.append("商店有三连可拿，先买")
+        # 场面弱的时候升本会挨打。⚠️ 低档位（<=3 本）例外：那时场面本来就小，
+        # 前几回合按曲线升本才是标准打法，不能因为"只有 2 只"就劝人别升。
+        if st.board and len(st.board) >= 5:
+            score += 3.0
+        elif cur is not None and cur <= 3:
+            score += 1.0
+            adv.reasons.append("低本阶段场面自然偏小")
+        else:
+            score -= 2.0
+            adv.reasons.append("场面偏薄")
+
+        adv.score = round(score, 1)
+        if adv.affordable and score >= 5.0:
+            adv.action = "升本"
+        elif adv.affordable and score >= 0.0:
+            adv.action = "观望"
+        else:
+            adv.action = "不升"
+        return adv
+
+    # -- 血线 / 其他预警 ------------------------------------------------
+
+    def _warnings(self, st: GameState, seat: Optional[Seat],
+                  rep: AdviceReport) -> List[Warning]:
+        out: List[Warning] = []
+        cfg = self.config
+        # 待选（饰品四选一 / 黑赐三选一）：放在最前面 —— 不做决定就卡住回合，
+        # 比血线更紧急。
+        choice = rep.pending_choice
+        if choice is not None:
+            out.append(Warning("info", f"{choice.display_title}还没选——点开挑一个"))
+        # 黑暗之赐：能点就提醒——这是个**免费收益**，漏点就是白亏。
+        gift = rep.dark_gift
+        if gift is not None and gift.available:
+            out.append(Warning("info", "「黑暗发现」可以点了——免费三选一，别忘拿"))
+        elif gift is not None and gift.granted:
+            out.append(Warning("info", "黑暗之赐：" + "、".join(gift.granted[:3])))
+        hp = rep.health
+        if hp is not None:
+            cap = self._combat_damage_cap(st) or cfg.combat_damage_cap
+            if hp <= cfg.critical_health:
+                out.append(Warning("danger", f"血量 {hp}，濒死——优先补场面"))
+            elif hp <= cfg.low_health:
+                extra = f"（下场最多挨 {cap}）" if cap else ""
+                out.append(Warning("warn", f"血量 {hp}，进入危险区{extra}"))
+        if seat is not None and seat.died_last_combat:
+            out.append(Warning("warn", "上回合战败，注意血量"))
+        if len(st.board) < 3 and st.turn >= 5:
+            out.append(Warning("warn", f"场面只有 {len(st.board)} 只，偏薄"))
+        if len(st.hand) >= cfg.hand_limit:
+            out.append(Warning("info", f"手牌 {len(st.hand)} 张，接近上限"))
+        for t in rep.triples[:2]:
+            if t.in_shop:
+                out.append(Warning("info", f"{t.name} 在售，可直接凑三连"))
+        free = self.free_refreshes(st)
+        if free:
+            out.append(Warning("info", f"有 {free} 次免费刷新"))
+        return out
+
+    def _combat_damage_cap(self, st: GameState) -> Optional[int]:
+        for e in st.entities.values():
+            v = e.tags.get("BACON_COMBAT_DAMAGE_CAP")
+            if v is not None and v != "":
+                try:
+                    return int(v)
+                except (TypeError, ValueError):
+                    return None
+        return None
+
+    # -- 一句话总结 -----------------------------------------------------
+
+    def _headline(self, rep: AdviceReport) -> str:
+        parts: List[str] = []
+        if rep.in_recruit:
+            parts.append(f"回合 {rep.turn} 招募")
+        else:
+            parts.append(f"回合 {rep.turn} 战斗")
+        if rep.gold is not None:
+            parts.append(f"{rep.gold} 金")
+        if rep.health is not None:
+            parts.append(f"{rep.health} 血")
+        buy = rep.top_shop(1)
+        if buy:
+            parts.append(f"建议买「{buy[0].name}」")
+        elif rep.level and rep.level.action == "升本":
+            parts.append(f"建议升 {rep.level.next_tier} 本")
+        return " · ".join(parts)
+
+
+def _cost_of(e: Entity) -> Optional[int]:
+    """读实体的 `COST`。⚠️ 战棋按钮的费用有时写在 `COST`，缺省时打 `BACON_COST`。"""
+    for key in ("COST", "BACON_COST"):
+        v = e.tags.get(key)
+        if v is None or v == "":
+            continue
+        try:
+            return int(v)
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
+def evaluate_state(st: GameState, db: Optional[CardDB] = None,
+                   config: Optional[RulesConfig] = None,
+                   db_en: Optional[CardDB] = None) -> AdviceReport:
+    """便捷函数：`RulesEngine(db, config, db_en).evaluate(st)`。"""
+    return RulesEngine(db, config, db_en).evaluate(st)

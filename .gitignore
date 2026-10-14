@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Swift 构建产物（用 native/FloatingPanel/build.sh 重建）
+native/FloatingPanel/build/
+
+# HearthstoneJSON 全量原始下载（10 MB，可用 tools/build_cards.py 重新生成）
+data/cards_raw_zhCN.json
+data/cards_raw_enUS.json
+
+# macOS
+.DS_Store

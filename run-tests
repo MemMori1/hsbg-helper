@@ -1,0 +1,5 @@
+#!/bin/bash
+# 跑单元测试（零依赖运行器 + 真实日志回归）。
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec /usr/bin/env PYTHONPATH="$HERE/src${PYTHONPATH:+:$PYTHONPATH}" /usr/bin/python3 "$HERE/tests/run_tests.py" "$@"
