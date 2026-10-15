@@ -1,0 +1,10151 @@
+{
+ "source": "https://hsreplay.net/api/v1/battlegrounds/trinkets/",
+ "fetched_at": "2026-10-15T14:08:12Z",
+ "note": "HSReplay 公开端点，只暴露选取率与平均名次，不暴露胜率；只统计终局场面。",
+ "brackets": {
+  "ALL": [
+   {
+    "dbf_id": 110957,
+    "card_id": "BG30_MagicItem_804",
+    "name": "古老的许愿叉骨",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 41.29,
+    "avg_final_placement": 4.412,
+    "placement_dist": [
+     16.62,
+     12.34,
+     10.6,
+     10.6,
+     11.27,
+     12.77,
+     13.65,
+     12.15
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110966,
+    "card_id": "BG30_MagicItem_821",
+    "name": "鱼的肖像",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 19.47,
+    "avg_final_placement": 4.296,
+    "placement_dist": [
+     11.74,
+     13.78,
+     14.28,
+     13.79,
+     13.68,
+     13.22,
+     11.42,
+     8.09
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110975,
+    "card_id": "BG30_MagicItem_868",
+    "name": "回溯者肖像",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 35.24,
+    "avg_final_placement": 3.833,
+    "placement_dist": [
+     11.54,
+     17.15,
+     18.73,
+     17.45,
+     13.76,
+     10.53,
+     7.32,
+     3.53
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110985,
+    "card_id": "BG30_MagicItem_900",
+    "name": "滑翔龙翼",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 22.44,
+    "avg_final_placement": 3.964,
+    "placement_dist": [
+     8.86,
+     15.53,
+     19.13,
+     18.87,
+     15.94,
+     11.21,
+     7.03,
+     3.42
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110991,
+    "card_id": "BG30_MagicItem_914",
+    "name": "鱼人语实用手册",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 24.42,
+    "avg_final_placement": 4.43,
+    "placement_dist": [
+     7.44,
+     12.25,
+     15.73,
+     16.73,
+     15.53,
+     14.11,
+     11.06,
+     7.17
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110993,
+    "card_id": "BG30_MagicItem_924",
+    "name": "藏宝海湾美酒",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 17.0,
+    "avg_final_placement": 4.141,
+    "placement_dist": [
+     7.15,
+     13.29,
+     18.85,
+     19.88,
+     16.49,
+     12.44,
+     8.04,
+     3.87
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111092,
+    "card_id": "BG30_MagicItem_841",
+    "name": "辐光护手",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 25.75,
+    "avg_final_placement": 4.063,
+    "placement_dist": [
+     14.71,
+     14.42,
+     14.9,
+     14.15,
+     13.25,
+     11.65,
+     10.04,
+     6.89
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111387,
+    "card_id": "BG32_MagicItem_350",
+    "name": "黄金残片",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 12.39,
+    "avg_final_placement": 4.474,
+    "placement_dist": [
+     15.11,
+     11.76,
+     11.21,
+     11.36,
+     11.88,
+     12.82,
+     13.4,
+     12.45
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111388,
+    "card_id": "BG30_MagicItem_301",
+    "name": "永恒肖像",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 36.36,
+    "avg_final_placement": 3.408,
+    "placement_dist": [
+     14.59,
+     24.72,
+     19.78,
+     14.6,
+     10.46,
+     7.39,
+     5.27,
+     3.19
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111399,
+    "card_id": "BG32_MagicItem_361",
+    "name": "口袋工厂",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 16.32,
+    "avg_final_placement": 4.266,
+    "placement_dist": [
+     16.63,
+     13.26,
+     12.41,
+     11.46,
+     11.58,
+     11.44,
+     11.89,
+     11.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111401,
+    "card_id": "BG30_MagicItem_902",
+    "name": "神圣重槌",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 14.51,
+    "avg_final_placement": 4.115,
+    "placement_dist": [
+     14.5,
+     14.45,
+     13.78,
+     13.62,
+     13.51,
+     12.7,
+     10.92,
+     6.52
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111408,
+    "card_id": "BG30_MagicItem_931",
+    "name": "幸运猫咪",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 24.47,
+    "avg_final_placement": 4.364,
+    "placement_dist": [
+     13.9,
+     12.04,
+     12.77,
+     12.41,
+     13.15,
+     14.06,
+     12.96,
+     8.71
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111417,
+    "card_id": "BG30_MagicItem_962",
+    "name": "参训证书",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 20.25,
+    "avg_final_placement": 3.958,
+    "placement_dist": [
+     23.56,
+     14.72,
+     10.14,
+     9.46,
+     9.91,
+     10.76,
+     11.12,
+     10.33
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111427,
+    "card_id": "BG32_MagicItem_400",
+    "name": "异变神龛",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 18.95,
+    "avg_final_placement": 4.57,
+    "placement_dist": [
+     11.57,
+     9.87,
+     12.64,
+     13.42,
+     13.96,
+     14.96,
+     14.19,
+     9.41
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111448,
+    "card_id": "BG30_MagicItem_847",
+    "name": "地精钱包",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 40.35,
+    "avg_final_placement": 4.453,
+    "placement_dist": [
+     18.07,
+     10.53,
+     9.56,
+     10.4,
+     11.59,
+     13.26,
+     14.36,
+     12.24
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111512,
+    "card_id": "BG30_MagicItem_410",
+    "name": "鬃尖笔墨套装",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 22.01,
+    "avg_final_placement": 3.907,
+    "placement_dist": [
+     18.47,
+     15.69,
+     14.02,
+     12.49,
+     11.74,
+     10.48,
+     9.67,
+     7.44
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111514,
+    "card_id": "BG30_MagicItem_411",
+    "name": "猪猪储蓄罐",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 34.62,
+    "avg_final_placement": 3.679,
+    "placement_dist": [
+     21.35,
+     17.54,
+     13.84,
+     11.77,
+     10.85,
+     9.95,
+     8.78,
+     5.93
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111556,
+    "card_id": "BG30_MagicItem_416",
+    "name": "古神信物",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 19.51,
+    "avg_final_placement": 4.617,
+    "placement_dist": [
+     13.05,
+     11.13,
+     11.02,
+     11.6,
+     12.62,
+     13.39,
+     14.11,
+     13.08
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111609,
+    "card_id": "BG30_MagicItem_420",
+    "name": "麦迪文之书",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 17.5,
+    "avg_final_placement": 4.295,
+    "placement_dist": [
+     14.71,
+     12.9,
+     12.7,
+     12.91,
+     12.69,
+     12.47,
+     12.02,
+     9.6
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111962,
+    "card_id": "BG30_MagicItem_973",
+    "name": "随从诱饵",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 39.98,
+    "avg_final_placement": 4.235,
+    "placement_dist": [
+     15.65,
+     13.5,
+     12.46,
+     12.28,
+     12.55,
+     12.51,
+     11.86,
+     9.19
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111999,
+    "card_id": "BG30_MagicItem_423",
+    "name": "旅店老板的酒杯",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 28.18,
+    "avg_final_placement": 4.423,
+    "placement_dist": [
+     15.15,
+     12.16,
+     11.47,
+     11.39,
+     12.26,
+     12.9,
+     13.15,
+     11.52
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112001,
+    "card_id": "BG30_MagicItem_425",
+    "name": "艾泽拉斯星球仪",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 34.95,
+    "avg_final_placement": 4.255,
+    "placement_dist": [
+     16.01,
+     13.08,
+     12.52,
+     12.22,
+     11.93,
+     12.29,
+     12.08,
+     9.87
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 28.16,
+    "avg_final_placement": 3.959,
+    "placement_dist": [
+     14.49,
+     16.56,
+     16.13,
+     13.74,
+     12.14,
+     11.07,
+     9.1,
+     6.77
+    ],
+    "extra_data": 11
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 34.49,
+    "avg_final_placement": 4.303,
+    "placement_dist": [
+     12.13,
+     14.58,
+     14.18,
+     13.02,
+     12.6,
+     12.53,
+     11.48,
+     9.48
+    ],
+    "extra_data": 14
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 46.24,
+    "avg_final_placement": 3.625,
+    "placement_dist": [
+     19.38,
+     19.05,
+     15.37,
+     12.87,
+     11.27,
+     9.11,
+     7.2,
+     5.75
+    ],
+    "extra_data": 15
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 37.46,
+    "avg_final_placement": 4.184,
+    "placement_dist": [
+     17.44,
+     12.72,
+     12.04,
+     12.16,
+     12.32,
+     12.99,
+     11.39,
+     8.94
+    ],
+    "extra_data": 17
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 31.55,
+    "avg_final_placement": 4.306,
+    "placement_dist": [
+     13.4,
+     13.27,
+     13.56,
+     12.75,
+     13.09,
+     13.1,
+     11.73,
+     9.1
+    ],
+    "extra_data": 18
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 31.12,
+    "avg_final_placement": 4.271,
+    "placement_dist": [
+     14.75,
+     12.31,
+     12.24,
+     13.6,
+     14.05,
+     13.06,
+     11.89,
+     8.1
+    ],
+    "extra_data": 20
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 18.58,
+    "avg_final_placement": 4.678,
+    "placement_dist": [
+     11.13,
+     11.07,
+     11.3,
+     12.25,
+     12.8,
+     14.74,
+     14.47,
+     12.25
+    ],
+    "extra_data": 23
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 29.03,
+    "avg_final_placement": 4.222,
+    "placement_dist": [
+     12.67,
+     13.72,
+     14.04,
+     14.67,
+     13.37,
+     13.61,
+     10.64,
+     7.3
+    ],
+    "extra_data": 24
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 36.11,
+    "avg_final_placement": 3.874,
+    "placement_dist": [
+     22.32,
+     15.08,
+     12.21,
+     10.86,
+     9.97,
+     10.59,
+     10.34,
+     8.63
+    ],
+    "extra_data": 43
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 34.44,
+    "avg_final_placement": 3.972,
+    "placement_dist": [
+     12.42,
+     16.73,
+     17.58,
+     14.88,
+     12.75,
+     10.57,
+     8.65,
+     6.42
+    ],
+    "extra_data": 126
+   },
+   {
+    "dbf_id": 112013,
+    "card_id": "BG30_MagicItem_988",
+    "name": "野猪之神标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 21.1,
+    "avg_final_placement": 3.804,
+    "placement_dist": [
+     16.31,
+     16.59,
+     15.73,
+     14.57,
+     13.02,
+     10.89,
+     8.16,
+     4.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112075,
+    "card_id": "BG32_MagicItem_428",
+    "name": "磨损的藏宝图",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 18.75,
+    "avg_final_placement": 4.419,
+    "placement_dist": [
+     15.04,
+     11.95,
+     11.6,
+     11.62,
+     12.28,
+     13.42,
+     12.96,
+     11.14
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112079,
+    "card_id": "BG30_MagicItem_430",
+    "name": "摇滚音乐盒",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 13.2,
+    "avg_final_placement": 4.478,
+    "placement_dist": [
+     13.62,
+     11.73,
+     11.84,
+     12.4,
+     12.51,
+     13.22,
+     13.62,
+     11.05
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112080,
+    "card_id": "BG30_MagicItem_437",
+    "name": "天灾之杖",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 27.18,
+    "avg_final_placement": 4.008,
+    "placement_dist": [
+     13.63,
+     16.9,
+     15.67,
+     14.23,
+     11.92,
+     10.55,
+     10.24,
+     6.85
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112082,
+    "card_id": "BG30_MagicItem_435",
+    "name": "点金补给",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 34.41,
+    "avg_final_placement": 4.467,
+    "placement_dist": [
+     18.07,
+     10.32,
+     9.72,
+     9.99,
+     11.69,
+     13.53,
+     14.22,
+     12.46
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112392,
+    "card_id": "BG30_MagicItem_544",
+    "name": "诺米标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 50.5,
+    "avg_final_placement": 4.097,
+    "placement_dist": [
+     9.66,
+     16.32,
+     17.32,
+     16.22,
+     14.02,
+     10.96,
+     9.32,
+     6.17
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112399,
+    "card_id": "BG30_MagicItem_547",
+    "name": "舒适的棺椁",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 24.85,
+    "avg_final_placement": 4.101,
+    "placement_dist": [
+     10.62,
+     15.39,
+     16.63,
+     16.23,
+     13.48,
+     12.58,
+     9.58,
+     5.5
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112850,
+    "card_id": "BG30_MagicItem_981",
+    "name": "达拉然之眼",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 5.19,
+    "avg_final_placement": 4.854,
+    "placement_dist": [
+     8.41,
+     8.85,
+     10.18,
+     16.37,
+     15.49,
+     12.83,
+     14.16,
+     13.72
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112855,
+    "card_id": "BG30_MagicItem_434",
+    "name": "大教堂模型",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 10.77,
+    "avg_final_placement": 4.634,
+    "placement_dist": [
+     12.43,
+     10.56,
+     11.29,
+     12.0,
+     13.29,
+     14.03,
+     13.82,
+     12.58
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112895,
+    "card_id": "BG30_MagicItem_888",
+    "name": "纪念品货架",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 40.2,
+    "avg_final_placement": 4.418,
+    "placement_dist": [
+     15.69,
+     11.94,
+     11.25,
+     11.32,
+     11.92,
+     12.93,
+     13.58,
+     11.36
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112991,
+    "card_id": "BG30_MagicItem_891",
+    "name": "旅途兑换券",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 41.58,
+    "avg_final_placement": 4.319,
+    "placement_dist": [
+     16.32,
+     12.57,
+     11.68,
+     11.68,
+     11.83,
+     12.57,
+     12.7,
+     10.65
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 113101,
+    "card_id": "BG30_MagicItem_998",
+    "name": "鲍勃摇头玩偶",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 19.2,
+    "avg_final_placement": 4.441,
+    "placement_dist": [
+     15.15,
+     10.99,
+     11.39,
+     11.98,
+     12.88,
+     13.48,
+     13.37,
+     10.76
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 113104,
+    "card_id": "BG30_MagicItem_994",
+    "name": "尤格糕点",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 11.17,
+    "avg_final_placement": 4.576,
+    "placement_dist": [
+     11.47,
+     10.92,
+     12.06,
+     13.12,
+     13.9,
+     14.16,
+     13.72,
+     10.64
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117794,
+    "card_id": "BG30_MagicItem_700",
+    "name": "死亡护命匣",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 26.34,
+    "avg_final_placement": 4.263,
+    "placement_dist": [
+     14.87,
+     12.61,
+     13.04,
+     13.15,
+     13.0,
+     12.73,
+     11.69,
+     8.91
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117801,
+    "card_id": "BG30_MagicItem_703",
+    "name": "神秘魔方",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 22.91,
+    "avg_final_placement": 4.322,
+    "placement_dist": [
+     17.59,
+     11.89,
+     11.51,
+     11.11,
+     11.32,
+     12.39,
+     12.6,
+     11.59
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117854,
+    "card_id": "BG30_MagicItem_705",
+    "name": "调酒机器人的油壶",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 28.75,
+    "avg_final_placement": 4.515,
+    "placement_dist": [
+     14.01,
+     11.75,
+     11.26,
+     11.57,
+     12.44,
+     13.19,
+     13.6,
+     12.17
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117857,
+    "card_id": "BG30_MagicItem_706",
+    "name": "映像吊坠",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 24.24,
+    "avg_final_placement": 4.42,
+    "placement_dist": [
+     17.25,
+     11.57,
+     10.34,
+     10.63,
+     11.6,
+     12.62,
+     13.56,
+     12.44
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117860,
+    "card_id": "BG30_MagicItem_707",
+    "name": "提克特斯标签",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 21.86,
+    "avg_final_placement": 4.383,
+    "placement_dist": [
+     15.7,
+     11.58,
+     11.69,
+     12.04,
+     12.22,
+     13.04,
+     13.05,
+     10.69
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117906,
+    "card_id": "BG30_MagicItem_713",
+    "name": "泣血之心",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 27.05,
+    "avg_final_placement": 4.037,
+    "placement_dist": [
+     14.97,
+     16.68,
+     14.36,
+     12.83,
+     12.13,
+     10.86,
+     10.19,
+     7.97
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120137,
+    "card_id": "BG32_MagicItem_360",
+    "name": "怨毒熏香",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 22.12,
+    "avg_final_placement": 3.899,
+    "placement_dist": [
+     10.43,
+     19.24,
+     18.29,
+     15.82,
+     12.94,
+     10.13,
+     7.82,
+     5.33
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120139,
+    "card_id": "BG32_MagicItem_858",
+    "name": "探险者的望远镜",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 27.45,
+    "avg_final_placement": 4.366,
+    "placement_dist": [
+     13.13,
+     12.24,
+     12.68,
+     13.62,
+     13.58,
+     13.61,
+     12.18,
+     8.96
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120146,
+    "card_id": "BG32_MagicItem_808",
+    "name": "血缚耳环",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 45.55,
+    "avg_final_placement": 3.566,
+    "placement_dist": [
+     22.47,
+     18.29,
+     14.07,
+     12.23,
+     10.2,
+     9.33,
+     7.82,
+     5.58
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120154,
+    "card_id": "BG32_MagicItem_817",
+    "name": "伦德尔标签",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 13.31,
+    "avg_final_placement": 4.469,
+    "placement_dist": [
+     13.59,
+     11.89,
+     11.76,
+     11.93,
+     13.32,
+     13.39,
+     13.39,
+     10.74
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120698,
+    "card_id": "BG32_MagicItem_821",
+    "name": "朝圣小鬼标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 37.48,
+    "avg_final_placement": 3.819,
+    "placement_dist": [
+     19.32,
+     16.71,
+     13.99,
+     12.61,
+     10.92,
+     10.12,
+     9.2,
+     7.12
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120760,
+    "card_id": "BG32_MagicItem_860",
+    "name": "甲虫之戒",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 28.77,
+    "avg_final_placement": 4.145,
+    "placement_dist": [
+     14.79,
+     15.03,
+     13.29,
+     12.72,
+     12.95,
+     12.09,
+     11.49,
+     7.64
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120800,
+    "card_id": "BG32_MagicItem_831",
+    "name": "商贩元素肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 23.71,
+    "avg_final_placement": 4.492,
+    "placement_dist": [
+     12.4,
+     12.52,
+     12.64,
+     11.99,
+     12.95,
+     12.89,
+     13.08,
+     11.52
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120809,
+    "card_id": "BG32_MagicItem_951",
+    "name": "黄金吊坠",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 25.01,
+    "avg_final_placement": 4.325,
+    "placement_dist": [
+     15.5,
+     12.82,
+     11.81,
+     12.28,
+     12.09,
+     12.71,
+     12.12,
+     10.65
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120827,
+    "card_id": "BG32_MagicItem_300",
+    "name": "普崔塞德标签",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 21.05,
+    "avg_final_placement": 4.439,
+    "placement_dist": [
+     9.81,
+     12.71,
+     13.87,
+     14.68,
+     14.28,
+     14.0,
+     12.23,
+     8.41
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120864,
+    "card_id": "BG32_MagicItem_170",
+    "name": "法术扳手",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 26.38,
+    "avg_final_placement": 4.379,
+    "placement_dist": [
+     11.33,
+     11.45,
+     13.44,
+     14.92,
+     15.34,
+     14.62,
+     11.97,
+     6.93
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121033,
+    "card_id": "BG32_MagicItem_822",
+    "name": "集市标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 26.91,
+    "avg_final_placement": 3.986,
+    "placement_dist": [
+     16.24,
+     15.38,
+     14.64,
+     13.14,
+     12.33,
+     11.41,
+     9.87,
+     7.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121036,
+    "card_id": "BG32_MagicItem_957",
+    "name": "诈骗犯肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 47.06,
+    "avg_final_placement": 4.556,
+    "placement_dist": [
+     14.44,
+     10.8,
+     10.3,
+     11.08,
+     12.96,
+     14.86,
+     14.14,
+     11.43
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121037,
+    "card_id": "BG32_MagicItem_416",
+    "name": "战鼓",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 14.77,
+    "avg_final_placement": 4.334,
+    "placement_dist": [
+     13.19,
+     13.45,
+     12.95,
+     12.99,
+     13.26,
+     12.56,
+     11.9,
+     9.7
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121120,
+    "card_id": "BG32_MagicItem_271",
+    "name": "华丽的时钟",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 18.6,
+    "avg_final_placement": 4.238,
+    "placement_dist": [
+     14.08,
+     13.61,
+     13.64,
+     13.42,
+     12.87,
+     12.2,
+     11.1,
+     9.08
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121121,
+    "card_id": "BG32_MagicItem_276",
+    "name": "神秘墓碑",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 22.4,
+    "avg_final_placement": 3.917,
+    "placement_dist": [
+     10.98,
+     16.36,
+     18.99,
+     16.88,
+     13.45,
+     11.32,
+     7.83,
+     4.2
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121125,
+    "card_id": "BG32_MagicItem_278",
+    "name": "复用电池",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 21.09,
+    "avg_final_placement": 4.542,
+    "placement_dist": [
+     12.37,
+     10.27,
+     11.12,
+     13.26,
+     15.03,
+     15.07,
+     13.8,
+     9.1
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121138,
+    "card_id": "BG32_MagicItem_892",
+    "name": "鲜活气泡",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 30.22,
+    "avg_final_placement": 4.406,
+    "placement_dist": [
+     15.54,
+     12.29,
+     11.28,
+     11.72,
+     11.92,
+     12.29,
+     13.29,
+     11.67
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121140,
+    "card_id": "BG32_MagicItem_893",
+    "name": "蓝鳃脚蹼",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 20.38,
+    "avg_final_placement": 4.388,
+    "placement_dist": [
+     6.76,
+     13.44,
+     16.54,
+     16.43,
+     15.95,
+     13.06,
+     10.8,
+     7.02
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130028,
+    "card_id": "BG35_MagicItem_801",
+    "name": "副厨师长标签",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 34.1,
+    "avg_final_placement": 4.355,
+    "placement_dist": [
+     15.08,
+     13.16,
+     11.96,
+     11.53,
+     12.0,
+     13.02,
+     11.98,
+     11.27
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130832,
+    "card_id": "BG35_MagicItem_814",
+    "name": "满当当的钱包",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 14.98,
+    "avg_final_placement": 4.593,
+    "placement_dist": [
+     15.04,
+     10.81,
+     10.19,
+     10.52,
+     11.91,
+     13.53,
+     14.76,
+     13.23
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130833,
+    "card_id": "BG35_MagicItem_815",
+    "name": "魔术师的高帽",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 14.46,
+    "avg_final_placement": 4.399,
+    "placement_dist": [
+     13.4,
+     12.14,
+     12.59,
+     13.07,
+     13.03,
+     13.55,
+     12.01,
+     10.22
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130834,
+    "card_id": "BG35_MagicItem_816",
+    "name": "未知宝珠",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 13.89,
+    "avg_final_placement": 4.373,
+    "placement_dist": [
+     15.28,
+     12.27,
+     11.81,
+     11.97,
+     12.48,
+     12.6,
+     12.52,
+     11.06
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130835,
+    "card_id": "BG35_MagicItem_817",
+    "name": "镜匣",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 21.22,
+    "avg_final_placement": 4.323,
+    "placement_dist": [
+     15.27,
+     12.52,
+     12.39,
+     12.37,
+     12.47,
+     12.25,
+     12.29,
+     10.44
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130836,
+    "card_id": "BG35_MagicItem_818",
+    "name": "神秘宝珠",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 8.55,
+    "avg_final_placement": 4.332,
+    "placement_dist": [
+     13.92,
+     13.08,
+     12.87,
+     12.81,
+     12.82,
+     12.63,
+     11.6,
+     10.27
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130841,
+    "card_id": "BG35_MagicItem_823",
+    "name": "老旧的烛台",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 27.51,
+    "avg_final_placement": 4.522,
+    "placement_dist": [
+     13.49,
+     11.2,
+     11.68,
+     12.04,
+     12.87,
+     13.79,
+     13.44,
+     11.48
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130877,
+    "card_id": "BG35_MagicItem_871",
+    "name": "熊妈妈标签",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 18.39,
+    "avg_final_placement": 4.139,
+    "placement_dist": [
+     8.22,
+     14.06,
+     17.61,
+     17.79,
+     16.74,
+     13.11,
+     8.5,
+     3.97
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130879,
+    "card_id": "BG35_MagicItem_301",
+    "name": "废铁回收机标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 50.04,
+    "avg_final_placement": 4.114,
+    "placement_dist": [
+     19.21,
+     12.4,
+     11.68,
+     11.98,
+     12.25,
+     12.64,
+     11.4,
+     8.44
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130880,
+    "card_id": "BG35_MagicItem_302",
+    "name": "积雷标签",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 21.8,
+    "avg_final_placement": 4.491,
+    "placement_dist": [
+     14.74,
+     10.61,
+     10.67,
+     12.02,
+     13.44,
+     14.1,
+     14.06,
+     10.36
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130886,
+    "card_id": "BG35_MagicItem_840",
+    "name": "多彩之泪",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 17.31,
+    "avg_final_placement": 4.188,
+    "placement_dist": [
+     12.36,
+     14.94,
+     14.62,
+     14.28,
+     13.2,
+     12.23,
+     10.83,
+     7.54
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130888,
+    "card_id": "BG35_MagicItem_850",
+    "name": "袋中旋风",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 34.42,
+    "avg_final_placement": 3.791,
+    "placement_dist": [
+     13.53,
+     18.09,
+     18.11,
+     15.23,
+     12.93,
+     9.93,
+     7.49,
+     4.69
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130889,
+    "card_id": "BG35_MagicItem_851",
+    "name": "水车",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 20.5,
+    "avg_final_placement": 4.171,
+    "placement_dist": [
+     12.97,
+     14.72,
+     14.23,
+     14.02,
+     14.31,
+     11.43,
+     10.76,
+     7.56
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130890,
+    "card_id": "BG35_MagicItem_890",
+    "name": "沉没的船锚",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 16.48,
+    "avg_final_placement": 4.428,
+    "placement_dist": [
+     10.99,
+     12.03,
+     13.14,
+     14.67,
+     14.41,
+     14.27,
+     11.93,
+     8.55
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130904,
+    "card_id": "BG35_MagicItem_434",
+    "name": "珠宝盒",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 28.3,
+    "avg_final_placement": 3.883,
+    "placement_dist": [
+     22.25,
+     14.33,
+     12.06,
+     11.29,
+     10.82,
+     10.83,
+     10.45,
+     7.98
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130908,
+    "card_id": "BG35_MagicItem_872",
+    "name": "蛇首之杖",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 26.97,
+    "avg_final_placement": 4.042,
+    "placement_dist": [
+     14.88,
+     15.49,
+     14.59,
+     13.52,
+     12.98,
+     11.42,
+     9.94,
+     7.19
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131003,
+    "card_id": "BG35_MagicItem_931",
+    "name": "转录打字机",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 17.96,
+    "avg_final_placement": 4.368,
+    "placement_dist": [
+     15.22,
+     12.38,
+     11.89,
+     12.08,
+     12.31,
+     12.54,
+     12.63,
+     10.95
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131135,
+    "card_id": "BG35_MagicItem_306",
+    "name": "典狱长标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 33.27,
+    "avg_final_placement": 4.096,
+    "placement_dist": [
+     14.63,
+     15.16,
+     14.95,
+     12.82,
+     12.73,
+     11.28,
+     10.29,
+     8.13
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131137,
+    "card_id": "BG35_MagicItem_305",
+    "name": "螺号肖像",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 37.92,
+    "avg_final_placement": 4.377,
+    "placement_dist": [
+     11.45,
+     13.93,
+     13.98,
+     12.95,
+     12.89,
+     13.07,
+     12.08,
+     9.65
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131276,
+    "card_id": "BG35_MagicItem_150",
+    "name": "被诅咒的水晶",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 23.78,
+    "avg_final_placement": 3.948,
+    "placement_dist": [
+     11.51,
+     16.23,
+     18.22,
+     16.48,
+     13.5,
+     10.76,
+     8.27,
+     5.03
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131280,
+    "card_id": "BG35_MagicItem_152",
+    "name": "恶魔挂毯",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 26.75,
+    "avg_final_placement": 4.122,
+    "placement_dist": [
+     16.36,
+     14.35,
+     12.83,
+     12.53,
+     12.63,
+     11.74,
+     11.47,
+     8.09
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133060,
+    "card_id": "BG36_MagicItem_800",
+    "name": "魔化血刀",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 32.65,
+    "avg_final_placement": 4.282,
+    "placement_dist": [
+     13.19,
+     12.68,
+     13.96,
+     14.12,
+     13.42,
+     12.74,
+     11.3,
+     8.57
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133061,
+    "card_id": "BG36_MagicItem_801",
+    "name": "吞魔之爪",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 44.0,
+    "avg_final_placement": 3.991,
+    "placement_dist": [
+     13.68,
+     15.18,
+     16.16,
+     15.36,
+     13.25,
+     11.49,
+     9.07,
+     5.82
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133062,
+    "card_id": "BG36_MagicItem_810",
+    "name": "磁感旋刃",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 23.14,
+    "avg_final_placement": 4.332,
+    "placement_dist": [
+     12.35,
+     11.88,
+     14.07,
+     14.54,
+     14.36,
+     13.04,
+     11.41,
+     8.34
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133063,
+    "card_id": "BG36_MagicItem_811",
+    "name": "防护龟壳",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 8.22,
+    "avg_final_placement": 4.542,
+    "placement_dist": [
+     12.02,
+     11.08,
+     12.31,
+     13.23,
+     13.36,
+     13.57,
+     13.47,
+     10.97
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133064,
+    "card_id": "BG36_MagicItem_820",
+    "name": "好斗的斥候肖像",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 27.42,
+    "avg_final_placement": 4.272,
+    "placement_dist": [
+     7.03,
+     13.83,
+     17.4,
+     17.85,
+     15.9,
+     12.28,
+     9.93,
+     5.78
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133340,
+    "card_id": "BG36_MagicItem_300",
+    "name": "冰寒之花",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 18.24,
+    "avg_final_placement": 4.68,
+    "placement_dist": [
+     12.55,
+     10.59,
+     10.55,
+     11.54,
+     12.62,
+     14.39,
+     15.05,
+     12.7
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133341,
+    "card_id": "BG36_MagicItem_301",
+    "name": "上锁宝箱肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 22.19,
+    "avg_final_placement": 4.603,
+    "placement_dist": [
+     13.26,
+     10.98,
+     11.09,
+     11.58,
+     12.48,
+     13.71,
+     14.36,
+     12.54
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133342,
+    "card_id": "BG36_MagicItem_302",
+    "name": "黄金重槌",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 22.95,
+    "avg_final_placement": 4.124,
+    "placement_dist": [
+     8.96,
+     12.65,
+     18.15,
+     18.48,
+     16.71,
+     12.94,
+     8.38,
+     3.73
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133346,
+    "card_id": "BG36_MagicItem_303",
+    "name": "透视玻璃杯",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 31.88,
+    "avg_final_placement": 3.923,
+    "placement_dist": [
+     22.6,
+     14.14,
+     11.42,
+     10.76,
+     10.96,
+     10.5,
+     10.66,
+     8.96
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133379,
+    "card_id": "BG36_MagicItem_307",
+    "name": "神圣魔杖",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 43.09,
+    "avg_final_placement": 3.895,
+    "placement_dist": [
+     26.8,
+     12.74,
+     9.5,
+     9.04,
+     9.86,
+     10.78,
+     11.59,
+     9.69
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133387,
+    "card_id": "BG36_MagicItem_200",
+    "name": "牧人号角",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 15.89,
+    "avg_final_placement": 4.565,
+    "placement_dist": [
+     15.52,
+     9.06,
+     10.43,
+     10.83,
+     13.71,
+     14.18,
+     15.52,
+     10.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133388,
+    "card_id": "BG36_MagicItem_201",
+    "name": "狮子鱼肖像",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 28.74,
+    "avg_final_placement": 4.196,
+    "placement_dist": [
+     11.76,
+     11.85,
+     14.61,
+     16.55,
+     16.43,
+     14.25,
+     9.93,
+     4.61
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133389,
+    "card_id": "BG36_MagicItem_202",
+    "name": "战吼图腾",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 16.01,
+    "avg_final_placement": 4.38,
+    "placement_dist": [
+     15.4,
+     12.42,
+     11.51,
+     11.61,
+     12.36,
+     12.93,
+     12.73,
+     11.03
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133390,
+    "card_id": "BG36_MagicItem_203",
+    "name": "巨龙头骨",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 11.24,
+    "avg_final_placement": 4.105,
+    "placement_dist": [
+     10.37,
+     16.01,
+     16.42,
+     15.61,
+     14.06,
+     12.41,
+     9.33,
+     5.79
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133393,
+    "card_id": "BG36_MagicItem_206",
+    "name": "不祥之石",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 35.09,
+    "avg_final_placement": 4.117,
+    "placement_dist": [
+     15.06,
+     14.13,
+     13.96,
+     13.77,
+     12.87,
+     12.1,
+     10.36,
+     7.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133395,
+    "card_id": "BG36_MagicItem_208",
+    "name": "漂浮蜡烛套装",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 16.79,
+    "avg_final_placement": 4.342,
+    "placement_dist": [
+     16.18,
+     12.26,
+     11.79,
+     11.33,
+     12.16,
+     12.67,
+     12.97,
+     10.65
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133399,
+    "card_id": "BG36_MagicItem_211",
+    "name": "爱心吊坠",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 14.1,
+    "avg_final_placement": 4.536,
+    "placement_dist": [
+     12.03,
+     11.49,
+     11.55,
+     13.03,
+     13.82,
+     14.18,
+     13.51,
+     10.38
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133695,
+    "card_id": "BG36_MagicItem_812",
+    "name": "应急锯刃",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 11.14,
+    "avg_final_placement": 4.508,
+    "placement_dist": [
+     8.74,
+     10.64,
+     13.97,
+     15.31,
+     16.93,
+     15.29,
+     11.77,
+     7.35
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133696,
+    "card_id": "BG36_MagicItem_220",
+    "name": "闪光水晶",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 14.78,
+    "avg_final_placement": 4.327,
+    "placement_dist": [
+     16.94,
+     11.98,
+     11.67,
+     11.33,
+     11.9,
+     12.61,
+     12.23,
+     11.33
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134199,
+    "card_id": "BG36_MagicItem_390",
+    "name": "投球手肖像",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 15.59,
+    "avg_final_placement": 4.403,
+    "placement_dist": [
+     10.59,
+     12.69,
+     14.34,
+     14.61,
+     13.81,
+     13.05,
+     11.77,
+     9.14
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134315,
+    "card_id": "BG36_MagicItem_400",
+    "name": "腐蚀的铸币肖像",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 44.19,
+    "avg_final_placement": 4.305,
+    "placement_dist": [
+     14.42,
+     13.44,
+     13.2,
+     12.49,
+     12.06,
+     11.8,
+     12.16,
+     10.42
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134316,
+    "card_id": "BG36_MagicItem_403",
+    "name": "暮光神锤",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 17.75,
+    "avg_final_placement": 3.869,
+    "placement_dist": [
+     8.78,
+     17.46,
+     20.07,
+     18.82,
+     14.74,
+     10.18,
+     6.6,
+     3.35
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134317,
+    "card_id": "BG36_MagicItem_404",
+    "name": "腐蚀的节杖",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 41.8,
+    "avg_final_placement": 4.071,
+    "placement_dist": [
+     8.66,
+     16.32,
+     18.61,
+     16.88,
+     14.02,
+     11.53,
+     8.61,
+     5.37
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134325,
+    "card_id": "BG36_MagicItem_411",
+    "name": "复苏之光",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 39.38,
+    "avg_final_placement": 4.348,
+    "placement_dist": [
+     14.58,
+     12.38,
+     12.44,
+     12.3,
+     12.97,
+     13.0,
+     12.52,
+     9.81
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134435,
+    "card_id": "BG36_MagicItem_407",
+    "name": "龙首法杖",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 47.62,
+    "avg_final_placement": 4.351,
+    "placement_dist": [
+     13.26,
+     13.27,
+     12.53,
+     12.82,
+     12.78,
+     13.7,
+     12.76,
+     8.88
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134436,
+    "card_id": "BG36_MagicItem_408",
+    "name": "军需官的铁钩",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 30.81,
+    "avg_final_placement": 4.78,
+    "placement_dist": [
+     10.99,
+     10.05,
+     10.81,
+     11.9,
+     13.14,
+     14.23,
+     15.18,
+     13.7
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134437,
+    "card_id": "BG36_MagicItem_409",
+    "name": "红宝石獠牙",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 61.54,
+    "avg_final_placement": 3.992,
+    "placement_dist": [
+     20.21,
+     14.64,
+     12.14,
+     11.37,
+     10.91,
+     10.75,
+     11.03,
+     8.96
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134438,
+    "card_id": "BG36_MagicItem_410",
+    "name": "吸魂器",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 42.41,
+    "avg_final_placement": 4.117,
+    "placement_dist": [
+     13.73,
+     15.88,
+     15.13,
+     12.93,
+     11.83,
+     11.76,
+     10.5,
+     8.23
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134439,
+    "card_id": "BG36_MagicItem_423",
+    "name": "扩音机肖像",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 48.96,
+    "avg_final_placement": 4.195,
+    "placement_dist": [
+     17.13,
+     12.88,
+     11.63,
+     12.35,
+     13.1,
+     12.36,
+     11.77,
+     8.79
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134444,
+    "card_id": "BG36_MagicItem_414",
+    "name": "加重护手",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 30.73,
+    "avg_final_placement": 3.287,
+    "placement_dist": [
+     39.27,
+     10.08,
+     9.36,
+     9.36,
+     8.85,
+     8.65,
+     7.91,
+     6.53
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134638,
+    "card_id": "BG36_MagicItem_402",
+    "name": "精神鞭笞者肖像",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 29.05,
+    "avg_final_placement": 4.197,
+    "placement_dist": [
+     6.6,
+     14.68,
+     18.84,
+     18.27,
+     15.06,
+     12.36,
+     8.8,
+     5.38
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134639,
+    "card_id": "BG36_MagicItem_852",
+    "name": "摧心怪标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 29.82,
+    "avg_final_placement": 3.93,
+    "placement_dist": [
+     14.37,
+     16.95,
+     16.61,
+     14.18,
+     11.68,
+     10.43,
+     9.02,
+     6.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134640,
+    "card_id": "BG36_MagicItem_424",
+    "name": "捣蛋鬼标签",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 7.46,
+    "avg_final_placement": 4.735,
+    "placement_dist": [
+     11.25,
+     9.96,
+     10.79,
+     12.42,
+     13.58,
+     14.57,
+     14.44,
+     12.99
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134642,
+    "card_id": "BG36_MagicItem_609",
+    "name": "戏法手套",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 11.2,
+    "avg_final_placement": 4.626,
+    "placement_dist": [
+     12.51,
+     10.63,
+     11.23,
+     12.08,
+     12.99,
+     14.36,
+     13.83,
+     12.37
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110928,
+    "card_id": "BG30_MagicItem_801",
+    "name": "罪碑标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 17.36,
+    "avg_final_placement": 4.159,
+    "placement_dist": [
+     19.59,
+     12.21,
+     11.24,
+     10.54,
+     11.79,
+     13.52,
+     12.96,
+     8.16
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110967,
+    "card_id": "BG30_MagicItem_886",
+    "name": "强固之盾",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 25.53,
+    "avg_final_placement": 3.946,
+    "placement_dist": [
+     9.71,
+     18.05,
+     18.78,
+     16.66,
+     12.39,
+     11.42,
+     8.5,
+     4.48
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111207,
+    "card_id": "BG30_MagicItem_876",
+    "name": "操纵者肖像",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 16.42,
+    "avg_final_placement": 4.167,
+    "placement_dist": [
+     16.32,
+     13.0,
+     12.51,
+     12.67,
+     13.06,
+     13.27,
+     12.2,
+     6.98
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111488,
+    "card_id": "BG30_MagicItem_403",
+    "name": "铁炉堡锻砧",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 10.85,
+    "avg_final_placement": 3.846,
+    "placement_dist": [
+     19.03,
+     14.45,
+     15.35,
+     13.2,
+     12.21,
+     10.05,
+     9.16,
+     6.55
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111499,
+    "card_id": "BG30_MagicItem_951",
+    "name": "熔岩提灯",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 22.31,
+    "avg_final_placement": 4.371,
+    "placement_dist": [
+     13.02,
+     11.11,
+     12.84,
+     13.81,
+     14.71,
+     14.13,
+     13.26,
+     7.12
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111500,
+    "card_id": "BG30_MagicItem_952",
+    "name": "瓶装冰灵",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 24.38,
+    "avg_final_placement": 4.447,
+    "placement_dist": [
+     7.37,
+     11.58,
+     14.91,
+     17.16,
+     17.11,
+     13.95,
+     11.8,
+     6.12
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111502,
+    "card_id": "BG30_MagicItem_406",
+    "name": "屠夫钩镰",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 44.1,
+    "avg_final_placement": 3.795,
+    "placement_dist": [
+     14.72,
+     18.09,
+     17.0,
+     14.69,
+     12.1,
+     10.12,
+     8.64,
+     4.63
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111607,
+    "card_id": "BG30_MagicItem_418",
+    "name": "铜须肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 57.54,
+    "avg_final_placement": 4.138,
+    "placement_dist": [
+     12.68,
+     14.71,
+     15.07,
+     14.14,
+     13.46,
+     12.83,
+     11.19,
+     5.92
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112102,
+    "card_id": "BG30_MagicItem_310",
+    "name": "瑞文戴尔肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 47.4,
+    "avg_final_placement": 4.249,
+    "placement_dist": [
+     15.99,
+     10.84,
+     12.5,
+     12.96,
+     14.27,
+     14.15,
+     12.67,
+     6.63
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112381,
+    "card_id": "BG30_MagicItem_540",
+    "name": "猛猿标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 28.05,
+    "avg_final_placement": 4.117,
+    "placement_dist": [
+     14.24,
+     14.39,
+     13.26,
+     13.83,
+     14.15,
+     13.62,
+     10.96,
+     5.55
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112382,
+    "card_id": "BG30_MagicItem_541",
+    "name": "虚空坠饰",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 44.12,
+    "avg_final_placement": 3.894,
+    "placement_dist": [
+     15.05,
+     15.95,
+     16.13,
+     14.25,
+     12.88,
+     11.9,
+     9.45,
+     4.39
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112397,
+    "card_id": "BG30_MagicItem_545",
+    "name": "冰箱磁贴",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 18.15,
+    "avg_final_placement": 4.382,
+    "placement_dist": [
+     14.88,
+     10.65,
+     11.36,
+     12.81,
+     14.02,
+     14.97,
+     13.69,
+     7.62
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112398,
+    "card_id": "BG30_MagicItem_546",
+    "name": "罐装宝石",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 20.37,
+    "avg_final_placement": 4.182,
+    "placement_dist": [
+     15.06,
+     13.03,
+     13.26,
+     13.19,
+     13.6,
+     13.06,
+     12.16,
+     6.63
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112400,
+    "card_id": "BG30_MagicItem_431",
+    "name": "艾泽里特肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 60.04,
+    "avg_final_placement": 3.768,
+    "placement_dist": [
+     17.25,
+     17.17,
+     15.8,
+     13.66,
+     12.28,
+     10.06,
+     8.84,
+     4.95
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112411,
+    "card_id": "BG30_MagicItem_995",
+    "name": "青铜龙时钟",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 24.96,
+    "avg_final_placement": 4.133,
+    "placement_dist": [
+     15.0,
+     12.56,
+     13.76,
+     14.18,
+     14.3,
+     13.37,
+     11.23,
+     5.61
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112988,
+    "card_id": "BG30_MagicItem_996",
+    "name": "鲍勃的小费罐",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 22.31,
+    "avg_final_placement": 4.238,
+    "placement_dist": [
+     17.13,
+     12.05,
+     11.44,
+     11.81,
+     12.86,
+     13.81,
+     13.32,
+     7.57
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112990,
+    "card_id": "BG30_MagicItem_439",
+    "name": "新潮眼罩",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 43.37,
+    "avg_final_placement": 4.337,
+    "placement_dist": [
+     16.89,
+     10.86,
+     9.98,
+     11.69,
+     14.14,
+     15.03,
+     13.73,
+     7.67
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 113096,
+    "card_id": "BG30_MagicItem_442",
+    "name": "鲜血魔像标签",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 43.98,
+    "avg_final_placement": 3.526,
+    "placement_dist": [
+     26.15,
+     16.06,
+     12.78,
+     11.03,
+     10.63,
+     9.65,
+     8.74,
+     4.97
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 113103,
+    "card_id": "BG30_MagicItem_993",
+    "name": "帕格的鱼竿",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 24.73,
+    "avg_final_placement": 4.371,
+    "placement_dist": [
+     14.34,
+     10.83,
+     11.89,
+     13.19,
+     13.98,
+     15.09,
+     13.25,
+     7.44
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115225,
+    "card_id": "BG30_MagicItem_988t",
+    "name": "野猪之神标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 27.23,
+    "avg_final_placement": 3.746,
+    "placement_dist": [
+     17.51,
+     17.17,
+     15.7,
+     14.2,
+     12.02,
+     9.8,
+     8.79,
+     4.81
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115226,
+    "card_id": "BG30_MagicItem_547t",
+    "name": "舒适的棺椁",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 25.94,
+    "avg_final_placement": 4.156,
+    "placement_dist": [
+     10.98,
+     14.62,
+     15.75,
+     15.42,
+     14.24,
+     12.88,
+     10.85,
+     5.25
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115230,
+    "card_id": "BG30_MagicItem_420t",
+    "name": "麦迪文之书",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 13.21,
+    "avg_final_placement": 4.248,
+    "placement_dist": [
+     15.01,
+     12.05,
+     12.92,
+     13.41,
+     13.23,
+     13.66,
+     12.6,
+     7.12
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115235,
+    "card_id": "BG30_MagicItem_544t",
+    "name": "诺米标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 49.72,
+    "avg_final_placement": 4.099,
+    "placement_dist": [
+     13.02,
+     14.98,
+     14.85,
+     14.73,
+     13.59,
+     12.15,
+     10.81,
+     5.86
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115236,
+    "card_id": "BG30_MagicItem_879t",
+    "name": "达拉然奶酪轮",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 35.97,
+    "avg_final_placement": 4.04,
+    "placement_dist": [
+     13.43,
+     14.85,
+     15.39,
+     15.13,
+     13.61,
+     12.19,
+     10.21,
+     5.2
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115237,
+    "card_id": "BG30_MagicItem_914t",
+    "name": "鱼人语实用手册",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 21.73,
+    "avg_final_placement": 4.489,
+    "placement_dist": [
+     6.68,
+     12.63,
+     15.31,
+     15.77,
+     15.77,
+     14.42,
+     12.76,
+     6.65
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115245,
+    "card_id": "BG30_MagicItem_924t",
+    "name": "藏宝海湾美酒",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 27.51,
+    "avg_final_placement": 4.34,
+    "placement_dist": [
+     8.13,
+     12.77,
+     16.01,
+     16.96,
+     15.74,
+     13.27,
+     10.87,
+     6.25
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 30.83,
+    "avg_final_placement": 4.123,
+    "placement_dist": [
+     13.78,
+     14.21,
+     14.5,
+     14.15,
+     13.24,
+     12.61,
+     11.92,
+     5.59
+    ],
+    "extra_data": 11
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 36.13,
+    "avg_final_placement": 4.26,
+    "placement_dist": [
+     12.85,
+     14.14,
+     13.09,
+     13.67,
+     13.4,
+     13.39,
+     12.03,
+     7.42
+    ],
+    "extra_data": 14
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 53.38,
+    "avg_final_placement": 3.658,
+    "placement_dist": [
+     22.22,
+     17.2,
+     13.27,
+     11.72,
+     10.89,
+     10.18,
+     9.21,
+     5.31
+    ],
+    "extra_data": 15
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 28.31,
+    "avg_final_placement": 4.322,
+    "placement_dist": [
+     17.11,
+     11.18,
+     10.75,
+     11.32,
+     13.13,
+     14.39,
+     13.76,
+     8.36
+    ],
+    "extra_data": 17
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 37.31,
+    "avg_final_placement": 4.054,
+    "placement_dist": [
+     16.24,
+     14.82,
+     13.64,
+     12.89,
+     12.36,
+     11.84,
+     11.45,
+     6.76
+    ],
+    "extra_data": 18
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 30.38,
+    "avg_final_placement": 4.338,
+    "placement_dist": [
+     15.59,
+     10.56,
+     11.11,
+     12.55,
+     14.91,
+     15.0,
+     13.15,
+     7.13
+    ],
+    "extra_data": 20
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 24.23,
+    "avg_final_placement": 4.916,
+    "placement_dist": [
+     8.35,
+     8.19,
+     9.57,
+     13.58,
+     15.13,
+     18.36,
+     16.61,
+     10.21
+    ],
+    "extra_data": 23
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 27.1,
+    "avg_final_placement": 4.272,
+    "placement_dist": [
+     12.24,
+     12.97,
+     13.66,
+     14.34,
+     14.29,
+     14.36,
+     12.04,
+     6.11
+    ],
+    "extra_data": 24
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 34.03,
+    "avg_final_placement": 3.956,
+    "placement_dist": [
+     23.34,
+     13.41,
+     10.19,
+     9.92,
+     10.93,
+     12.27,
+     12.61,
+     7.32
+    ],
+    "extra_data": 43
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 29.23,
+    "avg_final_placement": 4.226,
+    "placement_dist": [
+     9.44,
+     14.21,
+     16.91,
+     15.86,
+     13.6,
+     13.19,
+     10.93,
+     5.88
+    ],
+    "extra_data": 126
+   },
+   {
+    "dbf_id": 115253,
+    "card_id": "BG30_MagicItem_410t2",
+    "name": "鬃尖笔墨套装",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 18.71,
+    "avg_final_placement": 4.294,
+    "placement_dist": [
+     14.74,
+     11.83,
+     12.18,
+     12.86,
+     13.88,
+     14.68,
+     13.17,
+     6.67
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117157,
+    "card_id": "BG30_MagicItem_989t",
+    "name": "艺匠之瓮",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 24.0,
+    "avg_final_placement": 3.945,
+    "placement_dist": [
+     9.8,
+     15.93,
+     19.33,
+     18.21,
+     14.45,
+     10.41,
+     7.65,
+     4.21
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117795,
+    "card_id": "BG30_MagicItem_701",
+    "name": "萨格拉斯之眼",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 25.64,
+    "avg_final_placement": 4.047,
+    "placement_dist": [
+     15.09,
+     13.91,
+     14.4,
+     14.29,
+     13.5,
+     12.9,
+     10.69,
+     5.22
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117855,
+    "card_id": "BG30_MagicItem_942",
+    "name": "机械加拉克苏斯标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 26.29,
+    "avg_final_placement": 3.864,
+    "placement_dist": [
+     19.56,
+     15.22,
+     13.26,
+     12.41,
+     12.15,
+     11.37,
+     10.24,
+     5.79
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117856,
+    "card_id": "BG30_MagicItem_943",
+    "name": "测绘员肖像",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 58.97,
+    "avg_final_placement": 3.587,
+    "placement_dist": [
+     20.17,
+     19.12,
+     15.33,
+     12.5,
+     10.68,
+     9.2,
+     8.32,
+     4.68
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117905,
+    "card_id": "BG30_MagicItem_555",
+    "name": "惊喜肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 35.16,
+    "avg_final_placement": 4.26,
+    "placement_dist": [
+     13.72,
+     12.08,
+     13.36,
+     14.12,
+     14.11,
+     13.9,
+     12.06,
+     6.66
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120145,
+    "card_id": "BG32_MagicItem_807",
+    "name": "馆长标签",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 10.04,
+    "avg_final_placement": 4.226,
+    "placement_dist": [
+     12.54,
+     13.07,
+     14.24,
+     15.22,
+     13.85,
+     13.14,
+     11.3,
+     6.65
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120155,
+    "card_id": "BG31_MagicItem_903",
+    "name": "智慧之球补给",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 38.19,
+    "avg_final_placement": 4.511,
+    "placement_dist": [
+     13.81,
+     10.07,
+     10.65,
+     12.45,
+     14.25,
+     15.65,
+     14.79,
+     8.34
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120159,
+    "card_id": "BG32_MagicItem_901",
+    "name": "镀金罗盘",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 17.0,
+    "avg_final_placement": 4.159,
+    "placement_dist": [
+     15.78,
+     13.56,
+     12.79,
+     12.85,
+     12.82,
+     13.14,
+     12.13,
+     6.93
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120160,
+    "card_id": "BG32_MagicItem_801t",
+    "name": "森林之心",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 20.82,
+    "avg_final_placement": 4.612,
+    "placement_dist": [
+     10.77,
+     9.62,
+     11.2,
+     13.21,
+     16.05,
+     17.16,
+     14.25,
+     7.72
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120705,
+    "card_id": "BG32_MagicItem_888",
+    "name": "回收标签",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 21.87,
+    "avg_final_placement": 4.366,
+    "placement_dist": [
+     12.61,
+     11.82,
+     12.29,
+     14.2,
+     14.95,
+     14.03,
+     13.02,
+     7.07
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120866,
+    "card_id": "BG32_MagicItem_172",
+    "name": "砰砰的怪物肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 39.6,
+    "avg_final_placement": 4.138,
+    "placement_dist": [
+     18.49,
+     12.87,
+     11.25,
+     11.61,
+     12.46,
+     13.62,
+     12.24,
+     7.47
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120870,
+    "card_id": "BG32_MagicItem_363",
+    "name": "精灵龙鳞",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 23.81,
+    "avg_final_placement": 3.815,
+    "placement_dist": [
+     18.21,
+     16.22,
+     14.0,
+     13.81,
+     11.85,
+     11.7,
+     9.48,
+     4.72
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120873,
+    "card_id": "BG32_MagicItem_367",
+    "name": "鬼魅标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 16.19,
+    "avg_final_placement": 4.042,
+    "placement_dist": [
+     20.29,
+     12.41,
+     11.56,
+     11.48,
+     12.34,
+     13.27,
+     12.04,
+     6.61
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120875,
+    "card_id": "BG32_MagicItem_364",
+    "name": "诗心龙肖像",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 41.75,
+    "avg_final_placement": 4.18,
+    "placement_dist": [
+     14.48,
+     13.21,
+     12.81,
+     13.75,
+     14.0,
+     14.22,
+     11.88,
+     5.65
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120925,
+    "card_id": "BG32_MagicItem_361t",
+    "name": "口袋工厂",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 12.61,
+    "avg_final_placement": 4.599,
+    "placement_dist": [
+     11.65,
+     10.6,
+     11.4,
+     12.38,
+     14.21,
+     15.27,
+     15.31,
+     9.18
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120926,
+    "card_id": "BG32_MagicItem_306",
+    "name": "先锋标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 29.15,
+    "avg_final_placement": 4.085,
+    "placement_dist": [
+     17.05,
+     12.83,
+     13.01,
+     13.05,
+     13.46,
+     13.09,
+     11.38,
+     6.14
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120928,
+    "card_id": "BG32_MagicItem_366",
+    "name": "引路蜡烛",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 30.54,
+    "avg_final_placement": 4.282,
+    "placement_dist": [
+     15.69,
+     12.25,
+     11.67,
+     12.23,
+     13.33,
+     13.96,
+     13.25,
+     7.62
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120932,
+    "card_id": "BG32_MagicItem_200",
+    "name": "全能辅食",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 22.71,
+    "avg_final_placement": 4.136,
+    "placement_dist": [
+     10.86,
+     14.75,
+     16.27,
+     15.37,
+     14.5,
+     12.7,
+     10.13,
+     5.41
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120939,
+    "card_id": "BG32_MagicItem_232",
+    "name": "鲨鱼火炮",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 31.36,
+    "avg_final_placement": 4.535,
+    "placement_dist": [
+     11.28,
+     10.65,
+     12.03,
+     13.7,
+     14.29,
+     15.92,
+     14.04,
+     8.09
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120942,
+    "card_id": "BG32_MagicItem_301",
+    "name": "低音提琴鱼人肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 23.67,
+    "avg_final_placement": 4.354,
+    "placement_dist": [
+     9.56,
+     12.8,
+     15.55,
+     14.71,
+     14.75,
+     14.14,
+     11.81,
+     6.68
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121038,
+    "card_id": "BG32_MagicItem_808t",
+    "name": "血缚耳环",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 47.29,
+    "avg_final_placement": 3.516,
+    "placement_dist": [
+     26.18,
+     17.25,
+     12.35,
+     10.63,
+     9.8,
+     9.57,
+     8.86,
+     5.37
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121041,
+    "card_id": "BG32_MagicItem_270t",
+    "name": "邪恶魔典",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 23.66,
+    "avg_final_placement": 4.196,
+    "placement_dist": [
+     14.69,
+     12.48,
+     12.81,
+     13.8,
+     14.29,
+     14.16,
+     12.29,
+     5.48
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121109,
+    "card_id": "BG32_MagicItem_925",
+    "name": "黑客鱼人肖像",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 49.87,
+    "avg_final_placement": 3.554,
+    "placement_dist": [
+     19.87,
+     18.97,
+     15.55,
+     13.56,
+     10.96,
+     9.57,
+     7.66,
+     3.87
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121111,
+    "card_id": "BG32_MagicItem_926",
+    "name": "摩戈尔肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 14.33,
+    "avg_final_placement": 4.267,
+    "placement_dist": [
+     16.7,
+     10.58,
+     11.69,
+     13.1,
+     13.82,
+     13.97,
+     12.63,
+     7.5
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121114,
+    "card_id": "BG32_MagicItem_998",
+    "name": "巨怪肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 39.03,
+    "avg_final_placement": 4.443,
+    "placement_dist": [
+     7.38,
+     12.29,
+     15.76,
+     16.26,
+     15.35,
+     14.1,
+     12.26,
+     6.6
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121130,
+    "card_id": "BG32_MagicItem_283",
+    "name": "女沙皇肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 12.92,
+    "avg_final_placement": 4.316,
+    "placement_dist": [
+     8.36,
+     13.51,
+     16.43,
+     15.8,
+     15.28,
+     13.15,
+     11.3,
+     6.17
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121132,
+    "card_id": "BG32_MagicItem_284",
+    "name": "阿格姆标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 18.88,
+    "avg_final_placement": 3.811,
+    "placement_dist": [
+     17.61,
+     16.0,
+     15.71,
+     13.95,
+     11.92,
+     9.86,
+     9.89,
+     5.08
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121182,
+    "card_id": "BG32_MagicItem_860t",
+    "name": "甲虫之戒",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 28.01,
+    "avg_final_placement": 3.866,
+    "placement_dist": [
+     17.3,
+     16.61,
+     14.24,
+     12.8,
+     12.14,
+     12.03,
+     9.76,
+     5.12
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121558,
+    "card_id": "BG32_MagicItem_205",
+    "name": "噬渊施法者肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 38.2,
+    "avg_final_placement": 4.079,
+    "placement_dist": [
+     18.07,
+     12.17,
+     13.04,
+     12.37,
+     13.38,
+     13.11,
+     11.53,
+     6.33
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121684,
+    "card_id": "BG32_MagicItem_362t",
+    "name": "旅店老板的炉火",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 25.19,
+    "avg_final_placement": 4.349,
+    "placement_dist": [
+     11.75,
+     12.13,
+     13.5,
+     14.45,
+     14.66,
+     14.27,
+     12.31,
+     6.94
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130830,
+    "card_id": "BG35_MagicItem_812",
+    "name": "腐蚀秘典",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 13.15,
+    "avg_final_placement": 4.401,
+    "placement_dist": [
+     14.79,
+     10.6,
+     10.97,
+     13.11,
+     13.94,
+     14.86,
+     13.9,
+     7.83
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130838,
+    "card_id": "BG35_MagicItem_820",
+    "name": "安全徽章",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 38.09,
+    "avg_final_placement": 4.349,
+    "placement_dist": [
+     12.58,
+     12.35,
+     11.89,
+     12.95,
+     15.45,
+     16.06,
+     13.28,
+     5.45
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130868,
+    "card_id": "BG35_MagicItem_823t",
+    "name": "老旧的烛台",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 16.47,
+    "avg_final_placement": 4.4,
+    "placement_dist": [
+     11.9,
+     11.77,
+     13.09,
+     13.97,
+     14.46,
+     14.09,
+     13.19,
+     7.54
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130873,
+    "card_id": "BG35_MagicItem_861",
+    "name": "投球手肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 29.51,
+    "avg_final_placement": 4.261,
+    "placement_dist": [
+     9.75,
+     14.25,
+     14.84,
+     16.06,
+     15.16,
+     12.57,
+     11.14,
+     6.24
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130874,
+    "card_id": "BG35_MagicItem_862",
+    "name": "爆燃余烬",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 30.52,
+    "avg_final_placement": 4.005,
+    "placement_dist": [
+     16.7,
+     14.54,
+     14.03,
+     13.05,
+     12.61,
+     11.88,
+     11.45,
+     5.74
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130891,
+    "card_id": "BG35_MagicItem_712",
+    "name": "私掠者肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 23.67,
+    "avg_final_placement": 4.497,
+    "placement_dist": [
+     11.68,
+     10.85,
+     12.09,
+     13.57,
+     14.87,
+     15.02,
+     14.05,
+     7.87
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130892,
+    "card_id": "BG35_MagicItem_710",
+    "name": "迷你船模",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 24.24,
+    "avg_final_placement": 4.128,
+    "placement_dist": [
+     9.97,
+     15.64,
+     17.06,
+     15.83,
+     13.55,
+     12.0,
+     10.29,
+     5.66
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130893,
+    "card_id": "BG35_MagicItem_711",
+    "name": "防护戒指",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 18.87,
+    "avg_final_placement": 4.45,
+    "placement_dist": [
+     10.17,
+     11.41,
+     13.11,
+     15.34,
+     15.24,
+     15.03,
+     12.65,
+     7.05
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130894,
+    "card_id": "BG35_MagicItem_713",
+    "name": "结实的撬棍",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 23.63,
+    "avg_final_placement": 4.484,
+    "placement_dist": [
+     7.44,
+     11.31,
+     16.06,
+     16.01,
+     15.41,
+     14.39,
+     12.31,
+     7.06
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130895,
+    "card_id": "BG35_MagicItem_700",
+    "name": "荒羽尘掸",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 15.41,
+    "avg_final_placement": 4.406,
+    "placement_dist": [
+     13.78,
+     10.15,
+     11.57,
+     13.15,
+     15.59,
+     15.35,
+     14.13,
+     6.29
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130896,
+    "card_id": "BG35_MagicItem_701",
+    "name": "獠牙脚链",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 27.44,
+    "avg_final_placement": 3.942,
+    "placement_dist": [
+     13.03,
+     16.75,
+     16.7,
+     14.53,
+     13.42,
+     11.31,
+     9.56,
+     4.7
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130977,
+    "card_id": "BG35_MagicItem_840t",
+    "name": "多彩之泪",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 41.62,
+    "avg_final_placement": 3.964,
+    "placement_dist": [
+     14.54,
+     16.13,
+     15.03,
+     14.31,
+     12.82,
+     12.21,
+     9.82,
+     5.14
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131002,
+    "card_id": "BG35_MagicItem_930",
+    "name": "战队口哨",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 14.87,
+    "avg_final_placement": 4.247,
+    "placement_dist": [
+     15.65,
+     12.89,
+     12.24,
+     12.36,
+     12.69,
+     13.24,
+     13.15,
+     7.78
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131132,
+    "card_id": "BG35_MagicItem_732",
+    "name": "灵魂酵罐",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 48.01,
+    "avg_final_placement": 3.719,
+    "placement_dist": [
+     16.88,
+     19.57,
+     15.73,
+     13.01,
+     10.98,
+     10.16,
+     8.57,
+     5.1
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131133,
+    "card_id": "BG35_MagicItem_733",
+    "name": "典狱长标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 38.85,
+    "avg_final_placement": 4.144,
+    "placement_dist": [
+     14.28,
+     13.55,
+     14.9,
+     13.37,
+     13.15,
+     12.71,
+     11.48,
+     6.56
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131138,
+    "card_id": "BG35_MagicItem_740",
+    "name": "飞天魔像肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 9.24,
+    "avg_final_placement": 4.024,
+    "placement_dist": [
+     10.3,
+     16.22,
+     18.14,
+     16.31,
+     13.62,
+     11.09,
+     9.11,
+     5.21
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131139,
+    "card_id": "BG35_MagicItem_741",
+    "name": "B-Box拳手肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 83.81,
+    "avg_final_placement": 3.756,
+    "placement_dist": [
+     28.86,
+     11.91,
+     9.24,
+     9.83,
+     10.51,
+     11.29,
+     11.28,
+     7.09
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131140,
+    "card_id": "BG35_MagicItem_742",
+    "name": "手风琴机器人肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 46.6,
+    "avg_final_placement": 4.387,
+    "placement_dist": [
+     18.9,
+     8.57,
+     9.33,
+     10.98,
+     14.12,
+     14.96,
+     14.74,
+     8.4
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131141,
+    "card_id": "BG35_MagicItem_743",
+    "name": "电极吸附器",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 40.77,
+    "avg_final_placement": 4.3,
+    "placement_dist": [
+     17.72,
+     10.64,
+     10.81,
+     11.46,
+     13.4,
+     14.23,
+     13.55,
+     8.19
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131282,
+    "card_id": "BG35_MagicItem_154",
+    "name": "乌祖尔标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 41.87,
+    "avg_final_placement": 3.922,
+    "placement_dist": [
+     14.3,
+     16.4,
+     15.67,
+     15.14,
+     12.78,
+     11.37,
+     9.31,
+     5.03
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131284,
+    "card_id": "BG35_MagicItem_156",
+    "name": "魔焰肖像",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 36.08,
+    "avg_final_placement": 3.641,
+    "placement_dist": [
+     19.11,
+     18.19,
+     15.66,
+     13.33,
+     11.2,
+     9.77,
+     8.18,
+     4.56
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131303,
+    "card_id": "BG35_MagicItem_750",
+    "name": "魔鳍标签",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 9.33,
+    "avg_final_placement": 4.479,
+    "placement_dist": [
+     12.57,
+     10.99,
+     11.75,
+     12.4,
+     15.13,
+     14.94,
+     14.52,
+     7.7
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131305,
+    "card_id": "BG35_MagicItem_752",
+    "name": "小瞎眼标签",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 29.28,
+    "avg_final_placement": 4.29,
+    "placement_dist": [
+     13.71,
+     13.86,
+     12.24,
+     12.6,
+     12.97,
+     14.2,
+     12.84,
+     7.57
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131306,
+    "card_id": "BG35_MagicItem_753",
+    "name": "奔波尔霸标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 13.24,
+    "avg_final_placement": 4.063,
+    "placement_dist": [
+     14.38,
+     15.57,
+     14.5,
+     13.3,
+     13.12,
+     11.84,
+     10.86,
+     6.42
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131307,
+    "card_id": "BG35_MagicItem_754",
+    "name": "戏剧鱼人标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 33.39,
+    "avg_final_placement": 3.961,
+    "placement_dist": [
+     9.39,
+     17.81,
+     18.02,
+     17.03,
+     14.48,
+     10.69,
+     8.28,
+     4.31
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131308,
+    "card_id": "BG35_MagicItem_755",
+    "name": "切米尔拼贴画",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 17.15,
+    "avg_final_placement": 4.235,
+    "placement_dist": [
+     14.04,
+     13.43,
+     13.43,
+     13.1,
+     13.03,
+     13.22,
+     12.62,
+     7.13
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131325,
+    "card_id": "BG35_MagicItem_931t",
+    "name": "转录打字机",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 16.2,
+    "avg_final_placement": 4.318,
+    "placement_dist": [
+     15.19,
+     12.11,
+     11.77,
+     12.2,
+     13.16,
+     14.2,
+     13.68,
+     7.69
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131328,
+    "card_id": "BG35_MagicItem_816t",
+    "name": "未知宝珠",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 17.3,
+    "avg_final_placement": 4.17,
+    "placement_dist": [
+     16.27,
+     13.2,
+     12.58,
+     12.63,
+     12.9,
+     12.87,
+     12.06,
+     7.49
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131329,
+    "card_id": "BG35_MagicItem_850t",
+    "name": "袋中旋风",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 44.88,
+    "avg_final_placement": 3.655,
+    "placement_dist": [
+     17.63,
+     18.84,
+     16.31,
+     13.89,
+     11.23,
+     9.54,
+     8.17,
+     4.39
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133066,
+    "card_id": "BG36_MagicItem_830",
+    "name": "血怒盾牌",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 28.32,
+    "avg_final_placement": 4.088,
+    "placement_dist": [
+     14.65,
+     13.8,
+     14.18,
+     14.32,
+     13.72,
+     12.74,
+     11.04,
+     5.55
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133067,
+    "card_id": "BG36_MagicItem_831",
+    "name": "魔钢战刃",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 17.14,
+    "avg_final_placement": 4.083,
+    "placement_dist": [
+     15.7,
+     13.88,
+     13.77,
+     13.6,
+     13.28,
+     12.02,
+     11.33,
+     6.41
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133068,
+    "card_id": "BG36_MagicItem_840",
+    "name": "秘密图纸",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 14.16,
+    "avg_final_placement": 4.563,
+    "placement_dist": [
+     10.55,
+     10.53,
+     11.98,
+     13.75,
+     15.08,
+     16.28,
+     13.97,
+     7.86
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133070,
+    "card_id": "BG36_MagicItem_850",
+    "name": "曲奇的搅汤棒",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 14.42,
+    "avg_final_placement": 4.555,
+    "placement_dist": [
+     8.33,
+     12.5,
+     12.98,
+     13.82,
+     15.1,
+     15.77,
+     14.27,
+     7.24
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133343,
+    "card_id": "BG36_MagicItem_302t",
+    "name": "黄金重槌",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 18.75,
+    "avg_final_placement": 3.99,
+    "placement_dist": [
+     13.02,
+     14.98,
+     16.86,
+     16.1,
+     12.87,
+     11.71,
+     9.29,
+     5.19
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133348,
+    "card_id": "BG36_MagicItem_303t",
+    "name": "透视玻璃杯",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 23.23,
+    "avg_final_placement": 3.872,
+    "placement_dist": [
+     25.15,
+     13.1,
+     10.15,
+     10.01,
+     10.73,
+     11.69,
+     11.86,
+     7.31
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133380,
+    "card_id": "BG36_MagicItem_308",
+    "name": "开拓者标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 56.54,
+    "avg_final_placement": 3.82,
+    "placement_dist": [
+     25.91,
+     12.84,
+     10.22,
+     10.23,
+     10.93,
+     11.59,
+     11.61,
+     6.67
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133381,
+    "card_id": "BG36_MagicItem_309",
+    "name": "蜡油长枪",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 28.26,
+    "avg_final_placement": 4.238,
+    "placement_dist": [
+     14.68,
+     12.47,
+     13.01,
+     13.52,
+     13.3,
+     13.57,
+     12.47,
+     6.99
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133391,
+    "card_id": "BG36_MagicItem_204",
+    "name": "疫病行尸肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 34.37,
+    "avg_final_placement": 3.903,
+    "placement_dist": [
+     12.72,
+     18.45,
+     16.67,
+     14.86,
+     12.28,
+     10.65,
+     9.05,
+     5.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133400,
+    "card_id": "BG36_MagicItem_212",
+    "name": "狼头链锤",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 27.11,
+    "avg_final_placement": 4.071,
+    "placement_dist": [
+     19.03,
+     12.3,
+     12.05,
+     12.25,
+     12.6,
+     13.57,
+     11.72,
+     6.48
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133401,
+    "card_id": "BG36_MagicItem_213",
+    "name": "光羽标签",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 17.87,
+    "avg_final_placement": 4.264,
+    "placement_dist": [
+     17.25,
+     10.07,
+     10.6,
+     13.28,
+     14.48,
+     15.36,
+     12.13,
+     6.83
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133402,
+    "card_id": "BG36_MagicItem_214",
+    "name": "暴乱之刃",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 28.93,
+    "avg_final_placement": 3.876,
+    "placement_dist": [
+     23.86,
+     13.36,
+     10.57,
+     10.83,
+     11.04,
+     12.17,
+     11.53,
+     6.64
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133403,
+    "card_id": "BG36_MagicItem_215",
+    "name": "巨龙之眼",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 41.39,
+    "avg_final_placement": 4.001,
+    "placement_dist": [
+     14.09,
+     16.27,
+     14.93,
+     13.84,
+     12.93,
+     12.26,
+     10.35,
+     5.33
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133404,
+    "card_id": "BG36_MagicItem_216",
+    "name": "永恒肖像",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 35.75,
+    "avg_final_placement": 3.181,
+    "placement_dist": [
+     19.14,
+     27.6,
+     18.57,
+     11.69,
+     8.09,
+     6.45,
+     5.51,
+     2.96
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133405,
+    "card_id": "BG36_MagicItem_217",
+    "name": "葬礼花环",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 28.61,
+    "avg_final_placement": 4.035,
+    "placement_dist": [
+     13.3,
+     16.6,
+     15.17,
+     13.01,
+     12.98,
+     13.36,
+     10.2,
+     5.38
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133694,
+    "card_id": "BG36_MagicItem_810t",
+    "name": "磁感旋刃",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 18.4,
+    "avg_final_placement": 4.384,
+    "placement_dist": [
+     11.69,
+     12.7,
+     13.03,
+     13.79,
+     14.03,
+     14.34,
+     12.47,
+     7.94
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133712,
+    "card_id": "BG36_MagicItem_372",
+    "name": "记忆之球",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 14.42,
+    "avg_final_placement": 4.165,
+    "placement_dist": [
+     17.26,
+     12.42,
+     11.9,
+     12.27,
+     13.12,
+     13.9,
+     12.38,
+     6.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133713,
+    "card_id": "BG36_MagicItem_370",
+    "name": "玛卓克萨斯匕首",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 35.34,
+    "avg_final_placement": 4.132,
+    "placement_dist": [
+     19.82,
+     11.34,
+     10.98,
+     11.61,
+     12.93,
+     13.55,
+     12.73,
+     7.03
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133714,
+    "card_id": "BG36_MagicItem_363",
+    "name": "逃兵肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 22.26,
+    "avg_final_placement": 4.446,
+    "placement_dist": [
+     17.01,
+     10.19,
+     9.47,
+     10.75,
+     12.82,
+     15.41,
+     15.57,
+     8.78
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133715,
+    "card_id": "BG36_MagicItem_373",
+    "name": "多层护盾",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 10.59,
+    "avg_final_placement": 3.999,
+    "placement_dist": [
+     15.86,
+     14.92,
+     14.49,
+     13.85,
+     12.36,
+     11.96,
+     10.77,
+     5.8
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133722,
+    "card_id": "BG36_MagicItem_371",
+    "name": "蜂巢之戒",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 6.61,
+    "avg_final_placement": 4.217,
+    "placement_dist": [
+     16.13,
+     11.74,
+     12.18,
+     13.17,
+     13.42,
+     14.27,
+     12.59,
+     6.5
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134319,
+    "card_id": "BG36_MagicItem_406",
+    "name": "沙斯亚尔神坛",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 31.34,
+    "avg_final_placement": 4.034,
+    "placement_dist": [
+     11.51,
+     16.19,
+     16.8,
+     15.09,
+     13.4,
+     12.24,
+     9.72,
+     5.04
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134320,
+    "card_id": "BG36_MagicItem_403t",
+    "name": "暮光神锤",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 20.07,
+    "avg_final_placement": 3.712,
+    "placement_dist": [
+     9.25,
+     19.69,
+     21.92,
+     18.33,
+     13.11,
+     8.78,
+     5.97,
+     2.93
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134321,
+    "card_id": "BG36_MagicItem_606",
+    "name": "蠕动的触手",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 5.44,
+    "avg_final_placement": 4.6,
+    "placement_dist": [
+     5.69,
+     10.98,
+     15.26,
+     15.78,
+     16.48,
+     15.82,
+     13.75,
+     6.23
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134322,
+    "card_id": "BG36_MagicItem_602",
+    "name": "古神面具",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 42.07,
+    "avg_final_placement": 4.076,
+    "placement_dist": [
+     10.39,
+     15.32,
+     17.38,
+     15.99,
+     14.31,
+     12.17,
+     9.7,
+     4.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134323,
+    "card_id": "BG36_MagicItem_404t",
+    "name": "腐蚀的节杖",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 44.99,
+    "avg_final_placement": 3.864,
+    "placement_dist": [
+     9.33,
+     18.69,
+     20.13,
+     17.06,
+     13.09,
+     10.17,
+     7.67,
+     3.86
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134443,
+    "card_id": "BG36_MagicItem_430",
+    "name": "腐泥肖像",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 67.24,
+    "avg_final_placement": 3.281,
+    "placement_dist": [
+     27.21,
+     18.72,
+     14.53,
+     11.31,
+     9.32,
+     8.11,
+     6.98,
+     3.81
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134453,
+    "card_id": "BG36_MagicItem_600",
+    "name": "转化者肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 60.24,
+    "avg_final_placement": 3.96,
+    "placement_dist": [
+     11.93,
+     16.63,
+     17.23,
+     15.78,
+     13.35,
+     11.1,
+     9.21,
+     4.77
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134461,
+    "card_id": "BG36_MagicItem_423t",
+    "name": "扩音机肖像",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 46.09,
+    "avg_final_placement": 4.227,
+    "placement_dist": [
+     17.1,
+     12.21,
+     11.51,
+     12.09,
+     12.88,
+     13.36,
+     13.05,
+     7.79
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134637,
+    "card_id": "BG36_MagicItem_450",
+    "name": "尖利肖像",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 42.64,
+    "avg_final_placement": 3.473,
+    "placement_dist": [
+     22.89,
+     17.54,
+     15.5,
+     12.9,
+     10.66,
+     9.27,
+     7.6,
+     3.63
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134641,
+    "card_id": "BG36_MagicItem_611",
+    "name": "餐具肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 9.06,
+    "avg_final_placement": 3.791,
+    "placement_dist": [
+     14.49,
+     17.68,
+     17.82,
+     14.95,
+     12.04,
+     10.06,
+     8.25,
+     4.7
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134748,
+    "card_id": "BG36_MagicItem_610",
+    "name": "邪恶请柬",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 23.13,
+    "avg_final_placement": 4.201,
+    "placement_dist": [
+     14.7,
+     13.48,
+     13.33,
+     13.05,
+     13.02,
+     13.0,
+     12.13,
+     7.28
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134757,
+    "card_id": "BG36_MagicItem_416",
+    "name": "邪恶试验",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 28.15,
+    "avg_final_placement": 3.992,
+    "placement_dist": [
+     10.5,
+     16.17,
+     18.07,
+     16.48,
+     14.23,
+     11.31,
+     8.65,
+     4.58
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134758,
+    "card_id": "BG36_MagicItem_417",
+    "name": "代位神主",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 20.04,
+    "avg_final_placement": 4.074,
+    "placement_dist": [
+     10.2,
+     15.28,
+     17.62,
+     16.56,
+     13.87,
+     12.07,
+     9.43,
+     4.96
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134759,
+    "card_id": "BG36_MagicItem_418",
+    "name": "古神秘典",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 32.59,
+    "avg_final_placement": 3.97,
+    "placement_dist": [
+     13.78,
+     15.49,
+     15.98,
+     15.16,
+     13.2,
+     11.97,
+     9.54,
+     4.88
+    ],
+    "extra_data": null
+   }
+  ],
+  "TOP_1_PERCENT": [
+   {
+    "dbf_id": 110957,
+    "card_id": "BG30_MagicItem_804",
+    "name": "古老的许愿叉骨",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 53.36,
+    "avg_final_placement": 3.85,
+    "placement_dist": [
+     23.53,
+     13.73,
+     13.07,
+     11.11,
+     9.15,
+     11.76,
+     7.19,
+     10.46
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110966,
+    "card_id": "BG30_MagicItem_821",
+    "name": "鱼的肖像",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 15.71,
+    "avg_final_placement": 3.648,
+    "placement_dist": [
+     24.75,
+     14.36,
+     15.35,
+     11.39,
+     9.9,
+     7.92,
+     7.92,
+     8.42
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110975,
+    "card_id": "BG30_MagicItem_868",
+    "name": "回溯者肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 18.48,
+    "avg_final_placement": 3.877,
+    "placement_dist": [
+     14.15,
+     14.15,
+     17.92,
+     19.81,
+     8.49,
+     13.21,
+     7.55,
+     4.72
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110985,
+    "card_id": "BG30_MagicItem_900",
+    "name": "滑翔龙翼",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 15.55,
+    "avg_final_placement": 3.854,
+    "placement_dist": [
+     10.68,
+     16.5,
+     18.45,
+     17.48,
+     15.53,
+     12.62,
+     6.8,
+     1.94
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110991,
+    "card_id": "BG30_MagicItem_914",
+    "name": "鱼人语实用手册",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 10.43,
+    "avg_final_placement": 3.214,
+    "placement_dist": [
+     25.0,
+     25.0,
+     17.86,
+     0.0,
+     14.29,
+     7.14,
+     7.14,
+     3.57
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110993,
+    "card_id": "BG30_MagicItem_924",
+    "name": "藏宝海湾美酒",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 6.4,
+    "avg_final_placement": 3.979,
+    "placement_dist": [
+     14.29,
+     12.24,
+     16.33,
+     18.37,
+     16.33,
+     8.16,
+     8.16,
+     6.12
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111092,
+    "card_id": "BG30_MagicItem_841",
+    "name": "辐光护手",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 13.05,
+    "avg_final_placement": 3.687,
+    "placement_dist": [
+     20.73,
+     16.67,
+     14.63,
+     15.45,
+     10.16,
+     6.1,
+     8.54,
+     7.72
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111387,
+    "card_id": "BG32_MagicItem_350",
+    "name": "黄金残片",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 25.75,
+    "avg_final_placement": 3.282,
+    "placement_dist": [
+     28.19,
+     21.92,
+     11.63,
+     9.84,
+     8.05,
+     6.94,
+     7.38,
+     6.04
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111388,
+    "card_id": "BG30_MagicItem_301",
+    "name": "永恒肖像",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 14.67,
+    "avg_final_placement": 2.895,
+    "placement_dist": [
+     21.05,
+     31.58,
+     19.74,
+     10.53,
+     5.26,
+     6.58,
+     3.95,
+     1.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111399,
+    "card_id": "BG32_MagicItem_361",
+    "name": "口袋工厂",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 13.94,
+    "avg_final_placement": 3.733,
+    "placement_dist": [
+     25.08,
+     12.38,
+     13.36,
+     12.05,
+     12.38,
+     9.12,
+     6.51,
+     9.12
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111401,
+    "card_id": "BG30_MagicItem_902",
+    "name": "神圣重槌",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 9.32,
+    "avg_final_placement": 3.554,
+    "placement_dist": [
+     20.0,
+     16.92,
+     23.08,
+     10.77,
+     6.15,
+     10.77,
+     4.62,
+     7.69
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111408,
+    "card_id": "BG30_MagicItem_931",
+    "name": "幸运猫咪",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 15.07,
+    "avg_final_placement": 4.026,
+    "placement_dist": [
+     21.93,
+     14.04,
+     7.89,
+     10.53,
+     12.28,
+     15.79,
+     9.65,
+     7.89
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111417,
+    "card_id": "BG30_MagicItem_962",
+    "name": "参训证书",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 12.31,
+    "avg_final_placement": 2.988,
+    "placement_dist": [
+     34.88,
+     17.44,
+     15.12,
+     10.47,
+     6.98,
+     4.65,
+     4.65,
+     5.81
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111448,
+    "card_id": "BG30_MagicItem_847",
+    "name": "地精钱包",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 47.45,
+    "avg_final_placement": 3.78,
+    "placement_dist": [
+     27.53,
+     13.55,
+     9.35,
+     9.78,
+     10.97,
+     10.11,
+     9.03,
+     9.68
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111512,
+    "card_id": "BG30_MagicItem_410",
+    "name": "鬃尖笔墨套装",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 7.03,
+    "avg_final_placement": 3.642,
+    "placement_dist": [
+     14.93,
+     14.93,
+     22.39,
+     19.4,
+     13.43,
+     2.99,
+     5.97,
+     5.97
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111514,
+    "card_id": "BG30_MagicItem_411",
+    "name": "猪猪储蓄罐",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 14.33,
+    "avg_final_placement": 3.353,
+    "placement_dist": [
+     20.86,
+     19.42,
+     22.3,
+     11.51,
+     7.91,
+     7.19,
+     6.47,
+     4.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111556,
+    "card_id": "BG30_MagicItem_416",
+    "name": "古神信物",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 26.96,
+    "avg_final_placement": 3.92,
+    "placement_dist": [
+     19.55,
+     14.49,
+     12.39,
+     13.79,
+     12.39,
+     10.82,
+     8.38,
+     8.2
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111609,
+    "card_id": "BG30_MagicItem_420",
+    "name": "麦迪文之书",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 24.1,
+    "avg_final_placement": 3.705,
+    "placement_dist": [
+     22.31,
+     15.91,
+     13.64,
+     11.36,
+     12.4,
+     8.88,
+     9.3,
+     6.2
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111962,
+    "card_id": "BG30_MagicItem_973",
+    "name": "随从诱饵",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 16.15,
+    "avg_final_placement": 3.806,
+    "placement_dist": [
+     18.82,
+     17.65,
+     15.88,
+     11.76,
+     7.65,
+     11.18,
+     10.0,
+     7.06
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111999,
+    "card_id": "BG30_MagicItem_423",
+    "name": "旅店老板的酒杯",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 33.93,
+    "avg_final_placement": 3.79,
+    "placement_dist": [
+     22.16,
+     15.4,
+     12.95,
+     11.08,
+     10.94,
+     11.65,
+     8.35,
+     7.48
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112001,
+    "card_id": "BG30_MagicItem_425",
+    "name": "艾泽拉斯星球仪",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 32.66,
+    "avg_final_placement": 3.538,
+    "placement_dist": [
+     21.31,
+     18.82,
+     16.8,
+     11.82,
+     10.73,
+     6.69,
+     7.31,
+     6.53
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 25.38,
+    "avg_final_placement": 3.54,
+    "placement_dist": [
+     24.0,
+     16.0,
+     16.0,
+     12.0,
+     10.0,
+     8.0,
+     8.0,
+     6.0
+    ],
+    "extra_data": 11
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 19.14,
+    "avg_final_placement": 2.882,
+    "placement_dist": [
+     11.76,
+     47.06,
+     17.65,
+     5.88,
+     5.88,
+     5.88,
+     5.88,
+     0.0
+    ],
+    "extra_data": 14
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 44.04,
+    "avg_final_placement": 3.094,
+    "placement_dist": [
+     25.88,
+     24.71,
+     15.29,
+     9.41,
+     10.59,
+     5.88,
+     3.53,
+     4.71
+    ],
+    "extra_data": 15
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 18.58,
+    "avg_final_placement": 3.628,
+    "placement_dist": [
+     20.0,
+     17.14,
+     14.29,
+     17.14,
+     11.43,
+     5.71,
+     8.57,
+     5.71
+    ],
+    "extra_data": 17
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 18.85,
+    "avg_final_placement": 3.867,
+    "placement_dist": [
+     6.67,
+     20.0,
+     20.0,
+     13.33,
+     13.33,
+     26.67,
+     0.0,
+     0.0
+    ],
+    "extra_data": 18
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 24.82,
+    "avg_final_placement": 3.896,
+    "placement_dist": [
+     23.38,
+     14.29,
+     10.39,
+     11.69,
+     6.49,
+     15.58,
+     11.69,
+     6.49
+    ],
+    "extra_data": 20
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 12.11,
+    "avg_final_placement": 4.193,
+    "placement_dist": [
+     22.58,
+     12.9,
+     3.23,
+     16.13,
+     12.9,
+     6.45,
+     12.9,
+     12.9
+    ],
+    "extra_data": 23
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 12.43,
+    "avg_final_placement": 3.892,
+    "placement_dist": [
+     13.51,
+     16.22,
+     21.62,
+     13.51,
+     10.81,
+     2.7,
+     18.92,
+     2.7
+    ],
+    "extra_data": 24
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 31.72,
+    "avg_final_placement": 3.362,
+    "placement_dist": [
+     21.01,
+     23.91,
+     15.22,
+     13.04,
+     7.25,
+     8.7,
+     5.8,
+     5.07
+    ],
+    "extra_data": 43
+   },
+   {
+    "dbf_id": 112002,
+    "card_id": "BG30_MagicItem_426",
+    "name": "多彩罗盘",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 20.9,
+    "avg_final_placement": 3.881,
+    "placement_dist": [
+     16.83,
+     11.88,
+     20.79,
+     8.91,
+     19.8,
+     8.91,
+     5.94,
+     6.93
+    ],
+    "extra_data": 126
+   },
+   {
+    "dbf_id": 112013,
+    "card_id": "BG30_MagicItem_988",
+    "name": "野猪之神标签",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 10.53,
+    "avg_final_placement": 3.524,
+    "placement_dist": [
+     18.45,
+     27.18,
+     7.77,
+     15.53,
+     14.56,
+     2.91,
+     4.85,
+     8.74
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112075,
+    "card_id": "BG32_MagicItem_428",
+    "name": "磨损的藏宝图",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 36.01,
+    "avg_final_placement": 3.743,
+    "placement_dist": [
+     21.52,
+     16.24,
+     13.13,
+     14.07,
+     11.5,
+     6.63,
+     7.98,
+     8.93
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112079,
+    "card_id": "BG30_MagicItem_430",
+    "name": "摇滚音乐盒",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 14.86,
+    "avg_final_placement": 3.822,
+    "placement_dist": [
+     21.92,
+     16.44,
+     13.7,
+     9.93,
+     11.64,
+     6.16,
+     10.27,
+     9.93
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112080,
+    "card_id": "BG30_MagicItem_437",
+    "name": "天灾之杖",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 9.7,
+    "avg_final_placement": 3.372,
+    "placement_dist": [
+     23.26,
+     23.26,
+     6.98,
+     20.93,
+     6.98,
+     9.3,
+     2.33,
+     6.98
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112082,
+    "card_id": "BG30_MagicItem_435",
+    "name": "点金补给",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 33.69,
+    "avg_final_placement": 3.732,
+    "placement_dist": [
+     26.63,
+     15.13,
+     9.83,
+     10.29,
+     9.23,
+     11.5,
+     8.62,
+     8.77
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112392,
+    "card_id": "BG30_MagicItem_544",
+    "name": "诺米标签",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 10.22,
+    "avg_final_placement": 3.634,
+    "placement_dist": [
+     14.63,
+     26.83,
+     14.63,
+     9.76,
+     14.63,
+     7.32,
+     2.44,
+     9.76
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112399,
+    "card_id": "BG30_MagicItem_547",
+    "name": "舒适的棺椁",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 13.12,
+    "avg_final_placement": 3.311,
+    "placement_dist": [
+     19.67,
+     19.67,
+     19.67,
+     16.39,
+     9.84,
+     6.56,
+     6.56,
+     1.64
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112855,
+    "card_id": "BG30_MagicItem_434",
+    "name": "大教堂模型",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 11.51,
+    "avg_final_placement": 3.776,
+    "placement_dist": [
+     19.83,
+     18.1,
+     15.09,
+     9.48,
+     12.5,
+     7.33,
+     9.48,
+     8.19
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112895,
+    "card_id": "BG30_MagicItem_888",
+    "name": "纪念品货架",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 32.8,
+    "avg_final_placement": 3.669,
+    "placement_dist": [
+     23.32,
+     16.67,
+     12.89,
+     12.21,
+     10.08,
+     9.26,
+     7.75,
+     7.82
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112991,
+    "card_id": "BG30_MagicItem_891",
+    "name": "旅途兑换券",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 35.51,
+    "avg_final_placement": 3.629,
+    "placement_dist": [
+     24.74,
+     17.06,
+     12.24,
+     11.44,
+     8.8,
+     10.78,
+     6.68,
+     8.27
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 113101,
+    "card_id": "BG30_MagicItem_998",
+    "name": "鲍勃摇头玩偶",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 27.05,
+    "avg_final_placement": 3.627,
+    "placement_dist": [
+     27.31,
+     9.62,
+     17.31,
+     12.69,
+     8.08,
+     9.23,
+     8.46,
+     7.31
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 113104,
+    "card_id": "BG30_MagicItem_994",
+    "name": "尤格糕点",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 5.01,
+    "avg_final_placement": 4.048,
+    "placement_dist": [
+     17.48,
+     13.59,
+     14.56,
+     10.68,
+     13.59,
+     12.62,
+     9.71,
+     7.77
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117794,
+    "card_id": "BG30_MagicItem_700",
+    "name": "死亡护命匣",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 29.57,
+    "avg_final_placement": 3.76,
+    "placement_dist": [
+     20.91,
+     14.97,
+     14.54,
+     13.27,
+     10.62,
+     11.15,
+     7.86,
+     6.69
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117801,
+    "card_id": "BG30_MagicItem_703",
+    "name": "神秘魔方",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 28.31,
+    "avg_final_placement": 3.536,
+    "placement_dist": [
+     26.62,
+     15.71,
+     11.46,
+     13.68,
+     9.61,
+     9.06,
+     6.84,
+     7.02
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117854,
+    "card_id": "BG30_MagicItem_705",
+    "name": "调酒机器人的油壶",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 34.66,
+    "avg_final_placement": 3.752,
+    "placement_dist": [
+     21.67,
+     15.81,
+     12.01,
+     13.32,
+     12.74,
+     10.1,
+     6.44,
+     7.91
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117857,
+    "card_id": "BG30_MagicItem_706",
+    "name": "映像吊坠",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 12.26,
+    "avg_final_placement": 3.873,
+    "placement_dist": [
+     24.19,
+     14.92,
+     10.08,
+     11.9,
+     9.07,
+     10.08,
+     8.47,
+     11.29
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117860,
+    "card_id": "BG30_MagicItem_707",
+    "name": "提克特斯标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 38.27,
+    "avg_final_placement": 3.407,
+    "placement_dist": [
+     26.88,
+     18.28,
+     14.11,
+     9.81,
+     8.6,
+     8.74,
+     8.33,
+     5.24
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117906,
+    "card_id": "BG30_MagicItem_713",
+    "name": "泣血之心",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 13.79,
+    "avg_final_placement": 3.797,
+    "placement_dist": [
+     23.44,
+     17.19,
+     6.25,
+     15.63,
+     10.94,
+     9.38,
+     7.81,
+     9.38
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120137,
+    "card_id": "BG32_MagicItem_360",
+    "name": "怨毒熏香",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 9.07,
+    "avg_final_placement": 3.469,
+    "placement_dist": [
+     12.24,
+     22.45,
+     22.45,
+     18.37,
+     8.16,
+     8.16,
+     6.12,
+     2.04
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120139,
+    "card_id": "BG32_MagicItem_858",
+    "name": "探险者的望远镜",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 42.35,
+    "avg_final_placement": 3.701,
+    "placement_dist": [
+     21.97,
+     16.48,
+     13.96,
+     11.44,
+     10.53,
+     11.44,
+     7.21,
+     6.98
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120146,
+    "card_id": "BG32_MagicItem_808",
+    "name": "血缚耳环",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 35.26,
+    "avg_final_placement": 3.03,
+    "placement_dist": [
+     25.44,
+     24.85,
+     16.57,
+     9.47,
+     10.95,
+     6.8,
+     2.66,
+     3.25
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120154,
+    "card_id": "BG32_MagicItem_817",
+    "name": "伦德尔标签",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 20.13,
+    "avg_final_placement": 3.571,
+    "placement_dist": [
+     23.1,
+     19.52,
+     12.14,
+     10.95,
+     12.38,
+     8.1,
+     6.19,
+     7.62
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120698,
+    "card_id": "BG32_MagicItem_821",
+    "name": "朝圣小鬼标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 27.55,
+    "avg_final_placement": 3.453,
+    "placement_dist": [
+     25.9,
+     17.27,
+     13.67,
+     12.95,
+     10.07,
+     7.19,
+     5.04,
+     7.91
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120760,
+    "card_id": "BG32_MagicItem_860",
+    "name": "甲虫之戒",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 13.53,
+    "avg_final_placement": 3.528,
+    "placement_dist": [
+     27.78,
+     18.52,
+     10.19,
+     8.33,
+     8.33,
+     12.04,
+     8.33,
+     6.48
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120800,
+    "card_id": "BG32_MagicItem_831",
+    "name": "商贩元素肖像",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 16.39,
+    "avg_final_placement": 3.22,
+    "placement_dist": [
+     28.81,
+     22.03,
+     10.17,
+     8.47,
+     11.86,
+     8.47,
+     6.78,
+     3.39
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120809,
+    "card_id": "BG32_MagicItem_951",
+    "name": "黄金吊坠",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 40.16,
+    "avg_final_placement": 3.545,
+    "placement_dist": [
+     25.98,
+     16.34,
+     11.87,
+     12.43,
+     9.64,
+     10.34,
+     6.98,
+     6.42
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120827,
+    "card_id": "BG32_MagicItem_300",
+    "name": "普崔塞德标签",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 34.78,
+    "avg_final_placement": 3.919,
+    "placement_dist": [
+     19.25,
+     12.42,
+     16.15,
+     14.29,
+     11.18,
+     9.94,
+     7.45,
+     9.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120864,
+    "card_id": "BG32_MagicItem_170",
+    "name": "法术扳手",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 5.21,
+    "avg_final_placement": 4.956,
+    "placement_dist": [
+     4.35,
+     4.35,
+     13.04,
+     17.39,
+     17.39,
+     21.74,
+     17.39,
+     4.35
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121033,
+    "card_id": "BG32_MagicItem_822",
+    "name": "集市标签",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 25.02,
+    "avg_final_placement": 3.677,
+    "placement_dist": [
+     21.54,
+     19.23,
+     10.77,
+     8.46,
+     16.15,
+     11.54,
+     6.92,
+     5.38
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121036,
+    "card_id": "BG32_MagicItem_957",
+    "name": "诈骗犯肖像",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 38.82,
+    "avg_final_placement": 3.634,
+    "placement_dist": [
+     29.57,
+     14.02,
+     11.59,
+     5.49,
+     10.06,
+     13.11,
+     9.15,
+     7.01
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121037,
+    "card_id": "BG32_MagicItem_416",
+    "name": "战鼓",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 17.81,
+    "avg_final_placement": 3.351,
+    "placement_dist": [
+     27.55,
+     15.92,
+     14.08,
+     13.88,
+     9.8,
+     7.96,
+     5.31,
+     5.51
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121120,
+    "card_id": "BG32_MagicItem_271",
+    "name": "华丽的时钟",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 39.42,
+    "avg_final_placement": 3.647,
+    "placement_dist": [
+     22.0,
+     16.79,
+     14.04,
+     12.45,
+     12.16,
+     9.26,
+     5.64,
+     7.67
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121121,
+    "card_id": "BG32_MagicItem_276",
+    "name": "神秘墓碑",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 14.61,
+    "avg_final_placement": 3.522,
+    "placement_dist": [
+     21.74,
+     13.04,
+     18.84,
+     15.94,
+     10.14,
+     10.14,
+     8.7,
+     1.45
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121125,
+    "card_id": "BG32_MagicItem_278",
+    "name": "复用电池",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 4.45,
+    "avg_final_placement": 4.955,
+    "placement_dist": [
+     13.64,
+     4.55,
+     4.55,
+     22.73,
+     9.09,
+     18.18,
+     4.55,
+     22.73
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121138,
+    "card_id": "BG32_MagicItem_892",
+    "name": "鲜活气泡",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 26.95,
+    "avg_final_placement": 3.5,
+    "placement_dist": [
+     31.25,
+     16.67,
+     11.46,
+     11.46,
+     4.17,
+     5.21,
+     5.21,
+     14.58
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121140,
+    "card_id": "BG32_MagicItem_893",
+    "name": "蓝鳃脚蹼",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 6.67,
+    "avg_final_placement": 4.059,
+    "placement_dist": [
+     17.65,
+     11.76,
+     17.65,
+     11.76,
+     11.76,
+     11.76,
+     5.88,
+     11.76
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130028,
+    "card_id": "BG35_MagicItem_801",
+    "name": "副厨师长标签",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 54.36,
+    "avg_final_placement": 3.828,
+    "placement_dist": [
+     17.24,
+     24.14,
+     10.34,
+     6.9,
+     17.24,
+     10.34,
+     0.0,
+     13.79
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130832,
+    "card_id": "BG35_MagicItem_814",
+    "name": "满当当的钱包",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 26.12,
+    "avg_final_placement": 3.641,
+    "placement_dist": [
+     27.56,
+     17.32,
+     10.43,
+     8.57,
+     8.19,
+     9.87,
+     8.38,
+     9.68
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130833,
+    "card_id": "BG35_MagicItem_815",
+    "name": "魔术师的高帽",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 26.8,
+    "avg_final_placement": 3.705,
+    "placement_dist": [
+     20.09,
+     16.52,
+     15.18,
+     14.29,
+     8.93,
+     11.16,
+     7.59,
+     6.25
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130834,
+    "card_id": "BG35_MagicItem_816",
+    "name": "未知宝珠",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 27.47,
+    "avg_final_placement": 3.718,
+    "placement_dist": [
+     22.71,
+     15.02,
+     13.92,
+     12.27,
+     11.72,
+     8.24,
+     8.79,
+     7.33
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130835,
+    "card_id": "BG35_MagicItem_817",
+    "name": "镜匣",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 33.07,
+    "avg_final_placement": 3.651,
+    "placement_dist": [
+     23.28,
+     17.67,
+     12.93,
+     11.78,
+     8.76,
+     10.63,
+     6.61,
+     8.33
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130836,
+    "card_id": "BG35_MagicItem_818",
+    "name": "神秘宝珠",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 33.12,
+    "avg_final_placement": 3.538,
+    "placement_dist": [
+     23.37,
+     17.16,
+     13.4,
+     13.56,
+     11.76,
+     8.82,
+     5.56,
+     6.37
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130841,
+    "card_id": "BG35_MagicItem_823",
+    "name": "老旧的烛台",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 35.84,
+    "avg_final_placement": 3.777,
+    "placement_dist": [
+     21.91,
+     14.95,
+     13.92,
+     11.98,
+     10.95,
+     10.57,
+     7.73,
+     7.99
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130877,
+    "card_id": "BG35_MagicItem_871",
+    "name": "熊妈妈标签",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 6.92,
+    "avg_final_placement": 3.963,
+    "placement_dist": [
+     18.52,
+     7.41,
+     24.07,
+     11.11,
+     12.96,
+     7.41,
+     11.11,
+     7.41
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130879,
+    "card_id": "BG35_MagicItem_301",
+    "name": "废铁回收机标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 25.31,
+    "avg_final_placement": 3.431,
+    "placement_dist": [
+     30.89,
+     15.45,
+     12.2,
+     6.5,
+     12.2,
+     8.94,
+     6.5,
+     7.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130880,
+    "card_id": "BG35_MagicItem_302",
+    "name": "积雷标签",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 10.31,
+    "avg_final_placement": 3.871,
+    "placement_dist": [
+     17.74,
+     16.13,
+     14.52,
+     12.9,
+     14.52,
+     8.06,
+     8.06,
+     8.06
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130886,
+    "card_id": "BG35_MagicItem_840",
+    "name": "多彩之泪",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 12.32,
+    "avg_final_placement": 4.027,
+    "placement_dist": [
+     17.57,
+     17.12,
+     14.41,
+     9.91,
+     9.46,
+     9.91,
+     11.71,
+     9.91
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130888,
+    "card_id": "BG35_MagicItem_850",
+    "name": "袋中旋风",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 12.71,
+    "avg_final_placement": 3.519,
+    "placement_dist": [
+     19.23,
+     17.31,
+     25.0,
+     3.85,
+     13.46,
+     11.54,
+     5.77,
+     3.85
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130889,
+    "card_id": "BG35_MagicItem_851",
+    "name": "水车",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 12.12,
+    "avg_final_placement": 3.816,
+    "placement_dist": [
+     26.53,
+     6.12,
+     18.37,
+     8.16,
+     10.2,
+     14.29,
+     12.24,
+     4.08
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130890,
+    "card_id": "BG35_MagicItem_890",
+    "name": "沉没的船锚",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 11.6,
+    "avg_final_placement": 3.947,
+    "placement_dist": [
+     17.48,
+     16.02,
+     12.62,
+     15.05,
+     11.17,
+     10.68,
+     8.74,
+     8.25
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130904,
+    "card_id": "BG35_MagicItem_434",
+    "name": "珠宝盒",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 12.13,
+    "avg_final_placement": 3.488,
+    "placement_dist": [
+     26.02,
+     17.89,
+     14.63,
+     5.69,
+     11.38,
+     13.01,
+     5.69,
+     5.69
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130908,
+    "card_id": "BG35_MagicItem_872",
+    "name": "蛇首之杖",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 15.32,
+    "avg_final_placement": 3.282,
+    "placement_dist": [
+     24.79,
+     23.08,
+     12.82,
+     11.97,
+     8.55,
+     10.26,
+     1.71,
+     6.84
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131003,
+    "card_id": "BG35_MagicItem_931",
+    "name": "转录打字机",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 39.61,
+    "avg_final_placement": 3.741,
+    "placement_dist": [
+     21.15,
+     17.2,
+     13.44,
+     12.27,
+     10.11,
+     10.54,
+     6.97,
+     8.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131135,
+    "card_id": "BG35_MagicItem_306",
+    "name": "典狱长标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 26.68,
+    "avg_final_placement": 3.441,
+    "placement_dist": [
+     26.27,
+     17.8,
+     12.71,
+     11.02,
+     11.86,
+     9.32,
+     3.39,
+     7.63
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131137,
+    "card_id": "BG35_MagicItem_305",
+    "name": "螺号肖像",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 11.93,
+    "avg_final_placement": 3.31,
+    "placement_dist": [
+     27.59,
+     17.24,
+     13.79,
+     13.79,
+     10.34,
+     3.45,
+     10.34,
+     3.45
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131276,
+    "card_id": "BG35_MagicItem_150",
+    "name": "被诅咒的水晶",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 9.93,
+    "avg_final_placement": 3.314,
+    "placement_dist": [
+     17.65,
+     19.61,
+     29.41,
+     9.8,
+     5.88,
+     9.8,
+     3.92,
+     3.92
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131280,
+    "card_id": "BG35_MagicItem_152",
+    "name": "恶魔挂毯",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 28.28,
+    "avg_final_placement": 3.219,
+    "placement_dist": [
+     27.62,
+     20.0,
+     20.95,
+     0.95,
+     13.33,
+     5.71,
+     4.76,
+     6.67
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133060,
+    "card_id": "BG36_MagicItem_800",
+    "name": "魔化血刀",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 9.77,
+    "avg_final_placement": 3.839,
+    "placement_dist": [
+     23.21,
+     5.36,
+     17.86,
+     12.5,
+     17.86,
+     10.71,
+     7.14,
+     5.36
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133061,
+    "card_id": "BG36_MagicItem_801",
+    "name": "吞魔之爪",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 16.5,
+    "avg_final_placement": 3.639,
+    "placement_dist": [
+     16.87,
+     16.87,
+     18.07,
+     21.69,
+     8.43,
+     2.41,
+     9.64,
+     6.02
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133062,
+    "card_id": "BG36_MagicItem_810",
+    "name": "磁感旋刃",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 6.32,
+    "avg_final_placement": 4.143,
+    "placement_dist": [
+     11.43,
+     14.29,
+     25.71,
+     8.57,
+     11.43,
+     2.86,
+     17.14,
+     8.57
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133063,
+    "card_id": "BG36_MagicItem_811",
+    "name": "防护龟壳",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 6.93,
+    "avg_final_placement": 4.121,
+    "placement_dist": [
+     20.13,
+     11.41,
+     10.07,
+     13.42,
+     13.42,
+     12.08,
+     10.07,
+     9.4
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133064,
+    "card_id": "BG36_MagicItem_820",
+    "name": "好斗的斥候肖像",
+    "group": "lesser",
+    "tier": "f",
+    "pick_rate": 13.46,
+    "avg_final_placement": 4.12,
+    "placement_dist": [
+     14.0,
+     14.0,
+     12.0,
+     14.0,
+     18.0,
+     16.0,
+     4.0,
+     8.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133340,
+    "card_id": "BG36_MagicItem_300",
+    "name": "冰寒之花",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 28.77,
+    "avg_final_placement": 3.482,
+    "placement_dist": [
+     29.19,
+     14.08,
+     14.29,
+     9.52,
+     10.14,
+     7.66,
+     7.66,
+     7.45
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133341,
+    "card_id": "BG36_MagicItem_301",
+    "name": "上锁宝箱肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 20.9,
+    "avg_final_placement": 3.803,
+    "placement_dist": [
+     22.95,
+     13.93,
+     12.3,
+     13.11,
+     11.48,
+     9.29,
+     8.47,
+     8.47
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133342,
+    "card_id": "BG36_MagicItem_302",
+    "name": "黄金重槌",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 9.03,
+    "avg_final_placement": 3.509,
+    "placement_dist": [
+     24.56,
+     14.04,
+     14.04,
+     14.04,
+     8.77,
+     15.79,
+     8.77,
+     0.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133346,
+    "card_id": "BG36_MagicItem_303",
+    "name": "透视玻璃杯",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 42.97,
+    "avg_final_placement": 3.405,
+    "placement_dist": [
+     26.03,
+     19.06,
+     13.73,
+     10.78,
+     8.93,
+     8.61,
+     7.08,
+     5.77
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133379,
+    "card_id": "BG36_MagicItem_307",
+    "name": "神圣魔杖",
+    "group": "lesser",
+    "tier": "s",
+    "pick_rate": 75.03,
+    "avg_final_placement": 2.813,
+    "placement_dist": [
+     44.8,
+     16.62,
+     8.38,
+     6.5,
+     6.79,
+     5.64,
+     5.78,
+     5.49
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133387,
+    "card_id": "BG36_MagicItem_200",
+    "name": "牧人号角",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 20.04,
+    "avg_final_placement": 3.551,
+    "placement_dist": [
+     32.65,
+     10.2,
+     12.24,
+     10.2,
+     12.24,
+     6.12,
+     4.08,
+     12.24
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133388,
+    "card_id": "BG36_MagicItem_201",
+    "name": "狮子鱼肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 19.06,
+    "avg_final_placement": 3.908,
+    "placement_dist": [
+     18.42,
+     16.45,
+     10.53,
+     18.42,
+     9.21,
+     8.55,
+     10.53,
+     7.89
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133389,
+    "card_id": "BG36_MagicItem_202",
+    "name": "战吼图腾",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 24.76,
+    "avg_final_placement": 3.304,
+    "placement_dist": [
+     31.0,
+     17.57,
+     12.29,
+     9.14,
+     8.86,
+     8.86,
+     4.86,
+     7.43
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133390,
+    "card_id": "BG36_MagicItem_203",
+    "name": "巨龙头骨",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 6.11,
+    "avg_final_placement": 3.551,
+    "placement_dist": [
+     16.95,
+     22.03,
+     17.8,
+     9.32,
+     14.41,
+     8.47,
+     7.63,
+     3.39
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133393,
+    "card_id": "BG36_MagicItem_206",
+    "name": "不祥之石",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 48.34,
+    "avg_final_placement": 3.743,
+    "placement_dist": [
+     19.97,
+     17.61,
+     13.53,
+     12.88,
+     9.99,
+     11.17,
+     8.74,
+     6.11
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133395,
+    "card_id": "BG36_MagicItem_208",
+    "name": "漂浮蜡烛套装",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 11.93,
+    "avg_final_placement": 3.278,
+    "placement_dist": [
+     33.45,
+     16.37,
+     12.1,
+     7.12,
+     10.32,
+     7.83,
+     4.27,
+     8.54
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133399,
+    "card_id": "BG36_MagicItem_211",
+    "name": "爱心吊坠",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 10.47,
+    "avg_final_placement": 3.644,
+    "placement_dist": [
+     16.59,
+     21.8,
+     13.74,
+     11.85,
+     14.69,
+     10.43,
+     7.58,
+     3.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133695,
+    "card_id": "BG36_MagicItem_812",
+    "name": "应急锯刃",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 3.47,
+    "avg_final_placement": 3.6,
+    "placement_dist": [
+     10.0,
+     10.0,
+     30.0,
+     40.0,
+     0.0,
+     0.0,
+     0.0,
+     10.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133696,
+    "card_id": "BG36_MagicItem_220",
+    "name": "闪光水晶",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 31.1,
+    "avg_final_placement": 3.44,
+    "placement_dist": [
+     26.64,
+     18.15,
+     13.13,
+     9.27,
+     10.81,
+     10.04,
+     5.41,
+     6.56
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134199,
+    "card_id": "BG36_MagicItem_390",
+    "name": "投球手肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 8.96,
+    "avg_final_placement": 3.767,
+    "placement_dist": [
+     15.09,
+     18.24,
+     16.98,
+     14.47,
+     13.21,
+     8.81,
+     8.18,
+     5.03
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134315,
+    "card_id": "BG36_MagicItem_400",
+    "name": "腐蚀的铸币肖像",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 62.03,
+    "avg_final_placement": 3.663,
+    "placement_dist": [
+     22.74,
+     16.49,
+     13.58,
+     12.32,
+     10.17,
+     10.23,
+     7.39,
+     7.08
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134316,
+    "card_id": "BG36_MagicItem_403",
+    "name": "暮光神锤",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 7.68,
+    "avg_final_placement": 3.875,
+    "placement_dist": [
+     10.71,
+     17.86,
+     19.64,
+     14.29,
+     17.86,
+     8.93,
+     3.57,
+     7.14
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134317,
+    "card_id": "BG36_MagicItem_404",
+    "name": "腐蚀的节杖",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 23.26,
+    "avg_final_placement": 3.427,
+    "placement_dist": [
+     14.24,
+     20.47,
+     22.26,
+     15.13,
+     13.06,
+     10.09,
+     3.56,
+     1.19
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134325,
+    "card_id": "BG36_MagicItem_411",
+    "name": "复苏之光",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 50.5,
+    "avg_final_placement": 3.501,
+    "placement_dist": [
+     25.78,
+     18.61,
+     11.68,
+     12.72,
+     8.79,
+     7.05,
+     8.09,
+     7.28
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134435,
+    "card_id": "BG36_MagicItem_407",
+    "name": "龙首法杖",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 26.96,
+    "avg_final_placement": 3.963,
+    "placement_dist": [
+     16.49,
+     17.02,
+     13.83,
+     12.23,
+     10.11,
+     12.77,
+     12.23,
+     5.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134436,
+    "card_id": "BG36_MagicItem_408",
+    "name": "军需官的铁钩",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 13.45,
+    "avg_final_placement": 4.009,
+    "placement_dist": [
+     20.91,
+     11.82,
+     14.55,
+     10.91,
+     10.0,
+     12.73,
+     10.0,
+     9.09
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134437,
+    "card_id": "BG36_MagicItem_409",
+    "name": "红宝石獠牙",
+    "group": "lesser",
+    "tier": "b",
+    "pick_rate": 55.29,
+    "avg_final_placement": 3.508,
+    "placement_dist": [
+     22.2,
+     22.0,
+     13.0,
+     10.4,
+     11.0,
+     8.0,
+     6.2,
+     7.2
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134438,
+    "card_id": "BG36_MagicItem_410",
+    "name": "吸魂器",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 29.72,
+    "avg_final_placement": 3.322,
+    "placement_dist": [
+     25.17,
+     20.28,
+     17.48,
+     11.19,
+     6.29,
+     5.59,
+     7.69,
+     6.29
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134439,
+    "card_id": "BG36_MagicItem_423",
+    "name": "扩音机肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 20.0,
+    "avg_final_placement": 3.928,
+    "placement_dist": [
+     15.32,
+     18.02,
+     13.51,
+     13.51,
+     10.81,
+     16.22,
+     5.41,
+     7.21
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134444,
+    "card_id": "BG36_MagicItem_414",
+    "name": "加重护手",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 15.76,
+    "avg_final_placement": 3.304,
+    "placement_dist": [
+     34.18,
+     11.71,
+     11.39,
+     11.71,
+     8.54,
+     12.97,
+     4.75,
+     4.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134638,
+    "card_id": "BG36_MagicItem_402",
+    "name": "精神鞭笞者肖像",
+    "group": "lesser",
+    "tier": "d",
+    "pick_rate": 14.06,
+    "avg_final_placement": 3.835,
+    "placement_dist": [
+     9.5,
+     19.5,
+     18.5,
+     18.5,
+     13.0,
+     10.5,
+     6.5,
+     4.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134639,
+    "card_id": "BG36_MagicItem_852",
+    "name": "摧心怪标签",
+    "group": "lesser",
+    "tier": "a",
+    "pick_rate": 31.36,
+    "avg_final_placement": 3.485,
+    "placement_dist": [
+     20.9,
+     17.42,
+     17.29,
+     15.61,
+     9.94,
+     7.87,
+     6.19,
+     4.77
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134640,
+    "card_id": "BG36_MagicItem_424",
+    "name": "捣蛋鬼标签",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 7.31,
+    "avg_final_placement": 3.732,
+    "placement_dist": [
+     23.62,
+     17.32,
+     9.45,
+     12.6,
+     9.45,
+     11.02,
+     9.45,
+     7.09
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134642,
+    "card_id": "BG36_MagicItem_609",
+    "name": "戏法手套",
+    "group": "lesser",
+    "tier": "c",
+    "pick_rate": 20.97,
+    "avg_final_placement": 3.715,
+    "placement_dist": [
+     23.92,
+     16.54,
+     11.45,
+     10.69,
+     10.94,
+     11.2,
+     6.62,
+     8.65
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110928,
+    "card_id": "BG30_MagicItem_801",
+    "name": "罪碑标签",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 40.54,
+    "avg_final_placement": 3.78,
+    "placement_dist": [
+     22.38,
+     15.52,
+     14.44,
+     10.11,
+     7.94,
+     13.0,
+     9.75,
+     6.86
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 110967,
+    "card_id": "BG30_MagicItem_886",
+    "name": "强固之盾",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 9.16,
+    "avg_final_placement": 3.778,
+    "placement_dist": [
+     11.11,
+     13.89,
+     19.44,
+     16.67,
+     25.0,
+     8.33,
+     5.56,
+     0.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111207,
+    "card_id": "BG30_MagicItem_876",
+    "name": "操纵者肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 27.32,
+    "avg_final_placement": 3.531,
+    "placement_dist": [
+     24.64,
+     17.86,
+     12.68,
+     12.61,
+     8.75,
+     10.06,
+     7.14,
+     6.27
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111488,
+    "card_id": "BG30_MagicItem_403",
+    "name": "铁炉堡锻砧",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 12.87,
+    "avg_final_placement": 3.095,
+    "placement_dist": [
+     14.29,
+     28.57,
+     23.81,
+     14.29,
+     4.76,
+     14.29,
+     0.0,
+     0.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111499,
+    "card_id": "BG30_MagicItem_951",
+    "name": "熔岩提灯",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 33.93,
+    "avg_final_placement": 3.535,
+    "placement_dist": [
+     31.68,
+     10.89,
+     8.91,
+     14.85,
+     7.92,
+     12.87,
+     5.94,
+     6.93
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111500,
+    "card_id": "BG30_MagicItem_952",
+    "name": "瓶装冰灵",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 12.37,
+    "avg_final_placement": 4.428,
+    "placement_dist": [
+     11.43,
+     11.43,
+     5.71,
+     20.0,
+     20.0,
+     14.29,
+     11.43,
+     5.71
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111502,
+    "card_id": "BG30_MagicItem_406",
+    "name": "屠夫钩镰",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 30.96,
+    "avg_final_placement": 3.558,
+    "placement_dist": [
+     21.09,
+     14.97,
+     17.69,
+     16.33,
+     13.61,
+     2.72,
+     6.8,
+     6.8
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 111607,
+    "card_id": "BG30_MagicItem_418",
+    "name": "铜须肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 59.89,
+    "avg_final_placement": 3.486,
+    "placement_dist": [
+     19.58,
+     21.15,
+     15.73,
+     13.99,
+     9.44,
+     8.39,
+     7.69,
+     4.02
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112102,
+    "card_id": "BG30_MagicItem_310",
+    "name": "瑞文戴尔肖像",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 44.19,
+    "avg_final_placement": 3.653,
+    "placement_dist": [
+     27.61,
+     11.96,
+     10.74,
+     13.19,
+     11.35,
+     10.43,
+     8.28,
+     6.44
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112381,
+    "card_id": "BG30_MagicItem_540",
+    "name": "猛猿标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 18.53,
+    "avg_final_placement": 3.072,
+    "placement_dist": [
+     28.06,
+     23.74,
+     13.67,
+     12.95,
+     6.47,
+     3.6,
+     7.19,
+     4.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112382,
+    "card_id": "BG30_MagicItem_541",
+    "name": "虚空坠饰",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 12.27,
+    "avg_final_placement": 3.116,
+    "placement_dist": [
+     25.58,
+     16.28,
+     23.26,
+     13.95,
+     4.65,
+     9.3,
+     6.98,
+     0.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112397,
+    "card_id": "BG30_MagicItem_545",
+    "name": "冰箱磁贴",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 4.69,
+    "avg_final_placement": 4.316,
+    "placement_dist": [
+     10.53,
+     10.53,
+     10.53,
+     15.79,
+     26.32,
+     15.79,
+     5.26,
+     5.26
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112398,
+    "card_id": "BG30_MagicItem_546",
+    "name": "罐装宝石",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 3.28,
+    "avg_final_placement": 4.027,
+    "placement_dist": [
+     21.62,
+     13.51,
+     8.11,
+     13.51,
+     13.51,
+     10.81,
+     8.11,
+     10.81
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112400,
+    "card_id": "BG30_MagicItem_431",
+    "name": "艾泽里特肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 51.71,
+    "avg_final_placement": 3.188,
+    "placement_dist": [
+     24.12,
+     21.76,
+     13.53,
+     14.12,
+     11.76,
+     8.82,
+     4.71,
+     1.18
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112411,
+    "card_id": "BG30_MagicItem_995",
+    "name": "青铜龙时钟",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 13.51,
+    "avg_final_placement": 3.591,
+    "placement_dist": [
+     19.32,
+     19.32,
+     9.09,
+     19.32,
+     13.64,
+     10.23,
+     5.68,
+     3.41
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112988,
+    "card_id": "BG30_MagicItem_996",
+    "name": "鲍勃的小费罐",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 42.16,
+    "avg_final_placement": 3.661,
+    "placement_dist": [
+     23.58,
+     17.03,
+     11.75,
+     10.71,
+     10.95,
+     10.95,
+     10.31,
+     4.72
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 112990,
+    "card_id": "BG30_MagicItem_439",
+    "name": "新潮眼罩",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 32.89,
+    "avg_final_placement": 3.509,
+    "placement_dist": [
+     30.64,
+     14.45,
+     12.14,
+     9.83,
+     4.05,
+     15.03,
+     5.78,
+     8.09
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 113096,
+    "card_id": "BG30_MagicItem_442",
+    "name": "鲜血魔像标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 29.09,
+    "avg_final_placement": 3.012,
+    "placement_dist": [
+     30.93,
+     19.22,
+     16.52,
+     10.81,
+     8.71,
+     4.8,
+     5.41,
+     3.6
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 113103,
+    "card_id": "BG30_MagicItem_993",
+    "name": "帕格的鱼竿",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 22.99,
+    "avg_final_placement": 3.577,
+    "placement_dist": [
+     22.41,
+     15.83,
+     14.89,
+     14.42,
+     10.19,
+     10.66,
+     6.43,
+     5.17
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115225,
+    "card_id": "BG30_MagicItem_988t",
+    "name": "野猪之神标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 16.99,
+    "avg_final_placement": 3.387,
+    "placement_dist": [
+     23.58,
+     14.15,
+     23.58,
+     12.26,
+     9.43,
+     4.72,
+     6.6,
+     5.66
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115226,
+    "card_id": "BG30_MagicItem_547t",
+    "name": "舒适的棺椁",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 11.0,
+    "avg_final_placement": 3.5,
+    "placement_dist": [
+     25.0,
+     11.36,
+     18.18,
+     15.91,
+     6.82,
+     11.36,
+     9.09,
+     2.27
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115230,
+    "card_id": "BG30_MagicItem_420t",
+    "name": "麦迪文之书",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 21.89,
+    "avg_final_placement": 3.608,
+    "placement_dist": [
+     23.66,
+     14.23,
+     14.08,
+     13.66,
+     11.69,
+     9.86,
+     8.31,
+     4.51
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115235,
+    "card_id": "BG30_MagicItem_544t",
+    "name": "诺米标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 15.19,
+    "avg_final_placement": 3.513,
+    "placement_dist": [
+     18.92,
+     16.22,
+     16.22,
+     21.62,
+     8.11,
+     13.51,
+     0.0,
+     5.41
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115236,
+    "card_id": "BG30_MagicItem_879t",
+    "name": "达拉然奶酪轮",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 13.19,
+    "avg_final_placement": 3.935,
+    "placement_dist": [
+     16.82,
+     15.89,
+     17.76,
+     11.21,
+     7.48,
+     12.15,
+     13.08,
+     5.61
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115237,
+    "card_id": "BG30_MagicItem_914t",
+    "name": "鱼人语实用手册",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 6.34,
+    "avg_final_placement": 4.231,
+    "placement_dist": [
+     7.69,
+     23.08,
+     7.69,
+     15.38,
+     15.38,
+     15.38,
+     7.69,
+     7.69
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115245,
+    "card_id": "BG30_MagicItem_924t",
+    "name": "藏宝海湾美酒",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 9.09,
+    "avg_final_placement": 4.511,
+    "placement_dist": [
+     17.02,
+     8.51,
+     10.64,
+     10.64,
+     12.77,
+     19.15,
+     6.38,
+     14.89
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 35.85,
+    "avg_final_placement": 3.523,
+    "placement_dist": [
+     26.52,
+     15.15,
+     13.64,
+     11.36,
+     11.36,
+     8.33,
+     6.82,
+     6.82
+    ],
+    "extra_data": 11
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 27.56,
+    "avg_final_placement": 3.146,
+    "placement_dist": [
+     35.42,
+     14.58,
+     14.58,
+     6.25,
+     16.67,
+     0.0,
+     2.08,
+     10.42
+    ],
+    "extra_data": 14
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 58.35,
+    "avg_final_placement": 3.186,
+    "placement_dist": [
+     31.79,
+     16.43,
+     15.0,
+     11.43,
+     6.07,
+     7.5,
+     6.43,
+     5.36
+    ],
+    "extra_data": 15
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 19.87,
+    "avg_final_placement": 3.611,
+    "placement_dist": [
+     23.61,
+     16.67,
+     11.11,
+     13.89,
+     13.89,
+     8.33,
+     4.17,
+     8.33
+    ],
+    "extra_data": 17
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 41.89,
+    "avg_final_placement": 3.035,
+    "placement_dist": [
+     32.94,
+     17.65,
+     18.82,
+     5.88,
+     7.06,
+     7.06,
+     7.06,
+     3.53
+    ],
+    "extra_data": 18
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 23.45,
+    "avg_final_placement": 3.688,
+    "placement_dist": [
+     23.2,
+     20.0,
+     7.2,
+     9.6,
+     12.8,
+     12.8,
+     10.4,
+     4.0
+    ],
+    "extra_data": 20
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 21.64,
+    "avg_final_placement": 4.178,
+    "placement_dist": [
+     23.29,
+     12.33,
+     1.37,
+     13.7,
+     15.07,
+     13.7,
+     10.96,
+     9.59
+    ],
+    "extra_data": 23
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 19.04,
+    "avg_final_placement": 3.679,
+    "placement_dist": [
+     19.23,
+     16.67,
+     14.1,
+     14.1,
+     11.54,
+     14.1,
+     7.69,
+     2.56
+    ],
+    "extra_data": 24
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 35.67,
+    "avg_final_placement": 3.301,
+    "placement_dist": [
+     28.67,
+     19.35,
+     11.83,
+     9.68,
+     11.11,
+     7.53,
+     6.81,
+     5.02
+    ],
+    "extra_data": 43
+   },
+   {
+    "dbf_id": 115250,
+    "card_id": "BG30_MagicItem_426t",
+    "name": "多彩罗盘",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 21.01,
+    "avg_final_placement": 3.983,
+    "placement_dist": [
+     9.09,
+     14.88,
+     25.62,
+     15.7,
+     9.92,
+     11.57,
+     4.96,
+     8.26
+    ],
+    "extra_data": 126
+   },
+   {
+    "dbf_id": 115253,
+    "card_id": "BG30_MagicItem_410t2",
+    "name": "鬃尖笔墨套装",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 2.9,
+    "avg_final_placement": 3.28,
+    "placement_dist": [
+     20.0,
+     28.0,
+     20.0,
+     4.0,
+     8.0,
+     4.0,
+     16.0,
+     0.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117157,
+    "card_id": "BG30_MagicItem_989t",
+    "name": "艺匠之瓮",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 17.39,
+    "avg_final_placement": 4.387,
+    "placement_dist": [
+     12.5,
+     12.5,
+     10.0,
+     17.5,
+     13.75,
+     13.75,
+     10.0,
+     10.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117795,
+    "card_id": "BG30_MagicItem_701",
+    "name": "萨格拉斯之眼",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 33.68,
+    "avg_final_placement": 3.362,
+    "placement_dist": [
+     27.68,
+     18.75,
+     14.29,
+     8.93,
+     9.82,
+     8.04,
+     4.91,
+     7.59
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117855,
+    "card_id": "BG30_MagicItem_942",
+    "name": "机械加拉克苏斯标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 11.95,
+    "avg_final_placement": 3.4,
+    "placement_dist": [
+     27.74,
+     13.55,
+     14.84,
+     12.26,
+     12.9,
+     7.74,
+     7.1,
+     3.87
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117856,
+    "card_id": "BG30_MagicItem_943",
+    "name": "测绘员肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 53.86,
+    "avg_final_placement": 3.26,
+    "placement_dist": [
+     24.1,
+     20.5,
+     15.96,
+     13.46,
+     10.64,
+     6.26,
+     4.23,
+     4.85
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 117905,
+    "card_id": "BG30_MagicItem_555",
+    "name": "惊喜肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 29.59,
+    "avg_final_placement": 3.135,
+    "placement_dist": [
+     32.29,
+     16.67,
+     12.5,
+     11.46,
+     8.33,
+     11.46,
+     4.17,
+     3.13
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120145,
+    "card_id": "BG32_MagicItem_807",
+    "name": "馆长标签",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 15.08,
+    "avg_final_placement": 3.674,
+    "placement_dist": [
+     16.57,
+     19.34,
+     17.68,
+     12.15,
+     12.15,
+     9.94,
+     7.18,
+     4.97
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120155,
+    "card_id": "BG31_MagicItem_903",
+    "name": "智慧之球补给",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 38.17,
+    "avg_final_placement": 3.805,
+    "placement_dist": [
+     26.13,
+     14.63,
+     8.36,
+     8.36,
+     12.2,
+     13.59,
+     9.76,
+     6.97
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120159,
+    "card_id": "BG32_MagicItem_901",
+    "name": "镀金罗盘",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 27.18,
+    "avg_final_placement": 3.523,
+    "placement_dist": [
+     25.93,
+     16.64,
+     11.33,
+     13.36,
+     10.09,
+     9.03,
+     7.96,
+     5.66
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120160,
+    "card_id": "BG32_MagicItem_801t",
+    "name": "森林之心",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 17.05,
+    "avg_final_placement": 3.737,
+    "placement_dist": [
+     31.58,
+     10.53,
+     10.53,
+     5.26,
+     15.79,
+     5.26,
+     10.53,
+     10.53
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120705,
+    "card_id": "BG32_MagicItem_888",
+    "name": "回收标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 26.73,
+    "avg_final_placement": 3.361,
+    "placement_dist": [
+     30.56,
+     18.06,
+     8.33,
+     8.33,
+     15.28,
+     6.94,
+     6.94,
+     5.56
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120866,
+    "card_id": "BG32_MagicItem_172",
+    "name": "砰砰的怪物肖像",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 15.93,
+    "avg_final_placement": 4.131,
+    "placement_dist": [
+     21.43,
+     13.1,
+     10.71,
+     9.52,
+     8.33,
+     15.48,
+     10.71,
+     10.71
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120870,
+    "card_id": "BG32_MagicItem_363",
+    "name": "精灵龙鳞",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 11.51,
+    "avg_final_placement": 3.175,
+    "placement_dist": [
+     21.25,
+     28.75,
+     12.5,
+     13.75,
+     6.25,
+     10.0,
+     5.0,
+     2.5
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120873,
+    "card_id": "BG32_MagicItem_367",
+    "name": "鬼魅标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 9.49,
+    "avg_final_placement": 3.266,
+    "placement_dist": [
+     29.22,
+     19.48,
+     10.39,
+     9.09,
+     14.29,
+     8.44,
+     3.9,
+     5.19
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120875,
+    "card_id": "BG32_MagicItem_364",
+    "name": "诗心龙肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 19.91,
+    "avg_final_placement": 3.518,
+    "placement_dist": [
+     17.99,
+     20.86,
+     15.11,
+     13.67,
+     11.51,
+     12.23,
+     7.91,
+     0.72
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120925,
+    "card_id": "BG32_MagicItem_361t",
+    "name": "口袋工厂",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 12.93,
+    "avg_final_placement": 4.116,
+    "placement_dist": [
+     14.96,
+     16.15,
+     12.83,
+     12.11,
+     13.06,
+     12.83,
+     9.26,
+     8.79
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120926,
+    "card_id": "BG32_MagicItem_306",
+    "name": "先锋标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 18.31,
+    "avg_final_placement": 3.563,
+    "placement_dist": [
+     23.21,
+     17.75,
+     13.99,
+     11.6,
+     10.92,
+     9.9,
+     5.8,
+     6.83
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120928,
+    "card_id": "BG32_MagicItem_366",
+    "name": "引路蜡烛",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 41.93,
+    "avg_final_placement": 3.638,
+    "placement_dist": [
+     24.26,
+     15.74,
+     12.64,
+     11.63,
+     11.55,
+     10.16,
+     7.29,
+     6.74
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120932,
+    "card_id": "BG32_MagicItem_200",
+    "name": "全能辅食",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 7.31,
+    "avg_final_placement": 4.593,
+    "placement_dist": [
+     11.11,
+     11.11,
+     9.26,
+     16.67,
+     7.41,
+     24.07,
+     12.96,
+     7.41
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120939,
+    "card_id": "BG32_MagicItem_232",
+    "name": "鲨鱼火炮",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 8.48,
+    "avg_final_placement": 4.32,
+    "placement_dist": [
+     12.0,
+     24.0,
+     6.0,
+     12.0,
+     6.0,
+     12.0,
+     20.0,
+     8.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 120942,
+    "card_id": "BG32_MagicItem_301",
+    "name": "低音提琴鱼人肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 20.0,
+    "avg_final_placement": 3.485,
+    "placement_dist": [
+     22.06,
+     25.0,
+     10.29,
+     11.76,
+     10.29,
+     5.88,
+     5.88,
+     8.82
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121038,
+    "card_id": "BG32_MagicItem_808t",
+    "name": "血缚耳环",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 32.11,
+    "avg_final_placement": 2.928,
+    "placement_dist": [
+     31.13,
+     24.79,
+     11.02,
+     10.47,
+     10.47,
+     3.03,
+     6.06,
+     3.03
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121041,
+    "card_id": "BG32_MagicItem_270t",
+    "name": "邪恶魔典",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 10.39,
+    "avg_final_placement": 3.578,
+    "placement_dist": [
+     15.56,
+     26.67,
+     13.33,
+     8.89,
+     15.56,
+     8.89,
+     6.67,
+     4.44
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121109,
+    "card_id": "BG32_MagicItem_925",
+    "name": "黑客鱼人肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 36.09,
+    "avg_final_placement": 3.065,
+    "placement_dist": [
+     20.37,
+     25.0,
+     24.07,
+     11.11,
+     6.48,
+     5.56,
+     5.56,
+     1.85
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121111,
+    "card_id": "BG32_MagicItem_926",
+    "name": "摩戈尔肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 16.24,
+    "avg_final_placement": 3.545,
+    "placement_dist": [
+     32.49,
+     12.64,
+     9.39,
+     6.5,
+     12.64,
+     11.55,
+     8.3,
+     6.5
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121114,
+    "card_id": "BG32_MagicItem_998",
+    "name": "巨怪肖像",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 11.16,
+    "avg_final_placement": 2.621,
+    "placement_dist": [
+     27.59,
+     34.48,
+     10.34,
+     10.34,
+     13.79,
+     0.0,
+     3.45,
+     0.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121130,
+    "card_id": "BG32_MagicItem_283",
+    "name": "女沙皇肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 9.6,
+    "avg_final_placement": 3.731,
+    "placement_dist": [
+     3.85,
+     23.08,
+     25.0,
+     13.46,
+     21.15,
+     7.69,
+     3.85,
+     1.92
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121132,
+    "card_id": "BG32_MagicItem_284",
+    "name": "阿格姆标签",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 16.02,
+    "avg_final_placement": 3.985,
+    "placement_dist": [
+     7.46,
+     25.37,
+     13.43,
+     20.9,
+     5.97,
+     10.45,
+     7.46,
+     8.96
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121182,
+    "card_id": "BG32_MagicItem_860t",
+    "name": "甲虫之戒",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 22.66,
+    "avg_final_placement": 2.806,
+    "placement_dist": [
+     32.64,
+     27.08,
+     13.19,
+     6.25,
+     6.94,
+     6.25,
+     4.17,
+     3.47
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121558,
+    "card_id": "BG32_MagicItem_205",
+    "name": "噬渊施法者肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 67.73,
+    "avg_final_placement": 3.229,
+    "placement_dist": [
+     38.36,
+     11.3,
+     10.27,
+     8.9,
+     10.27,
+     8.22,
+     6.51,
+     6.16
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 121684,
+    "card_id": "BG32_MagicItem_362t",
+    "name": "旅店老板的炉火",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 35.06,
+    "avg_final_placement": 3.799,
+    "placement_dist": [
+     16.06,
+     18.53,
+     16.25,
+     12.09,
+     11.6,
+     11.89,
+     8.33,
+     5.25
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130830,
+    "card_id": "BG35_MagicItem_812",
+    "name": "腐蚀秘典",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 28.05,
+    "avg_final_placement": 3.801,
+    "placement_dist": [
+     20.29,
+     16.23,
+     11.22,
+     14.2,
+     12.41,
+     11.58,
+     7.28,
+     6.8
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130838,
+    "card_id": "BG35_MagicItem_820",
+    "name": "安全徽章",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 80.03,
+    "avg_final_placement": 3.803,
+    "placement_dist": [
+     18.23,
+     14.66,
+     15.04,
+     12.03,
+     15.6,
+     13.16,
+     7.71,
+     3.57
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130868,
+    "card_id": "BG35_MagicItem_823t",
+    "name": "老旧的烛台",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 19.96,
+    "avg_final_placement": 3.718,
+    "placement_dist": [
+     20.13,
+     15.51,
+     14.36,
+     15.35,
+     10.73,
+     9.74,
+     9.41,
+     4.79
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130874,
+    "card_id": "BG35_MagicItem_862",
+    "name": "爆燃余烬",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 15.41,
+    "avg_final_placement": 3.026,
+    "placement_dist": [
+     20.51,
+     23.08,
+     25.64,
+     17.95,
+     0.0,
+     7.69,
+     0.0,
+     5.13
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130891,
+    "card_id": "BG35_MagicItem_712",
+    "name": "私掠者肖像",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 34.46,
+    "avg_final_placement": 3.611,
+    "placement_dist": [
+     23.79,
+     14.51,
+     14.12,
+     12.96,
+     11.8,
+     9.48,
+     8.51,
+     4.84
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130892,
+    "card_id": "BG35_MagicItem_710",
+    "name": "迷你船模",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 7.5,
+    "avg_final_placement": 4.286,
+    "placement_dist": [
+     14.29,
+     9.52,
+     14.29,
+     19.05,
+     14.29,
+     7.14,
+     9.52,
+     11.9
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130893,
+    "card_id": "BG35_MagicItem_711",
+    "name": "防护戒指",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 8.9,
+    "avg_final_placement": 3.935,
+    "placement_dist": [
+     13.04,
+     19.57,
+     13.04,
+     13.04,
+     10.87,
+     21.74,
+     4.35,
+     4.35
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130894,
+    "card_id": "BG35_MagicItem_713",
+    "name": "结实的撬棍",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 5.88,
+    "avg_final_placement": 4.258,
+    "placement_dist": [
+     19.35,
+     6.45,
+     19.35,
+     9.68,
+     12.9,
+     6.45,
+     12.9,
+     12.9
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130895,
+    "card_id": "BG35_MagicItem_700",
+    "name": "荒羽尘掸",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 20.72,
+    "avg_final_placement": 3.29,
+    "placement_dist": [
+     31.61,
+     15.48,
+     12.9,
+     9.68,
+     9.03,
+     10.32,
+     5.81,
+     5.16
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130896,
+    "card_id": "BG35_MagicItem_701",
+    "name": "獠牙脚链",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 11.24,
+    "avg_final_placement": 3.232,
+    "placement_dist": [
+     25.61,
+     21.95,
+     12.2,
+     13.41,
+     10.98,
+     4.88,
+     8.54,
+     2.44
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 130977,
+    "card_id": "BG35_MagicItem_840t",
+    "name": "多彩之泪",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 39.8,
+    "avg_final_placement": 3.605,
+    "placement_dist": [
+     21.71,
+     16.37,
+     17.08,
+     10.68,
+     11.39,
+     9.25,
+     8.54,
+     4.98
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131002,
+    "card_id": "BG35_MagicItem_930",
+    "name": "战队口哨",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 27.61,
+    "avg_final_placement": 3.536,
+    "placement_dist": [
+     23.23,
+     17.36,
+     14.67,
+     12.71,
+     9.37,
+     9.86,
+     7.58,
+     5.22
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131132,
+    "card_id": "BG35_MagicItem_732",
+    "name": "灵魂酵罐",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 42.19,
+    "avg_final_placement": 3.297,
+    "placement_dist": [
+     25.13,
+     16.58,
+     18.09,
+     13.07,
+     8.54,
+     11.06,
+     4.52,
+     3.02
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131133,
+    "card_id": "BG35_MagicItem_733",
+    "name": "典狱长标签",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 41.51,
+    "avg_final_placement": 3.502,
+    "placement_dist": [
+     27.81,
+     15.51,
+     13.37,
+     9.09,
+     10.7,
+     10.16,
+     6.42,
+     6.95
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131138,
+    "card_id": "BG35_MagicItem_740",
+    "name": "飞天魔像肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 5.02,
+    "avg_final_placement": 3.989,
+    "placement_dist": [
+     9.57,
+     19.15,
+     17.02,
+     14.89,
+     12.77,
+     14.89,
+     6.38,
+     5.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131139,
+    "card_id": "BG35_MagicItem_741",
+    "name": "B-Box拳手肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 81.17,
+    "avg_final_placement": 3.444,
+    "placement_dist": [
+     31.9,
+     13.79,
+     9.27,
+     10.56,
+     11.64,
+     10.13,
+     5.82,
+     6.9
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131140,
+    "card_id": "BG35_MagicItem_742",
+    "name": "手风琴机器人肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 34.57,
+    "avg_final_placement": 3.758,
+    "placement_dist": [
+     29.57,
+     5.91,
+     11.29,
+     13.98,
+     10.22,
+     15.05,
+     8.6,
+     5.38
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131141,
+    "card_id": "BG35_MagicItem_743",
+    "name": "电极吸附器",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 23.43,
+    "avg_final_placement": 3.904,
+    "placement_dist": [
+     23.2,
+     15.2,
+     6.4,
+     12.8,
+     11.2,
+     14.4,
+     10.4,
+     6.4
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131282,
+    "card_id": "BG35_MagicItem_154",
+    "name": "乌祖尔标签",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 19.2,
+    "avg_final_placement": 3.797,
+    "placement_dist": [
+     15.45,
+     19.51,
+     13.01,
+     18.7,
+     11.38,
+     6.5,
+     8.13,
+     7.32
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131284,
+    "card_id": "BG35_MagicItem_156",
+    "name": "魔焰肖像",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 9.11,
+    "avg_final_placement": 3.597,
+    "placement_dist": [
+     22.22,
+     23.61,
+     13.89,
+     6.94,
+     4.17,
+     13.89,
+     5.56,
+     9.72
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131303,
+    "card_id": "BG35_MagicItem_750",
+    "name": "魔鳍标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 21.4,
+    "avg_final_placement": 3.359,
+    "placement_dist": [
+     29.89,
+     15.8,
+     11.78,
+     10.63,
+     12.64,
+     6.61,
+     7.47,
+     5.17
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131305,
+    "card_id": "BG35_MagicItem_752",
+    "name": "小瞎眼标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 20.59,
+    "avg_final_placement": 3.456,
+    "placement_dist": [
+     26.47,
+     19.12,
+     14.71,
+     8.82,
+     7.35,
+     7.35,
+     8.82,
+     7.35
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131306,
+    "card_id": "BG35_MagicItem_753",
+    "name": "奔波尔霸标签",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 7.31,
+    "avg_final_placement": 3.974,
+    "placement_dist": [
+     12.82,
+     12.82,
+     20.51,
+     12.82,
+     15.38,
+     15.38,
+     5.13,
+     5.13
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131307,
+    "card_id": "BG35_MagicItem_754",
+    "name": "戏剧鱼人标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 15.36,
+    "avg_final_placement": 3.15,
+    "placement_dist": [
+     25.0,
+     15.0,
+     25.0,
+     10.0,
+     10.0,
+     10.0,
+     5.0,
+     0.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131308,
+    "card_id": "BG35_MagicItem_755",
+    "name": "切米尔拼贴画",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 29.36,
+    "avg_final_placement": 3.444,
+    "placement_dist": [
+     24.76,
+     19.62,
+     13.88,
+     9.69,
+     9.57,
+     10.65,
+     6.46,
+     5.38
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131325,
+    "card_id": "BG35_MagicItem_931t",
+    "name": "转录打字机",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 28.22,
+    "avg_final_placement": 3.56,
+    "placement_dist": [
+     23.66,
+     16.74,
+     15.05,
+     10.83,
+     9.22,
+     11.67,
+     8.29,
+     4.53
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131328,
+    "card_id": "BG35_MagicItem_816t",
+    "name": "未知宝珠",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 33.37,
+    "avg_final_placement": 3.565,
+    "placement_dist": [
+     24.14,
+     16.19,
+     15.01,
+     9.52,
+     11.78,
+     10.21,
+     8.44,
+     4.71
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 131329,
+    "card_id": "BG35_MagicItem_850t",
+    "name": "袋中旋风",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 21.09,
+    "avg_final_placement": 3.795,
+    "placement_dist": [
+     15.07,
+     19.18,
+     16.44,
+     12.33,
+     12.33,
+     12.33,
+     6.85,
+     5.48
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133066,
+    "card_id": "BG36_MagicItem_830",
+    "name": "血怒盾牌",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 21.28,
+    "avg_final_placement": 3.459,
+    "placement_dist": [
+     21.86,
+     17.49,
+     15.85,
+     15.3,
+     12.57,
+     5.46,
+     7.1,
+     4.37
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133067,
+    "card_id": "BG36_MagicItem_831",
+    "name": "魔钢战刃",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 15.64,
+    "avg_final_placement": 3.364,
+    "placement_dist": [
+     23.18,
+     21.19,
+     13.91,
+     13.91,
+     7.95,
+     9.27,
+     6.62,
+     3.97
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133068,
+    "card_id": "BG36_MagicItem_840",
+    "name": "秘密图纸",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 5.1,
+    "avg_final_placement": 3.609,
+    "placement_dist": [
+     8.7,
+     34.78,
+     13.04,
+     8.7,
+     17.39,
+     4.35,
+     8.7,
+     4.35
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133070,
+    "card_id": "BG36_MagicItem_850",
+    "name": "曲奇的搅汤棒",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 7.71,
+    "avg_final_placement": 3.947,
+    "placement_dist": [
+     21.05,
+     10.53,
+     5.26,
+     21.05,
+     15.79,
+     15.79,
+     5.26,
+     5.26
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133343,
+    "card_id": "BG36_MagicItem_302t",
+    "name": "黄金重槌",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 7.53,
+    "avg_final_placement": 3.75,
+    "placement_dist": [
+     23.0,
+     15.0,
+     8.0,
+     17.0,
+     8.0,
+     17.0,
+     8.0,
+     4.0
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133348,
+    "card_id": "BG36_MagicItem_303t",
+    "name": "透视玻璃杯",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 36.14,
+    "avg_final_placement": 3.256,
+    "placement_dist": [
+     29.7,
+     18.4,
+     12.82,
+     10.41,
+     8.88,
+     9.01,
+     5.71,
+     5.08
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133380,
+    "card_id": "BG36_MagicItem_308",
+    "name": "开拓者标签",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 50.07,
+    "avg_final_placement": 3.119,
+    "placement_dist": [
+     34.91,
+     17.54,
+     11.93,
+     7.54,
+     8.42,
+     8.77,
+     5.79,
+     5.09
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133381,
+    "card_id": "BG36_MagicItem_309",
+    "name": "蜡油长枪",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 24.47,
+    "avg_final_placement": 3.608,
+    "placement_dist": [
+     24.96,
+     16.44,
+     11.19,
+     12.85,
+     9.52,
+     10.77,
+     8.35,
+     5.93
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133391,
+    "card_id": "BG36_MagicItem_204",
+    "name": "疫病行尸肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 25.46,
+    "avg_final_placement": 3.199,
+    "placement_dist": [
+     21.43,
+     25.4,
+     15.08,
+     15.08,
+     9.52,
+     5.56,
+     2.38,
+     5.56
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133400,
+    "card_id": "BG36_MagicItem_212",
+    "name": "狼头链锤",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 20.91,
+    "avg_final_placement": 3.215,
+    "placement_dist": [
+     30.79,
+     16.95,
+     15.25,
+     8.76,
+     8.76,
+     7.63,
+     8.47,
+     3.39
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133401,
+    "card_id": "BG36_MagicItem_213",
+    "name": "光羽标签",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 15.12,
+    "avg_final_placement": 3.658,
+    "placement_dist": [
+     31.53,
+     8.11,
+     15.32,
+     5.41,
+     11.71,
+     12.61,
+     6.31,
+     9.01
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133402,
+    "card_id": "BG36_MagicItem_214",
+    "name": "暴乱之刃",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 14.09,
+    "avg_final_placement": 3.368,
+    "placement_dist": [
+     26.38,
+     22.09,
+     11.66,
+     11.04,
+     7.36,
+     6.75,
+     7.98,
+     6.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133403,
+    "card_id": "BG36_MagicItem_215",
+    "name": "巨龙之眼",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 28.2,
+    "avg_final_placement": 3.713,
+    "placement_dist": [
+     17.59,
+     17.09,
+     16.08,
+     16.08,
+     10.05,
+     9.55,
+     9.05,
+     4.52
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133404,
+    "card_id": "BG36_MagicItem_216",
+    "name": "永恒肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 15.33,
+    "avg_final_placement": 3.123,
+    "placement_dist": [
+     16.44,
+     24.66,
+     23.29,
+     19.18,
+     6.85,
+     2.74,
+     5.48,
+     1.37
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133405,
+    "card_id": "BG36_MagicItem_217",
+    "name": "葬礼花环",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 14.54,
+    "avg_final_placement": 3.658,
+    "placement_dist": [
+     15.79,
+     26.32,
+     13.16,
+     9.21,
+     10.53,
+     10.53,
+     10.53,
+     3.95
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133694,
+    "card_id": "BG36_MagicItem_810t",
+    "name": "磁感旋刃",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 4.85,
+    "avg_final_placement": 4.381,
+    "placement_dist": [
+     14.29,
+     14.29,
+     14.29,
+     14.29,
+     4.76,
+     4.76,
+     23.81,
+     9.52
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133712,
+    "card_id": "BG36_MagicItem_372",
+    "name": "记忆之球",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 22.27,
+    "avg_final_placement": 3.49,
+    "placement_dist": [
+     25.98,
+     16.15,
+     12.84,
+     12.44,
+     10.43,
+     9.83,
+     7.32,
+     5.02
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133713,
+    "card_id": "BG36_MagicItem_370",
+    "name": "玛卓克萨斯匕首",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 46.76,
+    "avg_final_placement": 3.245,
+    "placement_dist": [
+     30.72,
+     16.81,
+     12.1,
+     11.19,
+     9.56,
+     10.29,
+     5.12,
+     4.21
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133714,
+    "card_id": "BG36_MagicItem_363",
+    "name": "逃兵肖像",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 39.51,
+    "avg_final_placement": 3.702,
+    "placement_dist": [
+     24.36,
+     16.05,
+     12.32,
+     8.6,
+     12.32,
+     10.32,
+     9.46,
+     6.59
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133715,
+    "card_id": "BG36_MagicItem_373",
+    "name": "多层护盾",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 12.58,
+    "avg_final_placement": 3.321,
+    "placement_dist": [
+     22.02,
+     20.24,
+     17.26,
+     12.5,
+     10.12,
+     10.71,
+     4.17,
+     2.98
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 133722,
+    "card_id": "BG36_MagicItem_371",
+    "name": "蜂巢之戒",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 11.74,
+    "avg_final_placement": 3.15,
+    "placement_dist": [
+     34.09,
+     16.48,
+     11.08,
+     9.09,
+     8.81,
+     11.93,
+     5.4,
+     3.13
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134319,
+    "card_id": "BG36_MagicItem_406",
+    "name": "沙斯亚尔神坛",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 22.53,
+    "avg_final_placement": 3.427,
+    "placement_dist": [
+     17.42,
+     19.1,
+     22.47,
+     12.92,
+     12.92,
+     6.18,
+     5.62,
+     3.37
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134320,
+    "card_id": "BG36_MagicItem_403t",
+    "name": "暮光神锤",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 4.3,
+    "avg_final_placement": 4.042,
+    "placement_dist": [
+     6.25,
+     22.92,
+     10.42,
+     22.92,
+     12.5,
+     12.5,
+     8.33,
+     4.17
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134321,
+    "card_id": "BG36_MagicItem_606",
+    "name": "蠕动的触手",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 3.2,
+    "avg_final_placement": 4.684,
+    "placement_dist": [
+     10.53,
+     15.79,
+     5.26,
+     10.53,
+     15.79,
+     15.79,
+     15.79,
+     10.53
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134322,
+    "card_id": "BG36_MagicItem_602",
+    "name": "古神面具",
+    "group": "greater",
+    "tier": "c",
+    "pick_rate": 27.89,
+    "avg_final_placement": 3.595,
+    "placement_dist": [
+     15.09,
+     13.79,
+     21.12,
+     20.26,
+     16.38,
+     6.9,
+     2.59,
+     3.88
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134323,
+    "card_id": "BG36_MagicItem_404t",
+    "name": "腐蚀的节杖",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 19.13,
+    "avg_final_placement": 3.752,
+    "placement_dist": [
+     9.8,
+     17.65,
+     22.88,
+     16.34,
+     14.38,
+     10.46,
+     6.54,
+     1.96
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134443,
+    "card_id": "BG36_MagicItem_430",
+    "name": "腐泥肖像",
+    "group": "greater",
+    "tier": "s",
+    "pick_rate": 59.86,
+    "avg_final_placement": 2.82,
+    "placement_dist": [
+     31.36,
+     23.31,
+     14.83,
+     12.92,
+     5.93,
+     6.14,
+     2.75,
+     2.75
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134453,
+    "card_id": "BG36_MagicItem_600",
+    "name": "转化者肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 49.19,
+    "avg_final_placement": 3.553,
+    "placement_dist": [
+     16.38,
+     21.76,
+     14.91,
+     17.6,
+     10.27,
+     9.05,
+     5.62,
+     4.4
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134461,
+    "card_id": "BG36_MagicItem_423t",
+    "name": "扩音机肖像",
+    "group": "greater",
+    "tier": "f",
+    "pick_rate": 21.29,
+    "avg_final_placement": 4.142,
+    "placement_dist": [
+     19.47,
+     14.16,
+     8.85,
+     13.27,
+     9.73,
+     13.27,
+     11.5,
+     9.73
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134637,
+    "card_id": "BG36_MagicItem_450",
+    "name": "尖利肖像",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 51.09,
+    "avg_final_placement": 3.083,
+    "placement_dist": [
+     32.89,
+     17.65,
+     14.44,
+     9.63,
+     8.56,
+     6.42,
+     6.42,
+     4.01
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134641,
+    "card_id": "BG36_MagicItem_611",
+    "name": "餐具肖像",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 8.0,
+    "avg_final_placement": 3.551,
+    "placement_dist": [
+     11.21,
+     24.3,
+     26.17,
+     10.28,
+     7.48,
+     10.28,
+     5.61,
+     4.67
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134748,
+    "card_id": "BG36_MagicItem_610",
+    "name": "邪恶请柬",
+    "group": "greater",
+    "tier": "d",
+    "pick_rate": 21.65,
+    "avg_final_placement": 3.839,
+    "placement_dist": [
+     16.4,
+     17.25,
+     15.44,
+     14.11,
+     12.87,
+     8.58,
+     8.39,
+     6.96
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134757,
+    "card_id": "BG36_MagicItem_416",
+    "name": "邪恶试验",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 17.93,
+    "avg_final_placement": 3.57,
+    "placement_dist": [
+     11.97,
+     23.24,
+     21.13,
+     14.08,
+     11.97,
+     7.75,
+     6.34,
+     3.52
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134758,
+    "card_id": "BG36_MagicItem_417",
+    "name": "代位神主",
+    "group": "greater",
+    "tier": "a",
+    "pick_rate": 15.27,
+    "avg_final_placement": 3.48,
+    "placement_dist": [
+     16.0,
+     20.8,
+     19.2,
+     16.8,
+     8.8,
+     10.4,
+     4.8,
+     3.2
+    ],
+    "extra_data": null
+   },
+   {
+    "dbf_id": 134759,
+    "card_id": "BG36_MagicItem_418",
+    "name": "古神秘典",
+    "group": "greater",
+    "tier": "b",
+    "pick_rate": 18.37,
+    "avg_final_placement": 3.562,
+    "placement_dist": [
+     17.65,
+     15.69,
+     18.95,
+     19.61,
+     7.84,
+     11.11,
+     7.19,
+     1.96
+    ],
+    "extra_data": null
+   }
+  ]
+ }
+}
