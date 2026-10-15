@@ -1,0 +1,973 @@
+{
+ "trinket_small": [
+  {
+   "card_id": "BG36_MagicItem_206",
+   "name": "不祥之石",
+   "offered_games": 2,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "发现一张具有黑暗之赐的你多数随从的类型的等级4的随从牌。"
+  },
+  {
+   "card_id": "BG36_MagicItem_211",
+   "name": "爱心吊坠",
+   "offered_games": 2,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你对一个友方随从施放法术后，本饰品对另一个友方随从施放该法术。"
+  },
+  {
+   "card_id": "BG32_MagicItem_817",
+   "name": "伦德尔标签",
+   "offered_games": 2,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "偷取酒馆中 等级最高的牌。在每个回合结束时，重复此效果。"
+  },
+  {
+   "card_id": "BG35_MagicItem_815",
+   "name": "魔术师的高帽",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取等级1，2和3的随从牌各两张。"
+  },
+  {
+   "card_id": "BG35_MagicItem_305",
+   "name": "螺号肖像",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取一张克隆螺号。每2个回合，在回合开始时，重复此效果。（还剩2回合！）"
+  },
+  {
+   "card_id": "BG35_MagicItem_434",
+   "name": "珠宝盒",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取一张能使野猪人获得嘲讽，圣盾或复生的鲜血宝石。在每个回合开始时，重复此效果。"
+  },
+  {
+   "card_id": "BG35_MagicItem_817",
+   "name": "镜匣",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取一张复映透镜。每2个回合，在回合开始时，重复此效果。（还剩2回合！）"
+  },
+  {
+   "card_id": "BG36_MagicItem_811",
+   "name": "防护龟壳",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "每回合中，你使用的第一个随从获得 圣盾。"
+  },
+  {
+   "card_id": "BG30_MagicItem_411",
+   "name": "猪猪储蓄罐",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "战斗开始时： 使你的野猪人获得“亡语：获取2张鲜血宝石。”"
+  },
+  {
+   "card_id": "BG35_MagicItem_816",
+   "name": "未知宝珠",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "随机获取一项小型 饰品。"
+  },
+  {
+   "card_id": "BG30_MagicItem_821",
+   "name": "鱼的肖像",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取一张恩佐斯的鱼。"
+  },
+  {
+   "card_id": "BG36_MagicItem_424",
+   "name": "捣蛋鬼标签",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "每有一个友方金色随从，获得1枚铸币。在你的回合开始时，重复此效果。"
+  },
+  {
+   "card_id": "BG30_MagicItem_547",
+   "name": "舒适的棺椁",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "每当你施放一个酒馆法术，你的亡灵在本局对战中拥有+1攻击力（无论它们在哪）。"
+  },
+  {
+   "card_id": "BG36_MagicItem_302",
+   "name": "黄金重槌",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你的回合结束时，使你的随从获得+1/+1。（在本局对战中你每使用过一张金色随从牌都会提升！）"
+  },
+  {
+   "card_id": "BG35_MagicItem_931",
+   "name": "转录打字机",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取你购买的下2个随从的各一张额外复制。（还剩2个！）2获取你购买的下2个随从的各一张额外复制。（已完成！）"
+  },
+  {
+   "card_id": "BG30_MagicItem_888",
+   "name": "纪念品货架",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "当你购买大型饰品时，本饰品变形成为它的复制。"
+  },
+  {
+   "card_id": "BG35_MagicItem_818",
+   "name": "神秘宝珠",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获得10枚铸币。 你的下一件饰品为小型饰品。"
+  },
+  {
+   "card_id": "BG36_MagicItem_404",
+   "name": "腐蚀的节杖",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你施放一个酒馆法术后，使你的神明获得+4/+4。"
+  },
+  {
+   "card_id": "BG32_MagicItem_858",
+   "name": "探险者的望远镜",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "随机获取三张等级4的随从牌。"
+  },
+  {
+   "card_id": "BG30_MagicItem_931",
+   "name": "幸运猫咪",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在7个友方随从死亡后， 随机获取一张野兽牌。（还剩7个！）"
+  },
+  {
+   "card_id": "BG30_MagicItem_700",
+   "name": "死亡护命匣",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "发现一个亡语随从。每场战斗中你的第一个亡语额外触发一次。"
+  },
+  {
+   "card_id": "BG32_MagicItem_821",
+   "name": "朝圣小鬼标签",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "每回合中，有一张恶魔牌可用生命值购买，而非铸币。（还剩1张！）"
+  },
+  {
+   "card_id": "BG32_MagicItem_416",
+   "name": "战鼓",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "每回合中，有一个战吼会额外触发两次。（还剩1个！）"
+  },
+  {
+   "card_id": "BG30_MagicItem_994",
+   "name": "尤格糕点",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "转动尤格-萨隆 的命运之轮。在每个回合开始时，再次转动。"
+  },
+  {
+   "card_id": "BG36_MagicItem_300",
+   "name": "冰寒之花",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你刷新后，升级酒馆所需的铸币减少（1）枚。"
+  },
+  {
+   "card_id": "BG30_MagicItem_430",
+   "name": "摇滚音乐盒",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "随机获取一张 战吼随从牌。在每个回合开始时，再获取一张。"
+  },
+  {
+   "card_id": "BG36_MagicItem_208",
+   "name": "漂浮蜡烛套装",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "塑造法术：触发一个友方随从的亡语。"
+  }
+ ],
+ "trinket_large": [
+  {
+   "card_id": "BG30_MagicItem_418",
+   "name": "铜须肖像",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取一张布莱恩·铜须和一张随机战吼随从牌。你的布莱恩·铜须视为鱼人和龙。"
+  },
+  {
+   "card_id": "BG35_MagicItem_840t",
+   "name": "多彩之泪",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "随机获取2张多彩幼龙。在你使用7张战吼随从牌后，重复此效果。（还剩7张！）"
+  },
+  {
+   "card_id": "BG32_MagicItem_361t",
+   "name": "口袋工厂",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "发现一张等级5的具有类型的随从牌。在每个回合开始时，再获取一张它的复制。"
+  },
+  {
+   "card_id": "BG32_MagicItem_367",
+   "name": "鬼魅标签",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "你的回合结束效果额外触发一次。"
+  },
+  {
+   "card_id": "BG36_MagicItem_370",
+   "name": "玛卓克萨斯匕首",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "发现一个友方随从的原始版复制，该复制具有黑暗之赐。每2个回合，在回合开始时，重复此效果。（还剩2回合！）"
+  },
+  {
+   "card_id": "BG30_MagicItem_988t",
+   "name": "野猪之神标签",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取5张鲜血宝石。你的鲜血宝石使随从额外获得+3/+3。"
+  },
+  {
+   "card_id": "BG32_MagicItem_901",
+   "name": "镀金罗盘",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "使你购买的下一个92变为金色。获得5次免费的刷新。"
+  },
+  {
+   "card_id": "BG32_MagicItem_808t",
+   "name": "血缚耳环",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你施放5个法术后，本饰品对你的所有随从各使用两张鲜血宝石。（还剩5个！）"
+  },
+  {
+   "card_id": "BG35_MagicItem_931t",
+   "name": "转录打字机",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取你购买的下4个随从的各一张额外复制。（还剩4个！）4获取你购买的下4个随从的各一张额外复制。（已完成！）"
+  },
+  {
+   "card_id": "BG30_MagicItem_426t",
+   "name": "多彩罗盘",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "随机获取2张92牌。在每个回合开始时，再获取2张。"
+  },
+  {
+   "card_id": "BG30_MagicItem_993",
+   "name": "帕格的鱼竿",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "随机获取一张等级7的随从牌。在每个回合开始时，再获取一张。"
+  },
+  {
+   "card_id": "BG30_MagicItem_547t",
+   "name": "舒适的棺椁",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "每当你施放一个酒馆法术，你的亡灵在本局对战中拥有+2攻击力（无论它们在哪）。"
+  },
+  {
+   "card_id": "BG30_MagicItem_801",
+   "name": "罪碑标签",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "每回合中，在你前2次发现卡牌时，额外获取一张复制。（还剩2次！）"
+  },
+  {
+   "card_id": "BG36_MagicItem_302t",
+   "name": "黄金重槌",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你的回合结束时，使你的随从获得+4/+2。（在本局对战中你每使用过一张金色随从牌都会提升！）"
+  },
+  {
+   "card_id": "BG30_MagicItem_879t",
+   "name": "达拉然奶酪轮",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "酒馆中的随从拥有+2/+2。你每刷新4次后提升。（还剩4次！）"
+  },
+  {
+   "card_id": "BG36_MagicItem_372",
+   "name": "记忆之球",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你的回合结束时，获取你施放的上一个酒馆法术的3张复制。"
+  },
+  {
+   "card_id": "BG36_MagicItem_406",
+   "name": "沙斯亚尔神坛",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你弃掉一张法术牌后，随机获取一张畸变怪。"
+  },
+  {
+   "card_id": "BG36_MagicItem_404t",
+   "name": "腐蚀的节杖",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "在你施放一个酒馆法术后，使你的神明获得+10/+10。"
+  },
+  {
+   "card_id": "BG36_MagicItem_450",
+   "name": "尖利肖像",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取2张尖利的鲨鱼。每当一个鱼饵死亡，使你的野兽获得+4/+4并提升此效果。"
+  },
+  {
+   "card_id": "BG35_MagicItem_816t",
+   "name": "未知宝珠",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "随机获取一项大型饰品和4枚铸币。"
+  },
+  {
+   "card_id": "BG36_MagicItem_213",
+   "name": "光羽标签",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "战斗开始时：使你的进击随从获得圣盾。"
+  },
+  {
+   "card_id": "BG35_MagicItem_712",
+   "name": "私掠者肖像",
+   "offered_games": 1,
+   "type": "BATTLEGROUND_TRINKET",
+   "text": "获取一张骄傲的私掠者和随机2张悬赏令。在每个回合开始时，再获取2张悬赏令。"
+  }
+ ],
+ "dark_gift": [
+  {
+   "card_id": "BG33_924",
+   "name": "蓝色雏龙",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "进击：在本局对战中，你的酒馆法术使随从额外获得+1 生命值。"
+  },
+  {
+   "card_id": "BG36_701",
+   "name": "海藻护卫",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "发动（1）：触发一个友方随从的战吼。"
+  },
+  {
+   "card_id": "BG36_245",
+   "name": "符文奥术师",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "战斗开始时：施放闪亮的戒指，触发 两次。"
+  },
+  {
+   "card_id": "BG34_684",
+   "name": "堑壕斗士",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "在你的回合结束时，获取一张查抄宝石。"
+  },
+  {
+   "card_id": "BG25_010",
+   "name": "断手被遗忘者",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "亡语：召唤一只2/1并具有复生的手。"
+  },
+  {
+   "card_id": "BG26_814",
+   "name": "苦情民谣歌手",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "战吼：使一个海盗获得+2生命值。（在本回合中你每花费一枚铸币都会提升！）"
+  },
+  {
+   "card_id": "BG36_112",
+   "name": "恶臭侵蚀怪",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "战吼：获取一张腐泥侵蚀。"
+  },
+  {
+   "card_id": "BG36_524",
+   "name": "海上勒索师",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "在本局对战中，你每使用一张金色随从牌，便拥有+7/+7（无论本随从在哪）。"
+  },
+  {
+   "card_id": "BG26_524",
+   "name": "舞蹈王子玛克扎尔",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "每回合中，有两次刷新会消耗生命值，而非铸币。（还剩2次！）"
+  },
+  {
+   "card_id": "BGS_126",
+   "name": "野火元素",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "在本随从攻击并消灭一个随从后，对一个相邻的敌人造成超过目标生命值的伤害。"
+  },
+  {
+   "card_id": "BG33_155",
+   "name": "虔诚的萨特唤魔者",
+   "offered_games": 2,
+   "type": "MINION",
+   "text": "在另一个友方恶魔造成伤害后，永久获得+2/+2。"
+  },
+  {
+   "card_id": "BG34_140",
+   "name": "飞行专家",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "进击：召唤你手牌中攻击力最高的鱼人，其登场仅限本场战斗。"
+  },
+  {
+   "card_id": "BG29_300",
+   "name": "巨饿冬鳍鱼人",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "嘲讽。每当本随从受到伤害，使你手牌中的一张随从牌获得+2/+1。"
+  },
+  {
+   "card_id": "BG36_764",
+   "name": "机鳍鱼人",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "在你的回合结束时，获取两张消耗为（1）的酒馆法术牌。"
+  },
+  {
+   "card_id": "BG36_703",
+   "name": "暮光猎潮者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "每当你对本随从施放法术，使你手牌中最左边的随从牌获得+8/+8。"
+  },
+  {
+   "card_id": "BG27_556",
+   "name": "凶饿的觅食者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "战斗开始时：当你有空位时，召唤你手牌中攻击力最高的鱼人，其登场仅限本场战斗。"
+  },
+  {
+   "card_id": "BG31_812",
+   "name": "守护者艾库隆",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "圣盾 每当你使用一张元素牌，直到下个回合，使其获得圣盾。"
+  },
+  {
+   "card_id": "BG32_820",
+   "name": "火鳞囤积者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "战吼，亡语：获取一张闪亮的戒指。"
+  },
+  {
+   "card_id": "BG36_208",
+   "name": "逐亡陆行鸟",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "在一个友方进击随从攻击后，触发你最左边的亡语。"
+  },
+  {
+   "card_id": "BG31_326",
+   "name": "健身搏猪",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "在你的回合结束时，获取一张宝石特训。"
+  },
+  {
+   "card_id": "BG28_582",
+   "name": "重伤的强盗",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "发动（0）：弃掉一张牌以获取3张鲜血宝石。"
+  },
+  {
+   "card_id": "BG34_682",
+   "name": "剃刀沼泽舞扇者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "战吼，亡语：获取一张鲜血宝石弹幕。"
+  },
+  {
+   "card_id": "BG34_604",
+   "name": "英勇的逆袭者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "潜行。进击：获得目标的攻击力。"
+  },
+  {
+   "card_id": "BG30_121",
+   "name": "热气球测绘员",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "从你手牌中使用 的鲜血宝石会额外施放一次。"
+  },
+  {
+   "card_id": "BG32_873",
+   "name": "灰烬腐蚀者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "在你的英雄受到伤害后，回溯该伤害并使酒馆中的随从在本回合中获得+2/+2。"
+  },
+  {
+   "card_id": "BG36_101",
+   "name": "强制躺平怪",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "亡语：随机获取一张消耗1枚铸币的酒馆法术牌。"
+  },
+  {
+   "card_id": "BG36_346",
+   "name": "水果商贩",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "发动（1）：获取2张香蕉果盘。"
+  },
+  {
+   "card_id": "BG32_880",
+   "name": "友善的恶鬼",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "亡语：在本局对战中，你酒馆法术使随从额外获得+1攻击力。"
+  },
+  {
+   "card_id": "BG32_340",
+   "name": "噬渊施法者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "战吼：消灭一个 友方亡灵以发现一张亡灵牌。"
+  },
+  {
+   "card_id": "BG34_690",
+   "name": "疫病行尸",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "亡语：在本局对战中，你的亡灵拥有+2攻击力，无论它们在哪。（如果在战斗之外触发，改为+4！）"
+  },
+  {
+   "card_id": "BG30_125",
+   "name": "遗骸看管者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "亡语：召唤三个1/1的骷髅。"
+  },
+  {
+   "card_id": "BG36_210",
+   "name": "囤食土狼",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "进击：召唤一只美味龙虾。"
+  },
+  {
+   "card_id": "BG33_318",
+   "name": "怒胆喷毒鱼人",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "烈毒。进击：使另一个友方鱼人获得烈毒。"
+  },
+  {
+   "card_id": "BG34_142",
+   "name": "狂热变装鱼人",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "圣盾。战斗开始时：获得你手牌中攻击力 最高的随从牌的攻击力。"
+  },
+  {
+   "card_id": "BG24_500",
+   "name": "琥珀卫士",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "嘲讽。战斗开始时：使另一条友方的龙获得+2/+2和圣盾。"
+  },
+  {
+   "card_id": "BG27_005",
+   "name": "时空船长钩尾",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "每当你施放一个酒馆法术，使你的随从获得+1攻击力。1每当你施放一个酒馆法术，使你的随从获得+1/+0。"
+  },
+  {
+   "card_id": "BG36_521",
+   "name": "铐住的哗变者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "亡语：获取一张上锁宝箱。如果你已有宝箱，改为使其提前1回合打开。"
+  },
+  {
+   "card_id": "BG36_503",
+   "name": "缚魂狱卒",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "发动（2）：你的恶魔各吞食酒馆中的一个随从，获得其 属性值。"
+  },
+  {
+   "card_id": "BG34_500",
+   "name": "魔焰执行者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "在你的回合结束时，吞食酒馆中生命值最高的随从以获得其 属性值。"
+  },
+  {
+   "card_id": "BG26_ICC_901",
+   "name": "达卡莱附魔师",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "你的回合结束效果会触发两次。"
+  },
+  {
+   "card_id": "BG36_097",
+   "name": "蛊心魔古厄夏",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "每当你弃掉一张牌，使你的其他随从获得+4/+4。"
+  },
+  {
+   "card_id": "BG34_405",
+   "name": "铁血防御机",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "当本随从拥有圣盾时，拥有嘲讽。复仇（3）：获得圣盾。"
+  },
+  {
+   "card_id": "BG36_115",
+   "name": "梦魇侵蚀怪",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "在你的回合结束时，获取一张腐泥侵蚀。"
+  },
+  {
+   "card_id": "BG36_362",
+   "name": "牺牲的愤怒卫士",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "亡语：使酒馆中的随从在本局对战中获得+2/+2。发动（1）：提升此效果。"
+  },
+  {
+   "card_id": "BG26_525",
+   "name": "奇瑰打击乐手",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "战吼： 发现一张恶魔牌，对你的英雄造成等同于其等级的伤害。"
+  },
+  {
+   "card_id": "BG36_103",
+   "name": "恩拉其工兵",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "战吼，亡语：获取一张供能腔。"
+  },
+  {
+   "card_id": "BG32_111",
+   "name": "梦魇茶客",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "战吼，亡语：获取一张乱放的茶具。"
+  },
+  {
+   "card_id": "BG35_883",
+   "name": "巴琳达·斯通赫尔斯",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "你的以友方随从为目标的法术会施放 两次。"
+  },
+  {
+   "card_id": "BG36_240",
+   "name": "受雇坐骑",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "发动（2）：随机获取一张多彩幼龙。"
+  },
+  {
+   "card_id": "BG36_207",
+   "name": "狼宝宝",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "进击：使你的其他随从获得+4/+1。"
+  },
+  {
+   "card_id": "BG26_817",
+   "name": "刀剑收藏家",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "同时对其攻击目标相邻的敌人造成伤害。"
+  },
+  {
+   "card_id": "BG36_211",
+   "name": "啮笼鼠",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "每当一只友方野兽攻击，使你的野兽获得+2/+1。"
+  },
+  {
+   "card_id": "BG34_403",
+   "name": "永恒大亨",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "复仇（5）：召唤一个永恒骑士并使其立即发起攻击。"
+  },
+  {
+   "card_id": "BG32_324",
+   "name": "德鲁斯特堕落屠夫",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "复仇（4）：获取一张宰割。"
+  },
+  {
+   "card_id": "BG36_730",
+   "name": "受困的钟舌恶魔",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "亡语：在你的下3次刷新中各添加一个恶魔饲料。"
+  },
+  {
+   "card_id": "BG36_106",
+   "name": "克熙尔割喉者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "每当你弃掉一张牌，使本随从和你的神明获得+4/+4。"
+  },
+  {
+   "card_id": "BG33_430",
+   "name": "惊异长牙猪",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "每当另一个友方随从攻击，本随从对其使用一张鲜血宝石。"
+  },
+  {
+   "card_id": "BG26_174",
+   "name": "灵魂回溯者",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "在你的英雄 受到伤害后，回溯该伤害并使本随从获得 +2生命值。"
+  },
+  {
+   "card_id": "BG34_856",
+   "name": "幼体水波",
+   "offered_games": 1,
+   "type": "MINION",
+   "text": "亡语：在本局对战中，在酒馆刷新后，使酒馆中一个随机随从获得+4/+4。"
+  }
+ ],
+ "mulligan": [
+  {
+   "card_id": "BG36_HERO_002",
+   "name": "基希克斯",
+   "offered_games": 2,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG22_HERO_003",
+   "name": "范达尔·雷矛",
+   "offered_games": 2,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG22_HERO_004",
+   "name": "瓦尔登·晨拥",
+   "offered_games": 2,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG34_HERO_000",
+   "name": "无限巨龙姆诺兹多",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_76",
+   "name": "奥拉基尔",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG22_HERO_200",
+   "name": "伊妮·积雷",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_49",
+   "name": "米尔豪斯·法力风暴",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG22_HERO_002",
+   "name": "德雷克塔尔",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG35_HERO_001",
+   "name": "吉恩，狼人国王",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG20_HERO_101",
+   "name": "泽瑞拉",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_22",
+   "name": "巫妖王",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG31_HERO_811",
+   "name": "刀锋女王凯瑞甘",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG20_HERO_242",
+   "name": "古夫·符文图腾",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_42",
+   "name": "伊莉斯·逐星",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG31_HERO_005",
+   "name": "克隆大师泽里克",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG36_HERO_105",
+   "name": "梦魇之王萨维斯",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG32_HERO_002",
+   "name": "扣子",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_91",
+   "name": "了不起的杰弗里斯",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_29",
+   "name": "克苏恩",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG25_HERO_105",
+   "name": "乐队经理精英牛头人酋长",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_11",
+   "name": "炎魔之王拉格纳罗斯",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_70",
+   "name": "比格沃斯先生",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG21_HERO_020",
+   "name": "厨师曲奇",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_12",
+   "name": "鼠王",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_68",
+   "name": "天空上尉库拉格",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "TB_BaconShop_HERO_14",
+   "name": "瓦托格尔女王",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG26_HERO_104",
+   "name": "摇滚教父沃恩",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG34_HERO_001",
+   "name": "时光扭曲者克罗米",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  },
+  {
+   "card_id": "BG24_HERO_204",
+   "name": "强化机器人",
+   "offered_games": 1,
+   "type": "HERO",
+   "text": ""
+  }
+ ],
+ "_meta": {
+  "games": 8,
+  "note": "offered_games = 该选项在多少局里被提供过"
+ }
+}
