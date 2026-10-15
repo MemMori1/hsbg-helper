@@ -66,6 +66,28 @@ _CARDS = [
     Card(card_id="BG_T_SPELL", name="某法术", type="SPELL", tech_level=None,
          attack=None, health=None, cost=1, race=None, races=(),
          mechanics=(), text="", pool_minion=False),
+    # 酒馆法术的**效果分类**用例：全部 3 星 2 金，**只有卡文不同** ——
+    # 这样分数差异只可能来自 `SPELL_EFFECT_PATTERNS` 的权重。
+    Card(card_id="BG_T_SP_CARD", name="测试发现", type="BATTLEGROUND_SPELL",
+         tech_level=3, attack=None, health=None, cost=2, race=None, races=(),
+         mechanics=(), text="<b>发现</b>一张等级3的随从牌。", pool_minion=False),
+    Card(card_id="BG_T_SP_COIN", name="测试铸币", type="BATTLEGROUND_SPELL",
+         tech_level=3, attack=None, health=None, cost=2, race=None, races=(),
+         mechanics=(), text="获得1枚铸币。", pool_minion=False),
+    Card(card_id="BG_T_SP_CAP", name="测试涨上限", type="BATTLEGROUND_SPELL",
+         tech_level=3, attack=None, health=None, cost=2, race=None, races=(),
+         mechanics=(), text="你的铸币上限提高1枚。", pool_minion=False),
+    Card(card_id="BG_T_SP_GLOBAL", name="测试全局增益", type="BATTLEGROUND_SPELL",
+         tech_level=3, attack=None, health=None, cost=2, race=None, races=(),
+         mechanics=(), text="使你的随从获得+1/+1。", pool_minion=False),
+    Card(card_id="BG_T_SP_SINGLE", name="测试单体增益", type="BATTLEGROUND_SPELL",
+         tech_level=3, attack=None, health=None, cost=2, race=None, races=(),
+         mechanics=(), text="使一个随从获得+2/+2。", pool_minion=False),
+    # ⚠️ 卡表正文里 `<b>` 被剥掉后会**留下空格**（实测「变为 金色」），
+    # 分类器必须先去空白再匹配。
+    Card(card_id="BG_T_SP_GOLD", name="测试变金", type="BATTLEGROUND_SPELL",
+         tech_level=3, attack=None, health=None, cost=2, race=None, races=(),
+         mechanics=(), text="随机使酒馆中的一个随从变为 金色。", pool_minion=False),
     # 黑暗之赐的**赐福**（另一张卡）：实测 `BG36_MidGameEffect_000t13`
     # 就是「圣盾 + 风怒」这种纯词条赐福
     Card(card_id="BG_T_GIFT1", name="测试赐福", type="SPELL", tech_level=None,
@@ -1027,6 +1049,70 @@ def test_empty_board_buys_a_body_instead_of_a_spell():
     assert rep.decision.action == "买"
     assert rep.decision.target == "野兽一号", rep.decision.target
     assert rep.decision.trigger == "thin_board"
+
+
+def _spell_item(card_id, board_n=4, gold=10):
+    """造一个 4 本、10 金、场上有 `board_n` 只随从的盘面，返回商店里那张法术的评分。"""
+    st = _state(turn=9, tier=4, gold=gold,
+                board=["BG_T_AVENGE"] * board_n, tech_up_cost=99)
+    st.spells = [ShopSlot(slot_entity_id=900, minion_entity_id=901,
+                          card_id=card_id, cost=2, kind="spell",
+                          belongs_to_local=True)]
+    return _eng().evaluate(st).spells[0]
+
+
+def test_spell_effect_is_read_from_card_text():
+    """效果分类全部来自**卡文**（实测酒馆法术的 `mechanics` 大多是空的）。"""
+    cases = {
+        "BG_T_SP_CARD": "给牌",
+        "BG_T_SP_COIN": "给钱",
+        "BG_T_SP_CAP": "涨钱上限",
+        "BG_T_SP_GOLD": "变身",          # ⚠️ 卡文里是「变为 金色」，中间有空格
+        "BG_T_SP_GLOBAL": "给身材",
+    }
+    for card_id, label in cases.items():
+        it = _spell_item(card_id)
+        assert any(label in r for r in it.reasons), (card_id, label, it.reasons)
+        assert "效果：" in "".join(it.reasons), (card_id, it.reasons)
+
+
+def test_coin_spell_does_not_match_the_gold_cap_pattern():
+    """⚠️ 「铸币上限」不能被算成一次性「给钱」——两者价值差一倍以上。"""
+    cap = _spell_item("BG_T_SP_CAP")
+    coin = _spell_item("BG_T_SP_COIN")
+    assert "涨钱上限" in "".join(cap.reasons)
+    assert "涨钱上限" not in "".join(coin.reasons)
+    assert cap.score > coin.score, (cap.score, coin.score)
+
+
+def test_a_free_minion_beats_a_coin_of_the_same_tier_and_cost():
+    """同星同费时「白拿一张随从」必须压过「净赚 1 金」。"""
+    card = _spell_item("BG_T_SP_CARD")
+    coin = _spell_item("BG_T_SP_COIN")
+    assert card.score > coin.score, (card.score, coin.score)
+
+
+def test_transforming_into_golden_is_penalised():
+    """变身/异常方差大，同星同费时要排在稳收益后面。"""
+    gold = _spell_item("BG_T_SP_GOLD")
+    card = _spell_item("BG_T_SP_CARD")
+    assert gold.score < card.score, (gold.score, card.score)
+
+
+def test_global_buff_scales_with_board_size():
+    """「使**你的**随从获得+1/+1」吃场面：场上越多只越值。"""
+    small = _spell_item("BG_T_SP_GLOBAL", board_n=1)
+    big = _spell_item("BG_T_SP_GLOBAL", board_n=6)
+    assert big.score > small.score, (small.score, big.score)
+    assert any("吃场面" in r for r in big.reasons), big.reasons
+
+
+def test_single_target_buff_is_penalised_on_an_empty_board():
+    """「使**一个**随从获得+2/+2」在空场没处贴，要减分并说清楚。"""
+    empty = _spell_item("BG_T_SP_SINGLE", board_n=0)
+    some = _spell_item("BG_T_SP_SINGLE", board_n=4)
+    assert empty.score < some.score, (empty.score, some.score)
+    assert any("场上没有随从可贴" in r for r in empty.reasons), empty.reasons
 
 
 def test_placeholder_entity_name_falls_back_to_the_card_db():

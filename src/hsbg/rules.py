@@ -81,7 +81,47 @@ MECHANIC_WEIGHT: Dict[str, float] = {
     "塑造法术": 0.8,
 }
 
-#: 只认这几种"家族"标，避免把 `BACON_xxx_ID` 这类数字作弊字段当成关键词。
+#: 酒馆法术按**效果**分类（实测卡表里 208 张 `BATTLEGROUND_SPELL`，其中真正能在
+#: 商店里买到的、两份真机日志里出现过 40 种）。
+#:
+#: ⚠️ 分类只用来调**法术内部**的相对顺序：法术起手分和随从"按身材算"的分不是
+#: 同一把尺子（实测直接把两者比大小会让决策框在回合 1 空场去买法术）。
+#: ⚠️ 顺序有意义：`给牌` 先匹配，避免"发现一张亡语随从牌"被同时算成 `给关键词`。
+SPELL_EFFECT_PATTERNS: Tuple[Tuple[str, str], ...] = (
+    ("给牌", r"发现|获取|复制|偷取"),
+    ("涨钱上限", r"铸币上限"),
+    ("给钱", r"获得\d*枚铸币"),
+    ("刷新", r"刷新|锁入"),
+    ("变身", r"变形|异变|点金|变为金色"),
+    ("给关键词", r"嘲讽|圣盾|复生|风怒|潜行|剧毒|亡语|进击|战斗开始时|回合结束时|施放"),
+    ("给身材", r"\+\d+/\+\d+|属性值"),
+)
+
+#: 效果权重（叠在法术起手分上）。口径：
+#:  · `给牌` ≈ 白拿一张随从，最稳（主厨甄选、发现一个等级N的随从）
+#:  · `涨钱上限` = 每回合永久 +1 金，越早越值（钻探原油）
+#:  · `给钱` **只给一点点**：实测「酒馆币」是 1 金买 1 金、净 0，
+#:    「慎重投资」1 金换下回合 2 金、净 +1 —— 价值远低于白拿一张随从
+#:  · `变身/异常` 方差大，样本不够时不赌
+SPELL_EFFECT_WEIGHT: Dict[str, float] = {
+    "给牌": 2.5,
+    "涨钱上限": 2.0,
+    "刷新": 1.0,
+    "给身材": 1.0,
+    "给钱": 0.5,
+    "给关键词": 0.5,
+    "变身": -1.0,
+}
+
+#: 法术的星级系数**比随从低**（随从用 1.5）。星级只代表"在第几级酒馆出现"，
+#: 不等于效果价值 —— 用 1.5 会让 5 星「变身金色」压过 2 星「白拿一张随从」。
+SPELL_TECH_LEVEL_WEIGHT = 1.0
+
+#: 「使**你的**随从/每个/所有」= 全局增益，价值随场面走；
+#: 「使**一个**随从」= 单体，场上没随从时根本没处贴。
+_SPELL_GLOBAL_RE = re.compile(r"你的随从|你的战队|每个|所有|酒馆中")
+_SPELL_SINGLE_RE = re.compile(r"使一个(友方)?随从|选择一个随从|使一条龙")
+
 _KEYWORD_MECHANICS = ("POISONOUS", "VENOMOUS", "DIVINE_SHIELD", "TAUNT",
                       "REBORN", "WINDFURY", "DEATHRATTLE", "BATTLECRY",
                       "AVENGE", "SPELLCRAFT", "BACON_RALLY")
@@ -1032,6 +1072,21 @@ class RulesEngine:
         items.sort(key=lambda it: -it.score)
         return items
 
+    def _spell_effects(self, text: str) -> List[str]:
+        """按卡文判酒馆法术的**效果**类别（可多类）。
+
+        ⚠️ 用**卡文**而不是 `mechanics`：实测酒馆法术的 `mechanics` 大多为空，
+        效果全写在正文里（例如 `BG28_810` 酒馆币的正文只有"获得1枚铸币。"）。
+
+        ⚠️ 匹配前必须**去掉空白**：卡表正文里 `<b>` 标签被剥掉后会留下空格
+        （实测「随机使酒馆中的一个随从变为 金色」），照原样匹配 `变为金色` 会漏。
+        """
+        if not text:
+            return []
+        flat = re.sub(r"\s+", "", text)
+        return [label for label, pat in SPELL_EFFECT_PATTERNS
+                if re.search(pat, flat)]
+
     def _score_spells(self, st: GameState) -> List[ShopItem]:
         """给酒馆法术打分。
 
@@ -1040,10 +1095,13 @@ class RulesEngine:
         看不到商店里那张 1 金法术。
 
         打分口径（刻意保守，法术强弱高度依赖卡文，样本不够时不硬猜）：
-          · 起手 5 分（法术是"即用即走"的灵活资源）
-          · 费用越高越难用（每金 −1，且逐金边际递减）
+          · 起手 6 分（法术是"即用即走"的灵活资源）
+          · 费用越高越难用（每金 −1）
           · 星级越高越强（+1.5/星）
           · 关键词照 `MECHANIC_WEIGHT` 加权
+          · ⭐ **按效果分类加分**（见 `SPELL_EFFECT_PATTERNS`）：给牌 > 给钱 >
+            刷新/给身材 > 给关键词；变身/异常减分
+          · ⭐ **全局增益随场面放大**（"使你的随从"/"每个"），单体增益在空场减分
           · ⭐ **场面已满时加分**：法术不占格子，此时它比随从更值
         """
         cfg = self.config
@@ -1077,7 +1135,7 @@ class RulesEngine:
 
             tl = card.tech_level if card is not None else None
             if tl:
-                score += tl * 1.5
+                score += tl * SPELL_TECH_LEVEL_WEIGHT
 
             keywords = self._keyword_labels(slot.card_id)
             kw_score = 0.0
@@ -1091,6 +1149,22 @@ class RulesEngine:
             if board_full:
                 score += 3.0
                 reasons.append("场面已满（法术不占格子）")
+
+            # ⭐ 按效果分类调分（只调法术内部顺序，不和随从横向比）
+            effects = self._spell_effects(text)
+            if effects:
+                score += sum(SPELL_EFFECT_WEIGHT.get(e, 0.0) for e in effects)
+                reasons.append("效果：" + "/".join(effects))
+                if "给身材" in effects or "给关键词" in effects:
+                    if _SPELL_GLOBAL_RE.search(text):
+                        # 全局增益：吃几只，价值就涨多少（封顶 2 分）
+                        bonus = min(0.4 * max(0, len(st.board) - 1), 2.0)
+                        if bonus:
+                            score += bonus
+                            reasons.append("吃场面（%d 只）" % len(st.board))
+                    elif _SPELL_SINGLE_RE.search(text) and not st.board:
+                        score -= 1.5
+                        reasons.append("场上没有随从可贴")
 
             affordable = gold is None or gold >= cost
             if not affordable:

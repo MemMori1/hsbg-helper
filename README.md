@@ -23,7 +23,7 @@ cd hsbg-helper
 ./hsbg advise          # 规则建议 + JevK5 模型意见
 ./hsbg serve start   # 拉起 JevK5 本地推理服务（llama-server）
 ./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行）
-./run-tests            # 跑单元测试（291 个）
+./run-tests            # 跑单元测试（297 个）
 ```
 
 **零依赖**：纯 Python 标准库，跑在本机自带的 `/usr/bin/python3`（3.9.6），不需要 venv、
@@ -115,7 +115,7 @@ cd hsbg-helper
 | `tools/winlist.swift` | 打印所有在屏窗口的矩形/owner（调窗口几何时用） |
 | `tools/trace_decisions.py` | **逐回合打印决策框**，用来对照大神的运营节奏复盘规则 |
 | `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表） |
-| `tests/` | 零依赖测试运行器 + 291 个测试 |
+| `tests/` | 零依赖测试运行器 + 297 个测试 |
 
 ---
 
@@ -471,6 +471,16 @@ evidence 会让 2B 模型基本读不懂。早期实测：evidence 里「商店�
 （`shop_spells` 是同名的兼容别名），`RulesEngine._score_spells()` 单独打分
 （法术与随从**不是同一把尺子**，不能直接比大小）。
 
+法术**按效果分类**打分（判据全是卡文正则，见 `src/hsbg/rules.py` 的
+`SPELL_EFFECT_PATTERNS`）：`给牌 +2.5` > `涨钱上限 +2.0` > `刷新/给身材 +1.0`
+> `给钱/给关键词 +0.5` > `变身 −1.0`。⚠️「酒馆币」是 1 金买 1 金**净 0**，
+所以 `给钱` 权重必须低；「钻探原油」（铸币上限 +1，永久）拆成 `涨钱上限`
+单独给高分。全局增益（"使你的随从"）另按场面数 `+0.4×(n−1)` 放大，
+单体增益在空场 `−1.5`。
+
+⚠️ 分类前**必须去掉空白**：卡表正文剥掉 `<b>` 后会留空格
+（实测「随机使酒馆中的一个随从变为 金色」），否则 `变为金色` 匹配不上。
+
 ⚠️ 两条由此而来的坑：
 
 1. **法术与随从的分数不能直接比**：法术起手 6 分、随从按身材算（早期随从普遍
@@ -706,7 +716,7 @@ CLI 侧一直是无条件打印的，两边口径不一致。改成 `if row.scor
 ## 测试
 
 ```bash
-./run-tests          # 全部（291 个）
+./run-tests          # 全部（297 个）
 ./run-tests -v       # 逐个打印
 ./run-tests -k tag   # 只跑名字含 "tag" 的
 ```
