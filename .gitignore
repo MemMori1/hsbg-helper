@@ -11,3 +11,6 @@ data/cards_raw_enUS.json
 
 # macOS
 .DS_Store
+
+# HSReplay API 原始响应（临时调研存档，可用本档 §3.1 的命令重新拉取）
+.hsreplay/
