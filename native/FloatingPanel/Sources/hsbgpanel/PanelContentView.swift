@@ -107,8 +107,13 @@ struct PanelContentState {
         var name: String = ""
         var note: String = ""
         /// 模型给这一项的概率（0..1）；无模型时为 nil。
-        /// 规则层对饰品/赐福刻意不打分，这是面板上唯一"选哪个"的量化依据。
+        /// 黑赐/发现类题面没有实证分，它仍是"选哪个"的唯一量化依据。
         var probability: Double?
+        /// HSReplay 实证摘要（只有饰品选项有）：`A级 · 选取37% · 平均名次3.82`。
+        /// 规则层按它对饰品四选一出推荐（见 rules._score_trinket_options）。
+        var scoreNote: String = ""
+        /// 规则层推荐的那一项（只有饰品四选一会有 ★ 标记）。
+        var recommended: Bool = false
         /// 黑暗之赐的赐福（**另一张卡**，靠 `DARK_GIFT_ENTITY` 关联）。
         /// ⚠️ 黑赐三选一里选项是随从，但强弱主要由赐福给了什么词条决定
         /// （实测同一只随从可以配 圣盾+风怒 / +10血亡语 / 复生 三种）。
@@ -200,9 +205,10 @@ final class PanelContentView: NSView {
         if let c = state.pendingChoice {
             h += sectionGap + headingHeight
             h += lineHeight * CGFloat(max(1, c.options.count))
-            // 每个选项最多再加一行 note + 一行赐福（黑赐才有赐福）
+            // 每个选项最多再加一行 note + 一行实证摘要 + 一行赐福（黑赐才有赐福）
             for o in c.options {
                 if !o.note.isEmpty { h += lineHeight }
+                if !o.scoreNote.isEmpty { h += lineHeight }
                 if !o.giftNote.isEmpty { h += lineHeight }
             }
         }
@@ -444,7 +450,12 @@ final class PanelContentView: NSView {
                      color: NSColor(calibratedRed: 1.0, green: 0.83, blue: 0.4, alpha: 1),
                      font: headingFont)
             for o in c.options {
-                let label = "\(o.index + 1). \(o.name)"
+                // ★ = 规则层推荐的那一项（只有饰品四选一有实证分）；名字整行
+                // 跟着变绿，扫一眼就能找到该点哪个。
+                let label = (o.recommended ? "★ " : "") + "\(o.index + 1). \(o.name)"
+                let nameColor = o.recommended
+                    ? NSColor(calibratedRed: 0.6, green: 0.9, blue: 0.6, alpha: 1)
+                    : NSColor(calibratedWhite: 0.92, alpha: 1)
                 if let p = o.probability {
                     // 概率排在名字右侧；`draw` 自带截断，长卡名会在概率前收尾。
                     let pText = String(format: "P=%.2f", p)
@@ -452,7 +463,7 @@ final class PanelContentView: NSView {
                         .font: monoFont]).width
                     let rowY = y
                     draw(label, at: padding, rowY,
-                         color: NSColor(calibratedWhite: 0.92, alpha: 1),
+                         color: nameColor,
                          font: nil, reserveRight: pw + 8)
                     draw(pText, at: bounds.width - padding - pw, rowY,
                          color: NSColor(calibratedRed: 0.6, green: 0.9, blue: 0.6,
@@ -460,8 +471,14 @@ final class PanelContentView: NSView {
                          font: monoFont)
                     y += lineHeight
                 } else {
-                    y = line(label, at: padding, y,
-                             color: NSColor(calibratedWhite: 0.92, alpha: 1))
+                    y = line(label, at: padding, y, color: nameColor)
+                }
+                // HSReplay 实证摘要（饰品选项才有）：排在卡文提示前面 ——
+                // 它是"选哪个"的主要依据，卡文只是补充说明。
+                if !o.scoreNote.isEmpty {
+                    y = line("    " + o.scoreNote, at: padding, y,
+                             color: NSColor(calibratedRed: 0.6, green: 0.9,
+                                            blue: 0.6, alpha: 0.9))
                 }
                 if !o.note.isEmpty {
                     y = line("    " + o.note, at: padding, y,

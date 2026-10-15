@@ -272,6 +272,9 @@ extension PanelContentState {
                 row.name = o["name"] as? String ?? ""
                 row.note = o["note"] as? String ?? ""
                 row.probability = o["probability"] as? Double
+                // HSReplay 实证分（只有饰品选项有）：规则层的推荐依据。
+                row.scoreNote = o["score_note"] as? String ?? ""
+                row.recommended = o["recommended"] as? Bool ?? false
                 // 黑暗之赐的赐福（另一张卡）：黑赐三选一的强弱主要看它
                 row.giftName = o["gift_name"] as? String ?? ""
                 row.giftNote = o["gift_note"] as? String ?? ""

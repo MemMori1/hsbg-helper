@@ -21,6 +21,7 @@ from .provider import (Advisor, Answer, JevK5Advisor, ModelUnavailable,
 from .rules import (AdviceReport, RulesEngine, clean_mechanics,
                     evaluate_state)
 from .state import Entity, GameState, Seat, ShopSlot
+from .trinkets import TrinketStats
 
 
 # ---------------------------------------------------------------------------
@@ -297,8 +298,10 @@ def pick_question(st: GameState, report: AdviceReport,
 def choice_question(st: GameState, report: AdviceReport) -> Optional[Question]:
     """当前待选做成 `choice` 题（饰品四选一 / 黑赐三选一 / 三连奖励 / 卡牌效果发现）。
 
-    ⚠️ 这块**只能**这样问：规则层对饰品与赐福刻意不打分（420 张效果差异没有样本），
-    而"该选哪个"正是 JevK5 最擅长的相对判断 —— 给全选项 + 盘面上下文让它推概率。
+    ⚠️ 题面里**同时给规则层的依据**：饰品选项带着 HSReplay 实证统计
+    （`trinkets.py`，evidence 与这里的选项行共用 `ChoiceItem.note_en`），
+    模型是在实证统计之上再叠加盘面上下文；黑赐这类没有实证的题，
+    仍然是"给全选项让模型自己推概率"。
 
     选项 id 用 **1..N 的显示序号**（与 evidence 里 `1. ...` 列表一致），
     这样返回的 `Answer.choice` 直接就是序号，翻译回中文名不会错位。
@@ -434,7 +437,8 @@ def consult(st: GameState, db: Optional[CardDB] = None,
             advisor: Optional[Advisor] = None,
             engine: Optional[RulesEngine] = None,
             limit: int = 12,
-            db_en: Optional[CardDB] = None) -> Advice:
+            db_en: Optional[CardDB] = None,
+            trinket_stats: Optional[TrinketStats] = None) -> Advice:
     """规则 + 模型的总入口。
 
     ⚠️ 模型不可用时不抛异常：返回 `provider="rules-only"` 并在 `note` 里说明，
@@ -444,12 +448,17 @@ def consult(st: GameState, db: Optional[CardDB] = None,
     `resolver` 的调用方（`panel.py` 的 `ModelAdvisorRunner`）会把 evidence 退化成
     裸 CardID —— 模型看到的是 `BG36_506 (tier 4, 5/2)` 而不是 `复映无人机 ...`，
     同一帧问出不同答案（实测：带卡表答 slot 2，不带卡表答 slot 1）。
+
+    `trinket_stats` 是 HSReplay 饰品实证表（`trinkets.TrinketStats`）：给了它
+    饰品四选一才有推荐，而 evidence 里的选项行也会带上实证统计。为 None 时
+    一切照旧（该题只有卡文，模型自己判）。
     """
     if db is None and resolver is not None:
         db = getattr(resolver, "db", None)
     if db_en is None and resolver is not None:
         db_en = getattr(resolver, "db_en", None)
-    rep = (engine or RulesEngine(db, db_en=db_en)).evaluate(st)
+    rep = (engine or RulesEngine(db, db_en=db_en,
+                                 trinket_stats=trinket_stats)).evaluate(st)
     adv = Advice(report=rep)
     adv.evidence = build_evidence(st, db=db, resolver=resolver, report=rep,
                                   db_en=db_en)

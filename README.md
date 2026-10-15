@@ -5,9 +5,10 @@
 > **红线：只看不动。** 本工具读游戏日志、给建议，**绝不模拟鼠标键盘、绝不注入游戏**。
 > 架构上不给执行层留任何接口（见 `docs/需求分析.md` §2.3）。
 
-当前进度：**P0–P6 + P8/P9 已完成**。日志解析 → 盘面重建 → 卡牌数据 → 规则引擎 →
+当前进度：**P0–P6 + P8–P14 已完成**。日志解析 → 盘面重建 → 卡牌数据 → 规则引擎 →
 JevK5 模型顾问 → Swift 悬浮框，整条链路已打通；饰品四选一 / 黑赐三选一 / 三连奖励
-等"待选"也已接入（规则展示 + 模型出概率）。
+等"待选"也已接入（规则展示 + 模型出概率），**饰品四选一另有 HSReplay 实证推荐**
+（tier + 选取率 + 平均名次，见 `src/hsbg/trinkets.py`）。
 
 ---
 
@@ -23,7 +24,7 @@ cd hsbg-helper
 ./hsbg advise          # 规则建议 + JevK5 模型意见
 ./hsbg serve start   # 拉起 JevK5 本地推理服务（llama-server）
 ./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行）
-./run-tests            # 跑单元测试（297 个）
+./run-tests            # 跑单元测试（323 个）
 ```
 
 **零依赖**：纯 Python 标准库，跑在本机自带的 `/usr/bin/python3`（3.9.6），不需要 venv、
@@ -103,7 +104,8 @@ cd hsbg-helper
 | `src/hsbg/state.py` | **盘面重建**：`GameState` / `Seat` / `ShopSlot` / `StateBuilder` |
 | `src/hsbg/cards.py` | 卡表（`CardDB` / `CardResolver`）、缓存构建、HearthstoneJSON 下载 |
 | `src/hsbg/names.py` | 从日志自举 `CardID → 中文名` |
-| `src/hsbg/rules.py` | **规则引擎**：商店打分、升本、三连、血线预警（纯规则，可离线单测） |
+| `src/hsbg/rules.py` | **规则引擎**：商店打分、升本、三连、血线预警、饰品实证推荐（纯规则，可离线单测） |
+| `src/hsbg/trinkets.py` | **饰品实证数据**：读 HSReplay tier/选取率/平均名次 → 打分（`data/trinkets_hsreplay.json`，`tools/fetch_hsreplay.py` 拉取） |
 | `src/hsbg/provider.py` | **JevK5 协议**：prompt 模板、字母 logprob 读法、概率校准 |
 | `src/hsbg/advisor.py` | **盘面 → 英文 evidence + 类型化提问**，`consult()` 总入口 |
 | `src/hsbg/model_server.py` | 找 llama-server / GGUF，启停 JevK5 服务 |
@@ -114,8 +116,8 @@ cd hsbg-helper
 | `tools/verify_attr_rule.py` | 归属规则的语义自证（靠 `ENTITY_ID` 判对错，不靠数数） |
 | `tools/winlist.swift` | 打印所有在屏窗口的矩形/owner（调窗口几何时用） |
 | `tools/trace_decisions.py` | **逐回合打印决策框**，用来对照大神的运营节奏复盘规则 |
-| `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表） |
-| `tests/` | 零依赖测试运行器 + 297 个测试 |
+| `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表）、`trinkets_hsreplay.json`（饰品实证） |
+| `tests/` | 零依赖测试运行器 + 323 个测试 |
 
 ---
 
@@ -337,8 +339,21 @@ evidence 会让 2B 模型基本读不懂。早期实测：evidence 里「商店�
 
 ## 待选（饰品四选一 / 黑赐三选一）与模型概率
 
-规则层对饰品与赐福**刻意不打分**（420 张饰品效果差异太大，没有样本定不出权重），
-所以"该选哪个"完全靠 JevK5 做 `choice` 题：
+待选分两类处理：
+
+**饰品四选一 —— 规则层给实证推荐 + 模型出概率**。HSReplay 提供了饰品的
+tier / 选取率 / 终局平均名次（`data/trinkets_hsreplay.json`，由 `tools/fetch_hsreplay.py`
+拉取），规则层据此打分并用 ★ 标出推荐（`src/hsbg/trinkets.py` + `rules.py`）：
+
+```
+小饰品四选一  （还没选）  小型饰品商店将于5回合后开启！
+  ★ 1. 朝圣小鬼标签  A级 · 选取37% · 平均名次3.82  每回合中，有一张恶魔牌可用生命值购买…
+    2. 爱心吊坠     D级 · 选取14% · 平均名次4.54  在你对一个友方随从施放法术后…
+```
+
+**黑赐三选一 / 三连奖励 / 卡牌效果发现 —— 规则层只展示，模型出概率**。这些没有
+可复现的样本（黑赐是"随从 + 赐福"的任意组合，420 张饰品的兄弟问题在赐福上复现），
+凭卡文猜分数只会误导，所以"该选哪个"完全靠 JevK5 做 `choice` 题：
 
 ```
 模型意见（jevk5）
@@ -346,7 +361,32 @@ evidence 会让 2B 模型基本读不懂。早期实测：evidence 里「商店�
     概率分布：伦德尔标签 35% · 朝圣小鬼标签 28% · 战鼓 21% · 爱心吊坠 16%
 ```
 
-实现要点（都在 `src/hsbg/advisor.py`）：
+实现要点（`src/hsbg/trinkets.py` + `src/hsbg/advisor.py`）：
+
+**实证分（只对饰品）**
+- 公式：`score = tier 基础分 + (4.2 − 平均名次) × 3`，
+  `S/A/B/C/D/F = 3.0 / 1.5 / 0.5 / −0.5 / −1.5 / −3.0`
+  - 参照点 4.2 = ALL 分段全体饰品平均名次的**中位数**（实测）；名次项实际贡献
+    约 ±2.6 分，与 tier 的 ±3 分同量级，两者不互相淹没。
+  - 固定用 `brackets.ALL`（样本最大）。`TOP_1_PERCENT` 的 tier 口径不同
+    （同一件饰品判 F 级的数量是 ALL 的 5 倍），**两套不能混用**。
+- ⚠️ **多彩罗盘**（`BG30_MagicItem_426` 小/大型）在 HSReplay 里是**按大厅种族组合
+  分行**的（同一 `card_id` 10 行）。取**平均名次的中位数行**作为代表值并标
+  "大厅种族相关"——取最好 = 假设大厅种族正好是它的最佳组合（高估），大厅种族
+  在日志里读不到，中位数是诚实的代表值。
+- ⚠️ **查不到 = `None`，绝不能当 0 分**：新补丁刚上的饰品 HSReplay 还没统计到，
+  0 分会让它看起来比 F 级还差。缺数据的选项不画分、不参与推荐。
+- 部分选项缺数据时仍然推荐"有数据的里面最好的"，但尾巴上带一句
+  `1 项无实证数据`（新饰品往往很强，闷头推荐一个 D 级老饰品会误导）。
+- 实证统计会**同时进 evidence 与 `choice` 题面**（英文一行
+  `HSReplay tier S, picked 37%, avg place 3.82`，ADR-4）——模型是在实证之上
+  再叠加盘面/阵容判断，不是从零猜。
+- ⚠️ **选项顺序不许重排**：面板上的 `1..N` 就是游戏里的 offer 顺序，模型答案按
+  序号翻译回中文名（`_pending_choice_text`）。规则层的推荐只加 ★ 标记。
+- `data/trinkets_hsreplay.json` 缺失/损坏时**静默降级**为老行为（只展示不推荐），
+  与缺 `cards_enUS.json` 的约定一致。
+
+**题面与答案翻译（`advisor.py`）**
 - `choice_question()` 把待选做成 `choice` 题，选项文本写成 `"N. 英文名 — 英文卡文"`
   - ⚠️ **不能**改成 `(id, 文本)` 元组：`Question.options()` 对 `choice` 题的既有契约是
     "裸文本即选项 id"，改成元组会同时破坏 `pick_shop` 的答案翻译。
@@ -751,7 +791,7 @@ CLI 侧一直是无条件打印的，两边口径不一致。改成 `if row.scor
 ## 测试
 
 ```bash
-./run-tests          # 全部（297 个）
+./run-tests          # 全部（323 个）
 ./run-tests -v       # 逐个打印
 ./run-tests -k tag   # 只跑名字含 "tag" 的
 ```

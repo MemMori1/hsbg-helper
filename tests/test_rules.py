@@ -768,7 +768,9 @@ def test_dark_gift_ignores_the_mechanism_toggle_card():
 
 
 # ---------------------------------------------------------------------------
-# 待选（饰品四选一 / 黑赐三选一）：规则层只做展示 + 一行特征，**不打分**
+# 待选（饰品四选一 / 黑赐三选一）
+# ⚠️ 只有**饰品**有 HSReplay 实证分（见 `trinkets.py`）；黑赐与发现类没有样本，
+# 仍然只做展示 + 一行特征提示，不打分。
 # ---------------------------------------------------------------------------
 
 from hsbg.state import ChoiceOption, PendingChoice, Trinket, DarkGiftRecord  # noqa: E402
@@ -936,6 +938,116 @@ def test_choice_advice_degrades_without_card_db():
     rep = evaluate_state(_choice_state(pc), None)
     assert rep.pending_choice is not None
     assert rep.pending_choice.options[0].label == "日志名0"
+
+
+# ---------------------------------------------------------------------------
+# 饰品实证分（HSReplay）：只有饰品四选一打分 + 给推荐
+# ---------------------------------------------------------------------------
+
+from hsbg.trinkets import TrinketStats  # noqa: E402
+
+
+def _stats(rows=None):
+    """一张只有测试卡的手搓实证表（不碰生成物 `data/trinkets_hsreplay.json`）。"""
+    if rows is None:
+        rows = [
+            {"card_id": "BG_T_BEAST1", "tier": "s", "pick_rate": 46.0,
+             "avg_final_placement": 3.55},
+            {"card_id": "BG_T_BEAST2", "tier": "c", "pick_rate": 20.0,
+             "avg_final_placement": 4.33},
+        ]
+    return TrinketStats.from_rows(rows, bracket="ALL")
+
+
+def test_trinket_options_get_scores_and_the_best_is_recommended():
+    # 差的一号在前、好的在后 —— 推荐必须换到后面那个，而不是排在前面那个
+    pc = _trinket_pc(["BG_T_BEAST2", "BG_T_BEAST1"])
+    rep = evaluate_state(_choice_state(pc), _db(), trinket_stats=_stats())
+    adv = rep.pending_choice
+    assert all(o.score is not None for o in adv.options)
+    assert adv.options[1].score > adv.options[0].score
+    assert adv.recommended is adv.options[1]        # 认的是选项对象本身
+    assert adv.recommended.label == "野兽一号"
+    assert "S级" in adv.options[1].score_note
+    assert adv.options[1].score_note_en.startswith("HSReplay tier S")
+    assert adv.recommend_note == ""                 # 数据齐全，没有缺口提示
+    assert adv.recommend_text.startswith("规则推荐 野兽一号")
+
+
+def test_trinket_note_en_puts_the_stats_before_the_card_text():
+    """喂模型的一行里实证统计要排在卡文前面（卡文可能很长，截断会吃掉统计）。"""
+    stats = _stats(rows=[{"card_id": "BG_T_FIRE0", "tier": "s",
+                          "pick_rate": 46.0, "avg_final_placement": 3.55}])
+    pc = _trinket_pc(["BG_T_FIRE0"])
+    rep = evaluate_state(_choice_state(pc), _db(), trinket_stats=stats)
+    note_en = rep.pending_choice.options[0].note_en
+    assert note_en.startswith("HSReplay tier S")
+    assert "发动（0）" in note_en                     # 卡文兜底排在后面
+
+
+def test_recommendation_reaches_the_decision_box_and_warning():
+    pc = _trinket_pc(["BG_T_BEAST2", "BG_T_BEAST1"])
+    rep = evaluate_state(_choice_state(pc), _db(), trinket_stats=_stats())
+    assert rep.decision.trigger == "pending_choice"
+    assert rep.decision.action == "选择"
+    assert rep.decision.target == "小饰品四选一"
+    assert "规则推荐 野兽一号" in rep.decision.reason
+    assert "S级" in rep.decision.reason
+    assert "推荐 野兽一号" in rep.warnings[0].text
+    assert rep.warnings[0].level == "info"           # 待选只是提醒，不是警告
+
+
+def test_trinket_scoring_degrades_to_display_only_without_stats():
+    """没有实证表（老行为）：只展示不推荐，决策框退回通用文案。"""
+    pc = _trinket_pc(["BG_T_BEAST1", "BG_T_BEAST2"])
+    rep = evaluate_state(_choice_state(pc), _db())   # 不传 trinket_stats
+    adv = rep.pending_choice
+    assert adv.recommended is None and adv.recommend_text == ""
+    assert all(o.score is None and o.score_note == "" for o in adv.options)
+    assert rep.decision.reason == "免费收益，先点开挑一个"
+    assert "推荐" not in rep.warnings[0].text
+
+
+def test_partial_stats_recommend_with_a_caveat():
+    """新补丁刚上的饰品 HSReplay 还没统计到：缺口必须写进推荐里。"""
+    pc = _trinket_pc(["BG_T_BEAST1", "BG_T_BEAST2"])
+    stats = _stats(rows=[{"card_id": "BG_T_BEAST2", "tier": "c",
+                          "pick_rate": 20.0, "avg_final_placement": 4.33}])
+    rep = evaluate_state(_choice_state(pc), _db(), trinket_stats=stats)
+    adv = rep.pending_choice
+    assert adv.options[0].score is None              # 一号没有数据 ≠ 0 分
+    assert adv.recommended is adv.options[1]
+    assert adv.recommend_note == "1 项无实证数据"
+    assert "1 项无实证数据" in adv.recommend_text
+    assert "1 项无实证数据" in rep.decision.reason
+
+
+def test_no_option_with_stats_means_no_recommendation():
+    """四个选项一个都没数据时不做推荐（宁可不说，也不能瞎指）。"""
+    pc = _trinket_pc(["BG_T_BEAST1", "BG_T_BEAST2"])
+    stats = _stats(rows=[{"card_id": "BG_T_FIRE0", "tier": "s",
+                          "avg_final_placement": 3.2}])
+    rep = evaluate_state(_choice_state(pc), _db(), trinket_stats=stats)
+    assert rep.pending_choice.recommended is None
+    assert rep.pending_choice.recommend_text == ""
+    assert rep.decision.reason == "免费收益，先点开挑一个"
+
+
+def test_dark_gift_and_other_choices_are_never_scored():
+    """⚠️ 只有饰品能打分：黑赐/三连奖励即使 card_id 命中实证表也不能推荐。"""
+    stats = _stats()
+    pc = _trinket_pc(["BG_T_BEAST1"], source="BG36_MidGameEffect_010",
+                     name="黑暗之赐")
+    rep = evaluate_state(_choice_state(pc), _db(), trinket_stats=stats)
+    assert rep.pending_choice.kind == "dark_gift"
+    assert rep.pending_choice.recommended is None
+    assert rep.pending_choice.options[0].score is None
+    other = _trinket_pc(["BG_T_BEAST2"], source="TB_BaconShop_3ofKindCheck",
+                        name="三连奖励")
+    rep2 = evaluate_state(_choice_state(other), _db(), trinket_stats=stats)
+    assert rep2.pending_choice.kind == "other"
+    assert rep2.pending_choice.recommended is None
+    assert rep2.pending_choice.options[0].score is None
 
 
 # --------------------------------------------------------------------------

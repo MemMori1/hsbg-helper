@@ -555,6 +555,12 @@ def _resolver(args) -> "object":
                              getattr(args, "cards_db_en", None))
 
 
+def _trinket_stats():
+    """HSReplay 饰品实证表（可选增强）。文件缺失/损坏时返回 None，全链路照常。"""
+    from .trinkets import load_or_none
+    return load_or_none()
+
+
 def cmd_cards(args: argparse.Namespace) -> int:
     """卡牌数据层自检：条目数 / 种族 / 星级 / 与日志自举名的交叉校验。"""
     from .cards import DEFAULT_CARD_DB_PATH, CardResolver
@@ -728,8 +734,13 @@ def _render_advice(adv, st, resolver, color: bool = True) -> str:
             head += r.dim("  " + pc.source_text)
         lines.append(head)
         for o in pc.options:
-            lines.append("  %d. %s  %s" % (o.index + 1, o.label,
-                                           r.dim(o.note or "")))
+            # ★ 标出规则层推荐的一项（只有饰品四选一有 HSReplay 实证分）。
+            # 实证摘要单独一列（绿色），不和暗色的卡文提示混在一起。
+            star = r.good("★") if pc.recommended is o else " "
+            score = r.good(o.score_note) if getattr(o, "score_note", "") else ""
+            lines.append("  %s %d. %s  %s  %s"
+                         % (star, o.index + 1, o.label, score,
+                            r.dim(o.note or "")))
             # 黑暗之赐的赐福单独一行高亮：同一只随从会配不同赐福（实测
             # `鹰身人之爪` 给 圣盾+风怒、`防御献祭` 给 +10 血+亡语），
             # 赐福给了什么词条才是"这个选项强不强"的主要依据。
@@ -789,8 +800,9 @@ def _render_advice(adv, st, resolver, color: bool = True) -> str:
     lines.append(r.bold("模型意见") + r.dim("（%s）" % adv.provider))
     if adv.note:
         lines.append(r.dim("  " + adv.note))
-    # ⚠️ 待选题排在最前：它是当前唯一"不做就卡住回合"的决策，
-    # 而规则层对饰品/赐福刻意不打分，模型概率是这里唯一的信息来源。
+    # ⚠️ 待选题排在最前：它是当前唯一"不做就卡住回合"的决策。
+    # 饰品四选一另有规则层实证推荐（见上方待选块），模型概率互为印证；
+    # 黑赐/发现类没有实证分，模型概率是唯一的信息来源。
     ch_ans = adv.answer_for("pending_choice")
     if ch_ans is not None and ch_ans.probabilities:
         pick_name = answer_text("pending_choice", ch_ans, rep, st.shop)
@@ -847,7 +859,8 @@ def cmd_advise(args: argparse.Namespace) -> int:
         print()
         print(render_state(st, resolver, color=not args.no_color))
     adv = consult(st, db=db, resolver=resolver,
-                  advisor=advisor_from_args(args), limit=args.limit)
+                  advisor=advisor_from_args(args), limit=args.limit,
+                  trinket_stats=_trinket_stats())
     print()
     print(_render_advice(adv, st, resolver, color=not args.no_color))
     if args.show_evidence:
@@ -863,14 +876,15 @@ def _empty_state():
     return GameState()
 
 
-def _frame_for(builder, resolver, runner, args):
+def _frame_for(builder, resolver, runner, args, trinket_stats=None):
     """基于当前 builder 造一帧：规则每帧重算，模型意见只走缓存。"""
     from .panel import build_frame
     from .rules import evaluate_state
 
     st = builder.state
     report = evaluate_state(st, resolver.db if resolver else None,
-                            db_en=getattr(resolver, "db_en", None) if resolver else None)
+                            db_en=getattr(resolver, "db_en", None) if resolver else None,
+                            trinket_stats=trinket_stats)
     runner.maybe_refresh(st, resolver, report)
     return build_frame(st, resolver, report=report,
                        advice=runner.current(st), model_note=runner.note)
@@ -902,10 +916,13 @@ def cmd_panel(args: argparse.Namespace) -> int:
     from .state import StateBuilder
 
     resolver = _resolver(args)
+    #: HSReplay 饰品实证表：加载一次，规则帧与模型题面共用（见 `trinkets.py`）。
+    stats = _trinket_stats()
     runner = ModelAdvisorRunner(
         advisor_from_panel_args(args),
         ttl=getattr(args, "model_ttl", 12.0),
         limit=getattr(args, "limit", 12),
+        trinket_stats=stats,
     )
     builder = StateBuilder()
 
@@ -925,7 +942,8 @@ def cmd_panel(args: argparse.Namespace) -> int:
             st = builder.state
             report = evaluate_state(st, resolver.db if resolver else None,
                                     db_en=getattr(resolver, "db_en", None)
-                                    if resolver else None)
+                                    if resolver else None,
+                                    trinket_stats=stats)
             runner.maybe_refresh(st, resolver, report)
             # 单帧模式：给模型一点时间，尽量把意见一起输出。
             # ⚠️ 不能把 `runner.note`（"模型思考中…"）当成"有答案"，
@@ -948,7 +966,7 @@ def cmd_panel(args: argparse.Namespace) -> int:
         if current_path is not None:
             for ev in iter_file(current_path):
                 builder.apply(ev)
-            _emit_frame(_frame_for(builder, resolver, runner, args))
+            _emit_frame(_frame_for(builder, resolver, runner, args, stats))
 
         # 2) 从文件末尾开始跟随；会话轮换时整体重建。
         tailer = LogTailer(log_root=DEFAULT_LOG_ROOT)
@@ -972,7 +990,7 @@ def cmd_panel(args: argparse.Namespace) -> int:
             now = time.time()
             if now >= next_frame:
                 next_frame = now + interval
-                _emit_frame(_frame_for(builder, resolver, runner, args))
+                _emit_frame(_frame_for(builder, resolver, runner, args, stats))
     except KeyboardInterrupt:
         return 0
     finally:

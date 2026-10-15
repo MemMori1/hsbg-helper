@@ -95,8 +95,8 @@ def _state(with_shop=True, with_board=True):
     return st
 
 
-def _report(st):
-    return RulesEngine(_db()).evaluate(st)
+def _report(st, trinket_stats=None):
+    return RulesEngine(_db(), trinket_stats=trinket_stats).evaluate(st)
 
 
 # ---------------------------------------------------------------------------
@@ -835,6 +835,49 @@ def test_evidence_without_choice_has_no_choice_section():
     st = _state()
     ev = A.build_evidence(st, db=_db(), report=_report(st))
     assert "choose exactly one" not in ev
+
+
+def _trinket_stats():
+    """两个待选项的手搓实证表（一号 S、二号 C）。"""
+    from hsbg.trinkets import TrinketStats
+    return TrinketStats.from_rows([
+        {"card_id": "BG36_110", "tier": "s", "pick_rate": 46.0,
+         "avg_final_placement": 3.55},
+        {"card_id": "BG31_149", "tier": "c", "pick_rate": 20.0,
+         "avg_final_placement": 4.33},
+    ])
+
+
+def test_evidence_shows_hsreplay_stats_for_trinket_options():
+    """⚠️ 实证统计必须进 evidence —— 它是模型判断饰品四选一的主要依据。
+
+    模型是 English-only（ADR-4），所以给的是英文一行（`ChoiceItem.note_en`）。
+    """
+    st = _pending_state()
+    rep = _report(st, trinket_stats=_trinket_stats())
+    ev = A.build_evidence(st, db=_db(), report=rep)
+    assert "HSReplay tier S, picked 46%, avg place 3.55" in ev
+    assert "HSReplay tier C, picked 20%, avg place 4.33" in ev
+    assert not _has_cjk(ev), "evidence 里混进了中文：\n" + ev
+
+
+def test_choice_question_options_carry_the_stats():
+    """`choice` 题的选项文本与 evidence 同源 —— 也带上实证统计。"""
+    st = _pending_state()
+    rep = _report(st, trinket_stats=_trinket_stats())
+    q = A.choice_question(st, rep)
+    assert q is not None and q.qtype == "choice"
+    joined = " | ".join(str(c) for c in q.criteria)
+    assert "HSReplay tier S" in joined
+    assert not _has_cjk(joined)
+
+
+def test_evidence_has_no_stats_without_trinket_stats():
+    """没实证表时选项行只剩卡文（老行为），不能凭空多出数字。"""
+    st = _pending_state()
+    rep = _report(st)
+    ev = A.build_evidence(st, db=_db(), report=rep)
+    assert "HSReplay" not in ev
 
 
 def test_evidence_shows_the_dark_gift_of_each_option():

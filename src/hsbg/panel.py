@@ -81,10 +81,14 @@ class ModelAdvisorRunner:
     """
 
     def __init__(self, advisor, ttl: float = DEFAULT_MODEL_TTL,
-                 limit: int = DEFAULT_BUY_LIMIT) -> None:
+                 limit: int = DEFAULT_BUY_LIMIT,
+                 trinket_stats=None) -> None:
         self.advisor = advisor
         self.ttl = ttl
         self.limit = limit
+        #: HSReplay 饰品实证表：`consult` 要用它给待选题面带上实证统计
+        #: （见 `advisor.consult`）。None = 模型只看到卡文。
+        self.trinket_stats = trinket_stats
         self._cache = _ModelCache()
         self._lock = threading.Lock()
 
@@ -118,7 +122,8 @@ class ModelAdvisorRunner:
         def _work() -> None:
             try:
                 adv = consult(snapshot, resolver=resolver, advisor=self.advisor,
-                              limit=self.limit, engine=None)
+                              limit=self.limit, engine=None,
+                              trinket_stats=self.trinket_stats)
                 with self._lock:
                     self._cache.advice = adv
                     self._cache.computed_at = time.time()
@@ -258,10 +263,13 @@ def build_frame(st: GameState,
                 advice: Optional[Advice] = None,
                 stale: bool = False,
                 error: str = "",
-                model_note: str = "") -> PanelFrame:
+                model_note: str = "",
+                trinket_stats=None) -> PanelFrame:
     """把盘面 + 规则结果 +（可选的）模型意见拼成一帧。
 
     `report` 为空时自己跑一次规则引擎；`advice` 为空时只输出规则部分。
+    `trinket_stats`（HSReplay 实证表）只在自跑规则时用到 —— 调用方带了
+    `report` 就说明它已经算过（并已把实证分填进 report）。
     """
     from .rules import evaluate_state  # 局部导入，避免 rules ↔ panel 循环引用
 
@@ -271,7 +279,8 @@ def build_frame(st: GameState,
     db = resolver.db if resolver is not None else None
     db_en = resolver.db_en if resolver is not None else None
     if report is None:
-        report = evaluate_state(st, db, db_en=db_en)
+        report = evaluate_state(st, db, db_en=db_en,
+                                trinket_stats=trinket_stats)
 
     seat = st.local_seat
     frame = PanelFrame(
@@ -301,8 +310,9 @@ def build_frame(st: GameState,
     # 待选（饰品四选一 / 黑赐三选一）：有就一定要显示 —— 不做决定会卡住回合。
     choice = getattr(report, "pending_choice", None)
     if choice is not None and choice.options:
-        # 模型对每个选项的概率（按中文名对齐）。规则层刻意不打分，
-        # 这里的是面板上唯一"选哪个"的量化依据。
+        # 模型对每个选项的概率（按中文名对齐）。饰品四选一另有规则层的
+        # HSReplay 实证分（`score`），两者并排展示；黑赐/发现类没有实证分，
+        # 模型概率仍是唯一"选哪个"的量化依据。
         ch_probs: Dict[str, float] = {}
         if advice is not None and advice.used_model:
             ch_ans = advice.answer_for("pending_choice")
@@ -320,6 +330,11 @@ def build_frame(st: GameState,
                     "card_id": o.card_id,
                     "name": o.label,
                     "note": o.note,
+                    # HSReplay 实证分（只有饰品选项有）：规则层推荐 + 原始统计。
+                    # `score` 为 None = 没有数据，Swift 侧不要画这一行。
+                    "score": o.score,
+                    "score_note": o.score_note,
+                    "recommended": choice.recommended is o,
                     # 黑暗之赐的赐福是**另一张卡**（靠 `DARK_GIFT_ENTITY` 关联）——
                     # 光给随从名看不出强弱，赐福给了什么词条才是关键。
                     "gift_card_id": o.gift_card_id,
@@ -369,8 +384,9 @@ def build_frame(st: GameState,
     buy_probs: Dict[int, float] = {}
     if advice is not None and advice.used_model:
         buy_probs = advice.buy_predictions()
-        # ⚠️ `pending_choice` 必须排在最前：它是当前唯一会卡住回合的决策，
-        # 而规则层对饰品/赐福刻意不打分，模型概率是唯一的信息来源。
+        # ⚠️ `pending_choice` 必须排在最前：它是当前唯一会卡住回合的决策。
+        # 饰品四选一另有规则层实证推荐（选项行里的 `recommended`），二者并排
+        # 展示；黑赐/发现类没有实证分，模型概率是唯一的信息来源。
         for key in ("pending_choice", "pick_shop", "level_up"):
             answer = advice.answer_for(key)
             if answer is None:

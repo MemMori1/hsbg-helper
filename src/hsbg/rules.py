@@ -32,6 +32,8 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 from .cards import Card, CardDB
 from .state import Entity, GameState, Seat, ShopSlot
+from .trinkets import TrinketStats
+
 # ---------------------------------------------------------------------------
 # 常量
 # ---------------------------------------------------------------------------
@@ -405,6 +407,15 @@ class ChoiceItem:
     name_en: str = ""
     text_en: str = ""
 
+    #: HSReplay 实证分（**只有饰品选项**有，见 `trinkets.TrinketStats.score`）。
+    #: `None` = 没有数据（非饰品选项 / 新补丁刚出还没统计到）——规则层对
+    #: "没有数据"必须保持沉默，不能当 0 分（那会让新饰品看起来比 F 级还差）。
+    score: Optional[float] = None
+    #: 一行实证摘要（中文展示）：`A级 · 选取43% · 平均名次3.90`
+    score_note: str = ""
+    #: 同上（英文，喂模型）——ADR-4：题面与 evidence 必须全英文
+    score_note_en: str = ""
+
     #: 黑暗之赐的**赐福**本身（另一张卡，`BG36_MidGameEffect_000tNN`）。
     #: 黑赐三选一里选项是随从，但玩家真正在挑的是赐福 —— 同一只随从可以配
     #: 完全不同的词条（实测 `鹰身人之爪` 给 圣盾+风怒、`防御献祭` 给 +10 血+亡语）。
@@ -464,11 +475,15 @@ class ChoiceItem:
         ⚠️ 黑暗之赐必须把**赐福**写进来：实测同一只随从会配不同赐福，
         "这个选项强不强"主要看赐福给了什么（圣盾/风怒/复生/亡语…），
         只报随从的卡文等于把最关键的那半条信息丢了。
+        ⚠️ HSReplay 实证统计（饰品选项）同理排在卡文**前面** —— 卡文可能很长
+        （截到 140 字），统计被挤到后面就等于没给。
         """
         bits: List[str] = []
         gift = self.gift_note_en
         if gift:
             bits.append("Dark Gift: " + gift)
+        if self.score_note_en:
+            bits.append(self.score_note_en)
         text = _clean_text(self.text_en or self.text, limit=140)
         if text:
             bits.append(text)
@@ -479,9 +494,10 @@ class ChoiceItem:
 class ChoiceAdvice:
     """一次等待玩家做的选一（饰品四选一 / 黑赐三选一）。
 
-    ⚠️ 规则层**不打分**：饰品与赐福的强弱要真实对局样本才定得下来
-    （用户 m03172 前明确"先做展示 + 特征提示"）。这里只做三件事：
-    列清楚每个选项是什么、从卡文提炼一行特征、提示"该做决定了"。
+    ⚠️ 规则层的打分能力**只对饰品**有：HSReplay 提供了饰品的实证统计
+    （`trinkets.py`），所以饰品四选一会给出明确推荐。赐福与"卡牌效果触发的
+    发现"（三连奖励、随从战吼…）仍然**不打分** —— 它们没有可复现的样本，
+    继续只做"列清楚是什么 + 一行特征提示"。
     """
     kind: str = ""                  # trinket / trinket_large / dark_gift / mulligan / other
     title: str = ""
@@ -491,6 +507,23 @@ class ChoiceAdvice:
     source_text_en: str = ""        # 英文触发源卡文（喂模型）""
     is_local: bool = True
     options: List[ChoiceItem] = field(default_factory=list)
+    #: 规则层明确推荐的那一项（目前只有饰品四选一，按 HSReplay 实证分选）。
+    #: `None` = 没有可用的实证数据，退回"只展示不推荐"（老行为）。
+    recommended: Optional[ChoiceItem] = None
+    #: 推荐的完整性提示（如 `2 项无实证数据`）；没有缺口时为空。
+    recommend_note: str = ""
+
+    @property
+    def recommend_text(self) -> str:
+        """一行推荐文案（CLI / 决策框 / 预警共用）；无推荐时为空串。"""
+        if self.recommended is None:
+            return ""
+        text = "规则推荐 %s" % self.recommended.label
+        if self.recommended.score_note:
+            text += "（%s）" % self.recommended.score_note
+        if self.recommend_note:
+            text += "；" + self.recommend_note
+        return text
 
     @property
     def display_title(self) -> str:
@@ -580,10 +613,14 @@ class RulesEngine:
 
     def __init__(self, db: Optional[CardDB] = None,
                  config: Optional[RulesConfig] = None,
-                 db_en: Optional[CardDB] = None):
+                 db_en: Optional[CardDB] = None,
+                 trinket_stats: Optional[TrinketStats] = None):
         self.db = db
         #: 英文卡表（只服务 `evidence`/`choice` 题面）。缺失时静默退回中文。
         self.db_en = db_en
+        #: HSReplay 饰品实证表（`trinkets.py`，由 `tools/fetch_hsreplay.py` 落盘）。
+        #: 缺失时饰品四选一退回"只展示不推荐"，其余功能不受影响。
+        self.trinket_stats = trinket_stats
         self.config = config or RulesConfig()
         #: card_id → 关键词元组。卡表是只读的，算一次就够（否则每张商店卡都要重扫卡文）。
         self._mech_cache: Dict[str, Tuple[str, ...]] = {}
@@ -740,8 +777,9 @@ class RulesEngine:
     def _choice_advice(self, st: GameState) -> Optional[ChoiceAdvice]:
         """把盘面上的 `pending_choice` 翻成带卡表信息的展示结构。
 
-        ⚠️ 规则层刻意**不打分**：饰品（420 张）与赐福的强弱没有足够样本，
-        凭卡文猜分数只会误导。只做"列清楚是什么 + 一行特征提示"。
+        ⚠️ 打分范围：**只有饰品**有 HSReplay 实证分（`_score_trinket_options`）。
+        赐福与"卡牌效果触发的发现"没有可复现的样本，凭卡文猜分数只会误导，
+        继续只做"列清楚是什么 + 一行特征提示"。
         起手换牌（MULLIGAN）直接跳过 —— 与战棋决策无关。
         """
         pc = getattr(st, "pending_choice", None)
@@ -783,7 +821,7 @@ class RulesEngine:
 
         src_card = self._card(getattr(pc, "source_card_id", ""))
         src_card_en = self._card_en(getattr(pc, "source_card_id", ""))
-        return ChoiceAdvice(
+        advice = ChoiceAdvice(
             kind=kind,
             title=getattr(pc, "source_name", "") or getattr(pc, "source_card_id", ""),
             source_name=getattr(pc, "source_name", ""),
@@ -795,6 +833,38 @@ class RulesEngine:
             is_local=True,
             options=options,
         )
+        self._score_trinket_options(advice)
+        return advice
+
+    def _score_trinket_options(self, advice: ChoiceAdvice) -> None:
+        """给饰品四选一的选项补 HSReplay 实证分，并选出推荐项。
+
+        ⚠️ 只对**饰品**打分：黑赐选项是随从（tier 表里没有），三连奖励这类
+        卡牌效果发现也不在表里 —— 它们保持原来的"只展示不推荐"。
+        ⚠️ 部分选项没数据时（新补丁刚上的饰品 HSReplay 还没统计到）仍然推荐
+        "有数据的里面最好的"，但必须把缺口写进 `recommend_note` —— 新饰品
+        往往很强，闷头推荐一个 D 级老饰品会误导。
+        """
+        stats = self.trinket_stats
+        if stats is None or not advice.kind.startswith("trinket"):
+            return
+        missing = 0
+        for item in advice.options:
+            sc = stats.score(item.card_id)
+            if sc is None:
+                missing += 1
+                continue
+            item.score = sc.score
+            item.score_note = sc.note
+            item.score_note_en = sc.note_en
+        scored = [o for o in advice.options if o.score is not None]
+        if not scored:
+            return
+        # 同分取先出的（游戏里排在前面的选项）——顺序稳定，结果可复现。
+        scored.sort(key=lambda o: (-(o.score or 0.0), o.index))
+        advice.recommended = scored[0]
+        if missing:
+            advice.recommend_note = "%d 项无实证数据" % missing
 
     @staticmethod
     def _strip_tags(text: str) -> str:
@@ -1419,9 +1489,11 @@ class RulesEngine:
 
         # 0. 已经弹出的选一永远排第一 —— 模态框卡着回合，不点就没法继续
         if rep.pending_choice is not None:
-            box.action, box.target, box.cost = "选择", rep.pending_choice.display_title, 0
+            pc = rep.pending_choice
+            box.action, box.target, box.cost = "选择", pc.display_title, 0
             box.trigger, box.urgency = "pending_choice", "now"
-            box.reason = "免费收益，先点开挑一个"
+            # 有实证推荐（饰品四选一）就说清楚推荐哪个；没有就退回通用文案。
+            box.reason = pc.recommend_text or "免费收益，先点开挑一个"
             return box
 
         gold = rep.gold or 0
@@ -1543,7 +1615,12 @@ class RulesEngine:
         # 比血线更紧急。
         choice = rep.pending_choice
         if choice is not None:
-            out.append(Warning("info", f"{choice.display_title}还没选——点开挑一个"))
+            if choice.recommended is not None:
+                out.append(Warning(
+                    "info",
+                    f"{choice.display_title}还没选——推荐 {choice.recommended.label}"))
+            else:
+                out.append(Warning("info", f"{choice.display_title}还没选——点开挑一个"))
         # 黑暗之赐：能点就提醒——这是个**免费收益**，漏点就是白亏。
         gift = rep.dark_gift
         if gift is not None and gift.available:
@@ -1616,6 +1693,7 @@ def _cost_of(e: Entity) -> Optional[int]:
 
 def evaluate_state(st: GameState, db: Optional[CardDB] = None,
                    config: Optional[RulesConfig] = None,
-                   db_en: Optional[CardDB] = None) -> AdviceReport:
-    """便捷函数：`RulesEngine(db, config, db_en).evaluate(st)`。"""
-    return RulesEngine(db, config, db_en).evaluate(st)
+                   db_en: Optional[CardDB] = None,
+                   trinket_stats: Optional[TrinketStats] = None) -> AdviceReport:
+    """便捷函数：`RulesEngine(db, config, db_en, trinket_stats).evaluate(st)`。"""
+    return RulesEngine(db, config, db_en, trinket_stats).evaluate(st)
