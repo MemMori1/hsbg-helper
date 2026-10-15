@@ -66,6 +66,7 @@ def main(argv):
     for path in sorted(glob(os.path.join(LOG_ROOT, "*", "Power.log"))):
         chosen = set()
         cur_kind, cur_source = None, None
+        before = {k: sum(v.values()) for k, v in buckets.items()}
         for ev in iter_file(path):
             if getattr(ev, "kind", None) == "CREATE_GAME":
                 games += 1
@@ -91,7 +92,9 @@ def main(argv):
             chosen.add(key)
             buckets[name][opt.card_id] += 1
         print("  %s -> %s" % (os.path.basename(os.path.dirname(path)),
-                              ", ".join("%s %d" % (k, sum(v.values())) for k, v in buckets.items() if v)))
+                              ", ".join("%s +%d" % (k, sum(v.values()) - before[k])
+                                        for k, v in buckets.items()
+                                        if sum(v.values()) - before[k])))
 
     payload = OrderedDict()
     for name, counter in buckets.items():
