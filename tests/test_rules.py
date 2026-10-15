@@ -1048,7 +1048,9 @@ def test_empty_board_buys_a_body_instead_of_a_spell():
     rep = _eng().evaluate(st)
     assert rep.decision.action == "买"
     assert rep.decision.target == "野兽一号", rep.decision.target
-    assert rep.decision.trigger == "thin_board"
+    # ⚠️ 触发原因可能是 `thin_board`（场面太空）也可能是 `shop`（它是店内第 1 名，
+    # 见 `_assign_shop_actions`）—— 这个用例只关心「买的是随从不是法术」。
+    assert rep.decision.trigger in ("thin_board", "shop")
 
 
 def _spell_item(card_id, board_n=4, gold=10):
@@ -1213,16 +1215,86 @@ def test_decision_waits_during_the_combat_phase():
 
 def test_decision_asks_for_the_refresh_when_it_is_free():
     """⚠️ 场面必须先撑起来：场空时「先买身材」优先于免费刷新（见 `_decision` 分支 4）。
-    场上用 5 张**互不相同**的牌，免得触发「凑三连/凑对子」分支。"""
-    st = _state(turn=5, tier=2, gold=5, shop=["BG_T_BEAST1"],
-                board=["BG_T_BEAST2", "BG_T_BEAST3", "BG_T_MECH1",
-                       "BG_T_MECH2", "BG_T_FIRE0"])
+    所以这里给 3 只随从（不算薄），并且**商店是空的** —— 有牌可买时买牌永远优先，
+    免费刷新是买完之后顺手用的，不该顶掉「买」。"""
+    st = _state(turn=5, tier=2, gold=5, shop=[],
+                board=["BG_T_BEAST2", "BG_T_MECH1", "BG_T_MECH2"])
     e = Entity(entity_id=555, card_id="Bacon_Free_Refresh_Player_Ench")
     e.tags["BACON_FREE_REFRESH_COUNT"] = "1"
     st.entities[555] = e
     box = _box(st)
     assert box.action == "刷新"
     assert box.trigger == "free_refresh"
+
+
+# --------------------------------------------------------------------------
+# 买牌动作分派：**按店内排名**，不是绝对分数线
+#
+# 依据 `tools/calibrate_shop.py`（5 份真机日志 / 83 个商店快照）：
+#   · 真人买走「店内第 1 名」的比例按分数段是 4-7 分 91.7%、7-10 分 100%、
+#     10-13 分 94.4%、13-16 分 69.2%、16-19 分 75%、19-22 分 87.5%、22+ 分 71.4%
+#     —— **几乎不随分数变化**；用分数预测「这回合买不买」的精确率在 0~24 分的
+#     每个阈值上都贴着基础率 84% 不动，说明分数对「买不买」没有预测力。
+#   · 但分数**排序**有效：真人选中的那张，店内排名第 1 占 47.1%、前 2 占 66.7%
+#     （纯随机约 30%）；中局（5-9 回合）第 1 名命中 64.7%。
+# 所以：分数只负责排序，「买不买」交给金币 / 场面 / 升本的约束。
+# --------------------------------------------------------------------------
+
+
+def test_the_top_ranked_card_is_the_one_the_engine_tells_you_to_buy():
+    st = _state(turn=5, tier=2, gold=10, shop=["BG_T_BEAST1", "BG_T_MECH2"])
+    rep = _eng().evaluate(st)
+    top = rep.shop[0]
+    assert top.card_id == "BG_T_MECH2"      # 6 星 8/8 一定排第一
+    assert top.action == "买"
+    assert "本店最高分" in top.reasons
+
+
+def test_a_low_scoring_shop_still_says_buy_the_best_card():
+    """⚠️ 旧逻辑要 `score >= 18` 才说「买」，而真机日志里真人会买的牌绝大多数只有
+    4~13 分 —— 于是引擎在真人 85% 会买的局面里一直说「跳过」，决策框自然几乎从不
+    说买。现在只要它是**店内第 1 名**且过了地板分（`BUY_TOP_MIN`）就该说「买」。"""
+    st = _state(turn=5, tier=2, gold=10, shop=["BG_T_BEAST1"])
+    rep = _eng().evaluate(st)
+    top = rep.shop[0]
+    assert top.score < 18.0                 # 远低于旧的「买」线
+    assert top.action == "买"
+    assert "本店最高分" in top.reasons
+
+
+def test_the_second_and_third_best_cards_are_only_consider():
+    st = _state(turn=7, tier=3, gold=10,
+                shop=["BG_T_MECH2", "BG_T_BEAST3", "BG_T_BEAST2", "BG_T_BEAST1"])
+    rep = _eng().evaluate(st)
+    assert [it.action for it in rep.shop[:3]] == ["买", "考虑", "考虑"]
+    assert rep.shop[3].action == "跳过"
+
+
+def test_a_full_board_downgrades_the_top_card_to_consider():
+    """实测：**场面已满的店恰恰是最高分的店**（店内最高分 p50=18.3，全场 p50=11.7），
+    高分在此时没有意义 —— 要买就得先卖，所以降级成「考虑」。"""
+    full = ["BG_T_MECH1", "BG_T_MECH1", "BG_T_MECH1", "BG_T_MECH2",
+            "BG_T_MECH2", "BG_T_BEAST1", "BG_T_BEAST2"]
+    st = _state(turn=9, tier=3, gold=10, shop=["BG_T_MECH2"], board=full)
+    rep = _eng().evaluate(st)
+    top = rep.shop[0]
+    assert top.action == "考虑"
+    assert "场面已满" in top.reasons
+
+
+def test_a_triple_always_buys_even_when_it_is_not_rank_one():
+    """凑三连是硬收益，不受「店内第 1 名」限制。"""
+    st = _state(turn=5, tier=2, gold=10,
+                shop=["BG_T_BEAST1", "BG_T_MECH2"],
+                board=["BG_T_BEAST1", "BG_T_BEAST1"])
+    by_id = {it.card_id: it for it in _eng().evaluate(st).shop}
+    assert by_id["BG_T_BEAST1"].completes_triple
+    assert by_id["BG_T_BEAST1"].action == "买"
+
+
+def test_an_unaffordable_card_is_skipped_even_when_it_is_rank_one():
+    st = _state(turn=5, tier=2, gold=1, shop=["BG_T_MECH2"])
+    assert _eng().evaluate(st).shop[0].action == "跳过"
 
 
 def test_decision_puts_the_pending_choice_first():

@@ -1033,22 +1033,12 @@ class RulesEngine:
                 reasons.append("金币不足")
 
             # --- 决策 ---
+            # ⚠️ 动作**不在这里定**，等这一店的随从全部打完之后，按**店内排名**
+            # 统一分派（见 `_assign_shop_actions`）。旧的绝对分数线（≥18 才"买"）
+            # 经真机实测没有预测力，详见那个方法的注释。
+            action = "跳过"
             if not affordable:
                 action = "跳过"
-            elif completes:
-                action = "买"
-            elif score >= 18.0:
-                action = "买"
-            elif score >= 11.0 or (gold is not None and gold >= 10 and score >= 9.0):
-                action = "考虑"
-            else:
-                action = "跳过"
-
-            # 场面满了且没有三连收益，就别买了
-            if len(st.board) >= cfg.board_limit and not completes and not slot.golden:
-                if action == "买":
-                    action = "考虑"
-                reasons.append("场面已满")
 
             items.append(ShopItem(
                 index=i,
@@ -1069,8 +1059,63 @@ class RulesEngine:
                 keywords=keywords,
             ))
 
+        self._assign_shop_actions(items, st, cfg)
         items.sort(key=lambda it: -it.score)
         return items
+
+    #: 店内第 1 名低于这个分就不劝买（降级成"考虑"）。
+    #: 依据 `tools/calibrate_shop.py` 实测（5 份真机日志、83 个商店快照）：真人买走
+    #: 「店内第 1 名」的比例在**最低的 4-7 分段仍有 91.7%**，所以地板必须压到 4 分 ——
+    #: 它的作用只是拦住明显不该买的牌，不是用来判断"值不值得买"。取 6.0 会把大量
+    #: 真人真会买的牌判成"考虑"（一张 1 星 2/3 的裸随从就只值 4.5 分）。
+    BUY_TOP_MIN = 4.0
+
+    def _assign_shop_actions(self, items: List["ShopItem"], st: GameState,
+                             cfg) -> None:
+        """按**店内排名**（而不是绝对分数线）给每个槽位定动作。
+
+        实测依据（`tools/calibrate_shop.py`，5 份真机日志 / 83 个商店快照）：
+
+          · **买不买 ≈ 与分数无关**。真人买走「店内第 1 名」的比例按分数段是
+            4-7 分 **91.7%**、7-10 分 **100%**、10-13 分 94.4%、13-16 分 69.2%、
+            16-19 分 75%、19-22 分 87.5%、22+ 分 71.4% —— 基本持平。
+          · 用「店内最高分」预测"这回合会不会买"，**精确率在 0~24 分的每个阈值上
+            都贴着基础率 84% 不动**，说明分数对"买不买"没有预测力。真正决定
+            "这回合买不买"的是金币、场面格子和要不要升本。
+          · 但**分数排序是有效的**：真人选中的那张，店内排名第 1 占 **47.1%**、
+            前 2 占 **66.7%**（纯随机约 30%）；中局（5-9 回合）第 1 名命中 64.7%。
+
+        所以：**分数只负责排序，"买不买"交给金币 / 场面 / 升本的约束**。旧逻辑用
+        `score >= 18` 才说"买"，而真人会买的牌里绝大多数只有 4~13 分，于是引擎在
+        真人 85% 会买的局面里一直说"跳过" —— 这正是决策框"几乎从不说买"的原因。
+
+        另一个实测结论：**场面已满的店恰是最高分的店**（店内最高分 p50 = 18.3，
+        而全场 p50 = 11.7），此时高分毫无意义 —— 所以场面满时把"买"降级为"考虑"，
+        并把理由写成"场面已满"。
+        """
+        board_full = len(st.board) >= cfg.board_limit
+        gold = st.local_seat.gold if st.local_seat else None
+        ranked = sorted(items, key=lambda it: -it.score)
+        for rank, it in enumerate(ranked, 1):
+            affordable = gold is None or gold >= it.cost
+            if not affordable:
+                it.action = "跳过"
+                continue
+            if it.completes_triple:
+                it.action = "买"
+            elif rank == 1:
+                it.action = "买" if it.score >= self.BUY_TOP_MIN else "考虑"
+            elif rank <= 3:
+                it.action = "考虑"
+            else:
+                it.action = "跳过"
+
+            if rank == 1 and it.action in ("买", "考虑"):
+                it.reasons.append("本店最高分")
+            # 场面满了且没有三连收益 / 不是金色，就别买了
+            if board_full and it.action == "买" and not it.golden:
+                it.action = "考虑"
+                it.reasons.append("场面已满")
 
     def _spell_effects(self, text: str) -> List[str]:
         """按卡文判酒馆法术的**效果**类别（可多类）。
