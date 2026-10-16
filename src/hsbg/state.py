@@ -234,7 +234,7 @@ class DarkGiftRecord:
     ⚠️ 日志**不直接说**"选了哪个赐福"：三选一给的选项是**随从**
     （`Entities[i]=[entityName=海藻护卫 … cardId=BG36_701]`），玩家是在挑"让哪只
     随从吃赐福"。所以这里记的是随从，赐福本身靠随从实体上的 `DARK_GIFT_ENTITY`
-    在规则层补齐（`DARK_GIFT_ENTITY` 每局末态会被清零，见 README 的坑）。
+    在规则层补齐（`DARK_GIFT_ENTITY` 每局末态会被清零，见 `docs/实现笔记.md`）。
     """
     minion_name: str = ""
     minion_card_id: str = ""

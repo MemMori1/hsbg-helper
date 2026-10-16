@@ -7,7 +7,7 @@
 - 结果映射（choice/noul/score → Answer、letter、truncated、missing）；
 - 失败路径（全部失败 / 顶层错误 / 起不了 / 超时）→ ModelUnavailable。
 
-真实插件联调不进单测（见 README「模型接入」的联调步骤）。
+真实插件联调不进单测（深挖见 `docs/实现笔记.md`）。
 """
 import argparse
 import contextlib
