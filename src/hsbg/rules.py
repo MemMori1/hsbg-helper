@@ -32,6 +32,7 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 from .cards import Card, CardDB
 from .state import Entity, GameState, Seat, ShopSlot
+from .heroes import HeroStats
 from .trinkets import TrinketStats
 
 # ---------------------------------------------------------------------------
@@ -407,11 +408,13 @@ class ChoiceItem:
     name_en: str = ""
     text_en: str = ""
 
-    #: HSReplay 实证分（**只有饰品选项**有，见 `trinkets.TrinketStats.score`）。
-    #: `None` = 没有数据（非饰品选项 / 新补丁刚出还没统计到）——规则层对
-    #: "没有数据"必须保持沉默，不能当 0 分（那会让新饰品看起来比 F 级还差）。
+    #: HSReplay 实证分（**英雄与饰品选项**有，见 `heroes.HeroStats.score` /
+    #: `trinkets.TrinketStats.score`）。
+    #: `None` = 没有数据（非英雄/饰品选项 / 新补丁刚出还没统计到）——规则层对
+    #: "没有数据"必须保持沉默，不能当 0 分（那会让新选项看起来比最差的还差）。
     score: Optional[float] = None
-    #: 一行实证摘要（中文展示）：`A级 · 选取43% · 平均名次3.90`
+    #: 一行实证摘要（中文展示）：饰品 `A级 · 选取43% · 平均名次3.90`；
+    #: 英雄 `选取率78% · 护甲6`
     score_note: str = ""
     #: 同上（英文，喂模型）——ADR-4：题面与 evidence 必须全英文
     score_note_en: str = ""
@@ -492,14 +495,14 @@ class ChoiceItem:
 
 @dataclass
 class ChoiceAdvice:
-    """一次等待玩家做的选一（饰品四选一 / 黑赐三选一）。
+    """一次等待玩家做的选一（英雄选择 / 饰品四选一 / 黑赐三选一）。
 
-    ⚠️ 规则层的打分能力**只对饰品**有：HSReplay 提供了饰品的实证统计
-    （`trinkets.py`），所以饰品四选一会给出明确推荐。赐福与"卡牌效果触发的
-    发现"（三连奖励、随从战吼…）仍然**不打分** —— 它们没有可复现的样本，
-    继续只做"列清楚是什么 + 一行特征提示"。
+    ⚠️ 规则层的打分能力**只对英雄与饰品**有：HSReplay 提供了这两类的实证统计
+    （`heroes.py` 选取率、`trinkets.py` tier+平均名次），所以它们会给出明确推荐。
+    赐福与"卡牌效果触发的发现"（三连奖励、随从战吼…）仍然**不打分** ——
+    它们没有可复现的样本，继续只做"列清楚是什么 + 一行特征提示"。
     """
-    kind: str = ""                  # trinket / trinket_large / dark_gift / mulligan / other
+    kind: str = ""                  # hero / trinket / trinket_large / dark_gift / mulligan / other
     title: str = ""
     source_name: str = ""
     source_text: str = ""           # 触发这次选择的卡文（三连奖励 / 某饰品的效果等）
@@ -527,6 +530,8 @@ class ChoiceAdvice:
 
     @property
     def display_title(self) -> str:
+        if self.kind == "hero":
+            return "英雄选择"
         if self.kind == "trinket":
             return "小饰品四选一"
         if self.kind == "trinket_large":
@@ -614,13 +619,17 @@ class RulesEngine:
     def __init__(self, db: Optional[CardDB] = None,
                  config: Optional[RulesConfig] = None,
                  db_en: Optional[CardDB] = None,
-                 trinket_stats: Optional[TrinketStats] = None):
+                 trinket_stats: Optional[TrinketStats] = None,
+                 hero_stats: Optional[HeroStats] = None):
         self.db = db
         #: 英文卡表（只服务 `evidence`/`choice` 题面）。缺失时静默退回中文。
         self.db_en = db_en
         #: HSReplay 饰品实证表（`trinkets.py`，由 `tools/fetch_hsreplay.py` 落盘）。
         #: 缺失时饰品四选一退回"只展示不推荐"，其余功能不受影响。
         self.trinket_stats = trinket_stats
+        #: HSReplay 英雄实证表（`heroes.py`，同上工具 `--heroes` 落盘）。
+        #: 缺失时英雄选择退回"只展示不推荐"，其余功能不受影响。
+        self.hero_stats = hero_stats
         self.config = config or RulesConfig()
         #: card_id → 关键词元组。卡表是只读的，算一次就够（否则每张商店卡都要重扫卡文）。
         self._mech_cache: Dict[str, Tuple[str, ...]] = {}
@@ -777,18 +786,25 @@ class RulesEngine:
     def _choice_advice(self, st: GameState) -> Optional[ChoiceAdvice]:
         """把盘面上的 `pending_choice` 翻成带卡表信息的展示结构。
 
-        ⚠️ 打分范围：**只有饰品**有 HSReplay 实证分（`_score_trinket_options`）。
-        赐福与"卡牌效果触发的发现"没有可复现的样本，凭卡文猜分数只会误导，
-        继续只做"列清楚是什么 + 一行特征提示"。
-        起手换牌（MULLIGAN）直接跳过 —— 与战棋决策无关。
+        ⚠️ 打分范围：饰品（`_score_trinket_options`）与**开局英雄选择**
+        （`_score_hero_options`，HSReplay 选取率）有实证分。赐福与"卡牌效果
+        触发的发现"没有可复现的样本，凭卡文猜分数只会误导，继续只做
+        "列清楚是什么 + 一行特征提示"。
+        普通起手换牌（MULLIGAN）直接跳过 —— 与战棋决策无关（**英雄选择在日志里
+        同样报 MULLIGAN**，实测三份会话一致，靠"选项卡号里带 `_HERO`"区分）。
         """
         pc = getattr(st, "pending_choice", None)
         if pc is None or not getattr(pc, "is_local", False):
             return None
-        if getattr(pc, "kind", "") == "MULLIGAN":
+        pc_kind = getattr(pc, "kind", "")
+        hero_pick = (pc_kind == "MULLIGAN"
+                     and any("_HERO" in (o.card_id or "") for o in pc.options))
+        if pc_kind == "MULLIGAN" and not hero_pick:
             return None
 
-        if pc.is_trinket:
+        if hero_pick:
+            kind = "hero"
+        elif pc.is_trinket:
             kind = "trinket_large" if pc.trinket_size == "large" else "trinket"
         elif pc.is_dark_gift:
             kind = "dark_gift"
@@ -809,7 +825,8 @@ class RulesEngine:
                 attack=card.attack if card else None,
                 health=card.health if card else None,
                 text=card.text if card else "",
-                kind="trinket" if kind.startswith("trinket") else "minion",
+                kind=("hero" if kind == "hero"
+                      else ("trinket" if kind.startswith("trinket") else "minion")),
                 # ⚠️ 英文靠 **CardID** 取（语言无关）；用中文名反查英文卡表不可靠
                 # （中文名与英文名不是直译，日志里还有第三套皮肤短名）。
                 name_en=(card_en.name if card_en and card_en.name else ""),
@@ -826,14 +843,16 @@ class RulesEngine:
             title=getattr(pc, "source_name", "") or getattr(pc, "source_card_id", ""),
             source_name=getattr(pc, "source_name", ""),
             source_text=self._strip_tags(src_card.text) if src_card else "",
-            title_en=(src_card_en.name if src_card_en and src_card_en.name
-                      else (getattr(pc, "source_name", "")
-                            or getattr(pc, "source_card_id", ""))),
+            title_en=("Hero selection" if kind == "hero"
+                      else (src_card_en.name if src_card_en and src_card_en.name
+                            else (getattr(pc, "source_name", "")
+                                  or getattr(pc, "source_card_id", "")))),
             source_text_en=(self._strip_tags(src_card_en.text) if src_card_en else ""),
             is_local=True,
             options=options,
         )
         self._score_trinket_options(advice)
+        self._score_hero_options(advice)
         return advice
 
     def _score_trinket_options(self, advice: ChoiceAdvice) -> None:
@@ -847,6 +866,36 @@ class RulesEngine:
         """
         stats = self.trinket_stats
         if stats is None or not advice.kind.startswith("trinket"):
+            return
+        missing = 0
+        for item in advice.options:
+            sc = stats.score(item.card_id)
+            if sc is None:
+                missing += 1
+                continue
+            item.score = sc.score
+            item.score_note = sc.note
+            item.score_note_en = sc.note_en
+        scored = [o for o in advice.options if o.score is not None]
+        if not scored:
+            return
+        # 同分取先出的（游戏里排在前面的选项）——顺序稳定，结果可复现。
+        scored.sort(key=lambda o: (-(o.score or 0.0), o.index))
+        advice.recommended = scored[0]
+        if missing:
+            advice.recommend_note = "%d 项无实证数据" % missing
+
+    def _score_hero_options(self, advice: ChoiceAdvice) -> None:
+        """给开局英雄选择的选项补 HSReplay 实证分，并选出推荐项。
+
+        ⚠️ 数据是**选取率百分位**（玩家共识代理），不是平均名次 —— 免费层
+        拿不到后者（见 `heroes.py` 头注）。决策要的是"这几个候选之间谁更被
+        认可"的相对排序，百分位正好表达它。
+        ⚠️ 同饰品：部分选项没数据时仍然推荐"有数据的里面最好的"，但把缺口
+        写进 `recommend_note` —— 新英雄往往很强，闷头推荐老英雄会误导。
+        """
+        stats = self.hero_stats
+        if stats is None or advice.kind != "hero":
             return
         missing = 0
         for item in advice.options:
@@ -1478,11 +1527,15 @@ class RulesEngine:
     def _decision_core(self, st: GameState, seat: Optional[Seat],
                        rep: AdviceReport) -> DecisionBox:
         box = DecisionBox(gold=rep.gold, curve_tier=self._curve_tier(rep.turn))
-        if seat is None:
+        # ⚠️ 英雄选择要先于"座位/阶段"两个兜底处理：它发生在 `STEP=BEGIN_MULLIGAN`
+        # （实测）——此时座位还没建、也不在招募期，但它是卡住游戏的模态选择。
+        pc0 = rep.pending_choice
+        hero_pick = pc0 is not None and pc0.kind == "hero"
+        if seat is None and not hero_pick:
             box.action, box.trigger, box.urgency = "观望", "idle", "wait"
             box.reason = "还没有本地玩家信息"
             return box
-        if not rep.in_recruit:
+        if not rep.in_recruit and not hero_pick:
             box.action, box.trigger, box.urgency = "观望", "idle", "wait"
             box.reason = "战斗阶段，等结算"
             return box
@@ -1492,8 +1545,10 @@ class RulesEngine:
             pc = rep.pending_choice
             box.action, box.target, box.cost = "选择", pc.display_title, 0
             box.trigger, box.urgency = "pending_choice", "now"
-            # 有实证推荐（饰品四选一）就说清楚推荐哪个；没有就退回通用文案。
-            box.reason = pc.recommend_text or "免费收益，先点开挑一个"
+            # 有实证推荐（英雄选择 / 饰品四选一）就说清楚推荐哪个；
+            # 没有就退回通用文案（英雄选择的"免费收益"说不通，单独给一句）。
+            box.reason = pc.recommend_text or (
+                "选好英雄再开局" if pc.kind == "hero" else "免费收益，先点开挑一个")
             return box
 
         gold = rep.gold or 0
@@ -1694,6 +1749,7 @@ def _cost_of(e: Entity) -> Optional[int]:
 def evaluate_state(st: GameState, db: Optional[CardDB] = None,
                    config: Optional[RulesConfig] = None,
                    db_en: Optional[CardDB] = None,
-                   trinket_stats: Optional[TrinketStats] = None) -> AdviceReport:
-    """便捷函数：`RulesEngine(db, config, db_en, trinket_stats).evaluate(st)`。"""
-    return RulesEngine(db, config, db_en, trinket_stats).evaluate(st)
+                   trinket_stats: Optional[TrinketStats] = None,
+                   hero_stats: Optional[HeroStats] = None) -> AdviceReport:
+    """便捷函数：`RulesEngine(db, config, db_en, trinket_stats, hero_stats).evaluate(st)`。"""
+    return RulesEngine(db, config, db_en, trinket_stats, hero_stats).evaluate(st)

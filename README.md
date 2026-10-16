@@ -6,9 +6,9 @@
 > 架构上不给执行层留任何接口（见 `docs/需求分析.md` §2.3）。
 
 当前进度：**P0–P6 + P8–P14 已完成**。日志解析 → 盘面重建 → 卡牌数据 → 规则引擎 →
-JevK5 模型顾问 → Swift 悬浮框，整条链路已打通；饰品四选一 / 黑赐三选一 / 三连奖励
-等"待选"也已接入（规则展示 + 模型出概率），**饰品四选一另有 HSReplay 实证推荐**
-（tier + 选取率 + 平均名次，见 `src/hsbg/trinkets.py`）。
+JevK5 模型顾问 → Swift 悬浮框，整条链路已打通；开局英雄选择 / 饰品四选一 /
+黑赐三选一 / 三连奖励等"待选"也已接入（规则展示 + 模型出概率），**英雄选择与
+饰品四选一另有 HSReplay 实证推荐**（见 `src/hsbg/heroes.py` / `src/hsbg/trinkets.py`）。
 
 ---
 
@@ -25,7 +25,7 @@ cd hsbg-helper
 ./hsbg serve start   # 拉起 JevK5 本地推理服务（llama-server）
 ./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行；跟随模式自动录像）
 ./hsbg replay          # 复盘回放：列出/回看自动落盘的对局
-./run-tests            # 跑单元测试（335 个）
+./run-tests            # 跑单元测试（356 个）
 ```
 
 **零依赖**：纯 Python 标准库，跑在本机自带的 `/usr/bin/python3`（3.9.6），不需要 venv、
@@ -108,6 +108,7 @@ cd hsbg-helper
 | `src/hsbg/names.py` | 从日志自举 `CardID → 中文名` |
 | `src/hsbg/rules.py` | **规则引擎**：商店打分、升本、三连、血线预警、饰品实证推荐（纯规则，可离线单测） |
 | `src/hsbg/trinkets.py` | **饰品实证数据**：读 HSReplay tier/选取率/平均名次 → 打分（`data/trinkets_hsreplay.json`，`tools/fetch_hsreplay.py` 拉取） |
+| `src/hsbg/heroes.py` | **英雄实证数据（S1）**：读 HSReplay 选取率/护甲 → 百分位打分（`data/heroes_hsreplay.json`，`tools/fetch_hsreplay.py --heroes` 拉取） |
 | `src/hsbg/provider.py` | **JevK5 协议**：prompt 模板、字母 logprob 读法、概率校准 |
 | `src/hsbg/advisor.py` | **盘面 → 英文 evidence + 类型化提问**，`consult()` 总入口 |
 | `src/hsbg/model_server.py` | 找 llama-server / GGUF，启停 JevK5 服务 |
@@ -119,8 +120,8 @@ cd hsbg-helper
 | `tools/verify_attr_rule.py` | 归属规则的语义自证（靠 `ENTITY_ID` 判对错，不靠数数） |
 | `tools/winlist.swift` | 打印所有在屏窗口的矩形/owner（调窗口几何时用） |
 | `tools/trace_decisions.py` | **逐回合打印决策框**，用来对照大神的运营节奏复盘规则 |
-| `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表）、`trinkets_hsreplay.json`（饰品实证） |
-| `tests/` | 零依赖测试运行器 + 335 个测试 |
+| `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表）、`trinkets_hsreplay.json`（饰品实证）、`heroes_hsreplay.json`（英雄实证） |
+| `tests/` | 零依赖测试运行器 + 356 个测试 |
 
 ---
 
@@ -340,9 +341,9 @@ evidence 会让 2B 模型基本读不懂。早期实测：evidence 里「商店�
 
 ---
 
-## 待选（饰品四选一 / 黑赐三选一）与模型概率
+## 待选（英雄选择 / 饰品四选一 / 黑赐三选一）与模型概率
 
-待选分两类处理：
+待选分三类处理：
 
 **饰品四选一 —— 规则层给实证推荐 + 模型出概率**。HSReplay 提供了饰品的
 tier / 选取率 / 终局平均名次（`data/trinkets_hsreplay.json`，由 `tools/fetch_hsreplay.py`
@@ -354,6 +355,23 @@ tier / 选取率 / 终局平均名次（`data/trinkets_hsreplay.json`，由 `too
     2. 爱心吊坠     D级 · 选取14% · 平均名次4.54  在你对一个友方随从施放法术后…
 ```
 
+**开局英雄选择（S1）—— 规则层给实证推荐**。HSReplay 免费层有每位英雄的
+选取率与护甲（`data/heroes_hsreplay.json`，由 `tools/fetch_hsreplay.py --heroes`
+拉取），规则层按**选取率百分位**打分并用 ★ 标出推荐（`src/hsbg/heroes.py` + `rules.py`）：
+
+```
+英雄选择  （还没选）
+  ★ 1. 摇滚教父沃恩  选取率32% · 护甲15
+    2. 时光扭曲者克罗米  选取率27% · 护甲14
+```
+
+- 免费层没有平均名次 / tier（Tier7 订阅内容），选取率是玩家共识的代理指标；
+  分数只用在一局内候选之间的相对排序，不跨补丁比较。
+- 护甲是暴雪的平衡杠杆（弱英雄补甲，高低不单调）→ **只展示不参与打分**。
+- ⚠️ 英雄选择在日志里是 `ChoiceType=MULLIGAN`（与起手换牌同类型），靠选项
+  卡号带 `_HERO` 区分；且发生在本地玩家名锁定**之前** —— `is_local` 走
+  "选项实体全部归本地座位"的退路（`src/hsbg/state.py`）。
+
 **黑赐三选一 / 三连奖励 / 卡牌效果发现 —— 规则层只展示，模型出概率**。这些没有
 可复现的样本（黑赐是"随从 + 赐福"的任意组合，420 张饰品的兄弟问题在赐福上复现），
 凭卡文猜分数只会误导，所以"该选哪个"完全靠 JevK5 做 `choice` 题：
@@ -364,9 +382,9 @@ tier / 选取率 / 终局平均名次（`data/trinkets_hsreplay.json`，由 `too
     概率分布：伦德尔标签 35% · 朝圣小鬼标签 28% · 战鼓 21% · 爱心吊坠 16%
 ```
 
-实现要点（`src/hsbg/trinkets.py` + `src/hsbg/advisor.py`）：
+实现要点（`src/hsbg/trinkets.py` / `src/hsbg/heroes.py` + `src/hsbg/advisor.py`）：
 
-**实证分（只对饰品）**
+**实证分（饰品）**
 - 公式：`score = tier 基础分 + (4.2 − 平均名次) × 3`，
   `S/A/B/C/D/F = 3.0 / 1.5 / 0.5 / −0.5 / −1.5 / −3.0`
   - 参照点 4.2 = ALL 分段全体饰品平均名次的**中位数**（实测）；名次项实际贡献
@@ -388,6 +406,14 @@ tier / 选取率 / 终局平均名次（`data/trinkets_hsreplay.json`，由 `too
   序号翻译回中文名（`_pending_choice_text`）。规则层的推荐只加 ★ 标记。
 - `data/trinkets_hsreplay.json` 缺失/损坏时**静默降级**为老行为（只展示不推荐），
   与缺 `cards_enUS.json` 的约定一致。
+
+**实证分（英雄选择，`src/hsbg/heroes.py`）**
+- 公式：`score = 10 × 选取率在全体英雄里的百分位`（116 位全表，`brackets.ALL`）。
+- 与饰品同款的降级约定：查不到 = `None` 不当 0 分；部分候选缺数据仍推荐
+  "有数据的里面最好的" + `N 项无实证数据`；`data/heroes_hsreplay.json`
+  缺失/损坏时静默降级为"只展示不推荐"。
+- 英雄技能文本没接：候选实体上只有 `HERO_POWER` dbfId 而运行时不带该映射，
+  先不接（名字对老玩家足够认出英雄）。
 
 **题面与答案翻译（`advisor.py`）**
 - `choice_question()` 把待选做成 `choice` 题，选项文本写成 `"N. 英文名 — 英文卡文"`
@@ -813,14 +839,14 @@ CLI 侧一直是无条件打印的，两边口径不一致。改成 `if row.scor
 ./hsbg replay 0      # 看最新一局（0=最新；也支持 last / 文件路径）
 ```
 
-输出：英雄/回合数、选一历史（饰品/黑赐…）、逐回合帧行（金币/血量/商店/决策框/待选★）。
+输出：英雄/回合数、选一历史（英雄/饰品/黑赐…）、逐回合帧行（金币/血量/商店/决策框/待选★）。
 
 ---
 
 ## 测试
 
 ```bash
-./run-tests          # 全部（335 个）
+./run-tests          # 全部（356 个）
 ./run-tests -v       # 逐个打印
 ./run-tests -k tag   # 只跑名字含 "tag" 的
 ```

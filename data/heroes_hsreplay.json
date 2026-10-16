@@ -1,0 +1,2282 @@
+{
+ "source": "https://hsreplay.net/api/v1/battlegrounds/heroes/free/",
+ "time_range": "LAST_7_DAYS",
+ "fetched_at": "2026-10-16T12:14:10Z",
+ "note": "HSReplay 公开端点（/heroes/free/）：免费层只有选取率与护甲，没有平均名次/tier（Tier7 订阅内容）。",
+ "brackets": {
+  "ALL": [
+   {
+    "dbf_id": 118509,
+    "card_id": "BG31_HERO_801",
+    "name": "吉姆·雷诺",
+    "pick_rate": 20.82,
+    "armor": 16
+   },
+   {
+    "dbf_id": 60372,
+    "card_id": "TB_BaconShop_HERO_55",
+    "name": "菌菇术士弗洛格尔",
+    "pick_rate": 20.8,
+    "armor": 12
+   },
+   {
+    "dbf_id": 97813,
+    "card_id": "BG25_HERO_100",
+    "name": "普崔塞德教授",
+    "pick_rate": 14.33,
+    "armor": 12
+   },
+   {
+    "dbf_id": 57891,
+    "card_id": "TB_BaconShop_HERO_10",
+    "name": "贸易亲王加里维克斯",
+    "pick_rate": 38.32,
+    "armor": 5
+   },
+   {
+    "dbf_id": 101345,
+    "card_id": "BG25_HERO_105",
+    "name": "乐队经理精英牛头人酋长",
+    "pick_rate": 32.44,
+    "armor": 16
+   },
+   {
+    "dbf_id": 57633,
+    "card_id": "TB_BaconShop_HERO_01",
+    "name": "艾德温·范克里夫",
+    "pick_rate": 9.64,
+    "armor": 15
+   },
+   {
+    "dbf_id": 58435,
+    "card_id": "TB_BaconShop_HERO_27",
+    "name": "辛达苟萨",
+    "pick_rate": 31.06,
+    "armor": 10
+   },
+   {
+    "dbf_id": 68129,
+    "card_id": "BG20_HERO_242",
+    "name": "古夫·符文图腾",
+    "pick_rate": 33.96,
+    "armor": 12
+   },
+   {
+    "dbf_id": 118510,
+    "card_id": "BG31_HERO_802",
+    "name": "阿塔尼斯",
+    "pick_rate": 20.75,
+    "armor": 18
+   },
+   {
+    "dbf_id": 60367,
+    "card_id": "TB_BaconShop_HERO_50",
+    "name": "苔丝·格雷迈恩",
+    "pick_rate": 36.57,
+    "armor": 17
+   },
+   {
+    "dbf_id": 101130,
+    "card_id": "BG26_HERO_101",
+    "name": "霍格船长",
+    "pick_rate": 30.98,
+    "armor": 14
+   },
+   {
+    "dbf_id": 134504,
+    "card_id": "BG36_HERO_002",
+    "name": "基希克斯",
+    "pick_rate": 39.18,
+    "armor": 8
+   },
+   {
+    "dbf_id": 74631,
+    "card_id": "BG20_HERO_280",
+    "name": "库尔特鲁斯·陨烬",
+    "pick_rate": 20.0,
+    "armor": 16
+   },
+   {
+    "dbf_id": 120358,
+    "card_id": "BG31_HERO_811",
+    "name": "刀锋女王凯瑞甘",
+    "pick_rate": 8.24,
+    "armor": 14
+   },
+   {
+    "dbf_id": 117409,
+    "card_id": "BG31_HERO_005",
+    "name": "克隆大师泽里克",
+    "pick_rate": 49.9,
+    "armor": 12
+   },
+   {
+    "dbf_id": 92960,
+    "card_id": "BG24_HERO_100",
+    "name": "德纳修斯大帝",
+    "pick_rate": 72.56,
+    "armor": 11
+   },
+   {
+    "dbf_id": 57892,
+    "card_id": "TB_BaconShop_HERO_11",
+    "name": "炎魔之王拉格纳罗斯",
+    "pick_rate": 14.3,
+    "armor": 15
+   },
+   {
+    "dbf_id": 61910,
+    "card_id": "TB_BaconShop_HERO_59",
+    "name": "阿兰娜·逐星",
+    "pick_rate": 29.85,
+    "armor": 12
+   },
+   {
+    "dbf_id": 57946,
+    "card_id": "TB_BaconShop_HERO_17",
+    "name": "米尔菲丝·法力风暴",
+    "pick_rate": 35.72,
+    "armor": 15
+   },
+   {
+    "dbf_id": 59831,
+    "card_id": "TB_BaconShop_HERO_39",
+    "name": "疯狂金字塔",
+    "pick_rate": 15.96,
+    "armor": 14
+   },
+   {
+    "dbf_id": 57947,
+    "card_id": "TB_BaconShop_HERO_18",
+    "name": "海盗帕奇斯",
+    "pick_rate": 29.86,
+    "armor": 19
+   },
+   {
+    "dbf_id": 76521,
+    "card_id": "BG21_HERO_030",
+    "name": "斯尼德",
+    "pick_rate": 15.93,
+    "armor": 15
+   },
+   {
+    "dbf_id": 63604,
+    "card_id": "TB_BaconShop_HERO_74",
+    "name": "林地守护者欧穆",
+    "pick_rate": 41.24,
+    "armor": 6
+   },
+   {
+    "dbf_id": 116920,
+    "card_id": "BG32_HERO_001",
+    "name": "森林之王塞纳留斯",
+    "pick_rate": 56.05,
+    "armor": 13
+   },
+   {
+    "dbf_id": 70956,
+    "card_id": "BG20_HERO_101",
+    "name": "泽瑞拉",
+    "pick_rate": 28.99,
+    "armor": 14
+   },
+   {
+    "dbf_id": 129684,
+    "card_id": "BG35_HERO_001",
+    "name": "吉恩，狼人国王",
+    "pick_rate": 62.61,
+    "armor": 7
+   },
+   {
+    "dbf_id": 86291,
+    "card_id": "BG23_HERO_305",
+    "name": "劫匪之王托瓦格尔",
+    "pick_rate": 21.02,
+    "armor": 16
+   },
+   {
+    "dbf_id": 86013,
+    "card_id": "BG23_HERO_201",
+    "name": "厄祖玛特",
+    "pick_rate": 11.65,
+    "armor": 15
+   },
+   {
+    "dbf_id": 60362,
+    "card_id": "TB_BaconShop_HERO_45",
+    "name": "至尊盗王拉法姆",
+    "pick_rate": 26.11,
+    "armor": 15
+   },
+   {
+    "dbf_id": 63601,
+    "card_id": "TB_BaconShop_HERO_71",
+    "name": "詹迪斯·巴罗夫",
+    "pick_rate": 20.46,
+    "armor": 18
+   },
+   {
+    "dbf_id": 60214,
+    "card_id": "TB_BaconShop_HERO_43",
+    "name": "恐龙大师布莱恩",
+    "pick_rate": 49.73,
+    "armor": 18
+   },
+   {
+    "dbf_id": 74646,
+    "card_id": "BG20_HERO_282",
+    "name": "塔姆辛·罗姆",
+    "pick_rate": 15.49,
+    "armor": 10
+   },
+   {
+    "dbf_id": 60366,
+    "card_id": "TB_BaconShop_HERO_49",
+    "name": "米尔豪斯·法力风暴",
+    "pick_rate": 15.31,
+    "armor": 16
+   },
+   {
+    "dbf_id": 126537,
+    "card_id": "BG34_HERO_001",
+    "name": "时光扭曲者克罗米",
+    "pick_rate": 27.48,
+    "armor": 14
+   },
+   {
+    "dbf_id": 61489,
+    "card_id": "TB_BaconShop_HERO_57",
+    "name": "诺兹多姆",
+    "pick_rate": 25.01,
+    "armor": 13
+   },
+   {
+    "dbf_id": 67553,
+    "card_id": "TB_BaconShop_HERO_95",
+    "name": "格雷布",
+    "pick_rate": 36.03,
+    "armor": 16
+   },
+   {
+    "dbf_id": 61914,
+    "card_id": "TB_BaconShop_HERO_62",
+    "name": "玛维·影歌",
+    "pick_rate": 17.37,
+    "armor": 18
+   },
+   {
+    "dbf_id": 80832,
+    "card_id": "BG22_HERO_200",
+    "name": "伊妮·积雷",
+    "pick_rate": 28.79,
+    "armor": 15
+   },
+   {
+    "dbf_id": 61490,
+    "card_id": "TB_BaconShop_HERO_58",
+    "name": "玛里苟斯",
+    "pick_rate": 24.19,
+    "armor": 17
+   },
+   {
+    "dbf_id": 60212,
+    "card_id": "TB_BaconShop_HERO_41",
+    "name": "雷诺·杰克逊",
+    "pick_rate": 59.05,
+    "armor": 12
+   },
+   {
+    "dbf_id": 62266,
+    "card_id": "TB_BaconShop_HERO_67",
+    "name": "钩牙船长",
+    "pick_rate": 20.69,
+    "armor": 14
+   },
+   {
+    "dbf_id": 76562,
+    "card_id": "BG21_HERO_010",
+    "name": "斯卡布斯·刀油",
+    "pick_rate": 32.25,
+    "armor": 18
+   },
+   {
+    "dbf_id": 82110,
+    "card_id": "BG22_HERO_305",
+    "name": "奥妮克希亚",
+    "pick_rate": 17.34,
+    "armor": 10
+   },
+   {
+    "dbf_id": 58534,
+    "card_id": "TB_BaconShop_HERO_28",
+    "name": "永恒者托奇",
+    "pick_rate": 39.62,
+    "armor": 15
+   },
+   {
+    "dbf_id": 64485,
+    "card_id": "TB_BaconShop_HERO_91",
+    "name": "了不起的杰弗里斯",
+    "pick_rate": 41.54,
+    "armor": 17
+   },
+   {
+    "dbf_id": 81569,
+    "card_id": "BG22_HERO_201",
+    "name": "费林大使",
+    "pick_rate": 58.65,
+    "armor": 14
+   },
+   {
+    "dbf_id": 79615,
+    "card_id": "BG22_HERO_004",
+    "name": "瓦尔登·晨拥",
+    "pick_rate": 28.71,
+    "armor": 18
+   },
+   {
+    "dbf_id": 71908,
+    "card_id": "BG20_HERO_202",
+    "name": "阮大师",
+    "pick_rate": 59.48,
+    "armor": 10
+   },
+   {
+    "dbf_id": 75702,
+    "card_id": "BG20_HERO_283",
+    "name": "狂风之翼",
+    "pick_rate": 33.31,
+    "armor": 10
+   },
+   {
+    "dbf_id": 60213,
+    "card_id": "TB_BaconShop_HERO_42",
+    "name": "伊莉斯·逐星",
+    "pick_rate": 25.74,
+    "armor": 15
+   },
+   {
+    "dbf_id": 61912,
+    "card_id": "TB_BaconShop_HERO_60",
+    "name": "凯尔萨斯·逐日者",
+    "pick_rate": 18.04,
+    "armor": 18
+   },
+   {
+    "dbf_id": 63602,
+    "card_id": "TB_BaconShop_HERO_72",
+    "name": "巴罗夫领主",
+    "pick_rate": 29.73,
+    "armor": 14
+   },
+   {
+    "dbf_id": 77516,
+    "card_id": "BG21_HERO_020",
+    "name": "厨师曲奇",
+    "pick_rate": 32.14,
+    "armor": 8
+   },
+   {
+    "dbf_id": 64475,
+    "card_id": "TB_BaconShop_HERO_78",
+    "name": "齐恩瓦拉",
+    "pick_rate": 42.11,
+    "armor": 15
+   },
+   {
+    "dbf_id": 105314,
+    "card_id": "BG28_HERO_400",
+    "name": "蛇眼",
+    "pick_rate": 56.62,
+    "armor": 8
+   },
+   {
+    "dbf_id": 70838,
+    "card_id": "BG20_HERO_100",
+    "name": "洛卡拉",
+    "pick_rate": 12.28,
+    "armor": 18
+   },
+   {
+    "dbf_id": 57893,
+    "card_id": "TB_BaconShop_HERO_12",
+    "name": "鼠王",
+    "pick_rate": 27.82,
+    "armor": 14
+   },
+   {
+    "dbf_id": 63319,
+    "card_id": "TB_BaconShop_HERO_70",
+    "name": "比格沃斯先生",
+    "pick_rate": 23.58,
+    "armor": 19
+   },
+   {
+    "dbf_id": 64480,
+    "card_id": "TB_BaconShop_HERO_90",
+    "name": "希拉斯·暗月",
+    "pick_rate": 30.51,
+    "armor": 16
+   },
+   {
+    "dbf_id": 105434,
+    "card_id": "BG28_HERO_801",
+    "name": "荷利戴医生",
+    "pick_rate": 23.27,
+    "armor": 14
+   },
+   {
+    "dbf_id": 99033,
+    "card_id": "BG26_HERO_104",
+    "name": "摇滚教父沃恩",
+    "pick_rate": 32.24,
+    "armor": 15
+   },
+   {
+    "dbf_id": 96870,
+    "card_id": "BG24_HERO_204",
+    "name": "强化机器人",
+    "pick_rate": 31.26,
+    "armor": 14
+   },
+   {
+    "dbf_id": 116926,
+    "card_id": "BG31_HERO_003",
+    "name": "预言者努波顿",
+    "pick_rate": 28.46,
+    "armor": 15
+   },
+   {
+    "dbf_id": 58535,
+    "card_id": "TB_BaconShop_HERO_29",
+    "name": "克苏恩",
+    "pick_rate": 14.4,
+    "armor": 20
+   },
+   {
+    "dbf_id": 62268,
+    "card_id": "TB_BaconShop_HERO_68",
+    "name": "天空上尉库拉格",
+    "pick_rate": 26.29,
+    "armor": 14
+   },
+   {
+    "dbf_id": 71454,
+    "card_id": "BG20_HERO_102",
+    "name": "萨鲁法尔大王",
+    "pick_rate": 20.87,
+    "armor": 15
+   },
+   {
+    "dbf_id": 58027,
+    "card_id": "TB_BaconShop_HERO_23",
+    "name": "沙德沃克",
+    "pick_rate": 44.78,
+    "armor": 10
+   },
+   {
+    "dbf_id": 64400,
+    "card_id": "TB_BaconShop_HERO_75",
+    "name": "拉卡尼休",
+    "pick_rate": 24.94,
+    "armor": 10
+   },
+   {
+    "dbf_id": 66196,
+    "card_id": "TB_BaconShop_HERO_92",
+    "name": "亚煞极",
+    "pick_rate": 23.41,
+    "armor": 20
+   },
+   {
+    "dbf_id": 129173,
+    "card_id": "BG34_HERO_004",
+    "name": "米罗克",
+    "pick_rate": 59.73,
+    "armor": 8
+   },
+   {
+    "dbf_id": 57924,
+    "card_id": "TB_BaconShop_HERO_14",
+    "name": "瓦托格尔女王",
+    "pick_rate": 14.63,
+    "armor": 14
+   },
+   {
+    "dbf_id": 60211,
+    "card_id": "TB_BaconShop_HERO_40",
+    "name": "芬利·莫格顿爵士",
+    "pick_rate": 54.69,
+    "armor": 14
+   },
+   {
+    "dbf_id": 105431,
+    "card_id": "BG28_HERO_800",
+    "name": "泰瑟兰·血望者",
+    "pick_rate": 15.97,
+    "armor": 18
+   },
+   {
+    "dbf_id": 59203,
+    "card_id": "TB_BaconShop_HERO_33",
+    "name": "馆长",
+    "pick_rate": 27.94,
+    "armor": 16
+   },
+   {
+    "dbf_id": 67356,
+    "card_id": "TB_BaconShop_HERO_94",
+    "name": "提克特斯",
+    "pick_rate": 38.24,
+    "armor": 17
+   },
+   {
+    "dbf_id": 77987,
+    "card_id": "BG22_HERO_000",
+    "name": "塔维什·雷矛",
+    "pick_rate": 27.99,
+    "armor": 14
+   },
+   {
+    "dbf_id": 79719,
+    "card_id": "BG22_HERO_001",
+    "name": "布鲁坎",
+    "pick_rate": 17.15,
+    "armor": 15
+   },
+   {
+    "dbf_id": 127696,
+    "card_id": "BG34_HERO_000",
+    "name": "无限巨龙姆诺兹多",
+    "pick_rate": 59.06,
+    "armor": 12
+   },
+   {
+    "dbf_id": 117425,
+    "card_id": "BG31_HERO_006",
+    "name": "大主教奥萨尔",
+    "pick_rate": 19.64,
+    "armor": 15
+   },
+   {
+    "dbf_id": 71916,
+    "card_id": "BG20_HERO_301",
+    "name": "吞噬者穆坦努斯",
+    "pick_rate": 32.27,
+    "armor": 20
+   },
+   {
+    "dbf_id": 62242,
+    "card_id": "TB_BaconShop_HERO_64",
+    "name": "尤朵拉船长",
+    "pick_rate": 42.97,
+    "armor": 14
+   },
+   {
+    "dbf_id": 57635,
+    "card_id": "TB_BaconShop_HERO_02",
+    "name": "迦拉克隆",
+    "pick_rate": 49.57,
+    "armor": 18
+   },
+   {
+    "dbf_id": 60370,
+    "card_id": "TB_BaconShop_HERO_53",
+    "name": "伊瑟拉",
+    "pick_rate": 27.53,
+    "armor": 17
+   },
+   {
+    "dbf_id": 66483,
+    "card_id": "TB_BaconShop_HERO_93",
+    "name": "恩佐斯",
+    "pick_rate": 30.33,
+    "armor": 12
+   },
+   {
+    "dbf_id": 103500,
+    "card_id": "BG26_HERO_102",
+    "name": "因葛，钢铁颂歌",
+    "pick_rate": 23.6,
+    "armor": 10
+   },
+   {
+    "dbf_id": 59814,
+    "card_id": "TB_BaconShop_HERO_38",
+    "name": "穆克拉",
+    "pick_rate": 16.76,
+    "armor": 16
+   },
+   {
+    "dbf_id": 84867,
+    "card_id": "BG23_HERO_303",
+    "name": "摩洛克·福尔摩斯",
+    "pick_rate": 30.27,
+    "armor": 12
+   },
+   {
+    "dbf_id": 122925,
+    "card_id": "BG33_HERO_001",
+    "name": "洛，在世传奇",
+    "pick_rate": 38.65,
+    "armor": 19
+   },
+   {
+    "dbf_id": 58044,
+    "card_id": "TB_BaconShop_HERO_25",
+    "name": "巫妖巴兹亚尔",
+    "pick_rate": 26.9,
+    "armor": 18
+   },
+   {
+    "dbf_id": 89293,
+    "card_id": "BG23_HERO_306",
+    "name": "希尔瓦娜斯·风行者",
+    "pick_rate": 53.88,
+    "armor": 10
+   },
+   {
+    "dbf_id": 58021,
+    "card_id": "TB_BaconShop_HERO_21",
+    "name": "伟大的阿卡扎曼扎拉克",
+    "pick_rate": 30.02,
+    "armor": 12
+   },
+   {
+    "dbf_id": 59806,
+    "card_id": "TB_BaconShop_HERO_36",
+    "name": "舞者达瑞尔",
+    "pick_rate": 21.5,
+    "armor": 18
+   },
+   {
+    "dbf_id": 59805,
+    "card_id": "TB_BaconShop_HERO_35",
+    "name": "尤格-萨隆",
+    "pick_rate": 38.29,
+    "armor": 10
+   },
+   {
+    "dbf_id": 57929,
+    "card_id": "TB_BaconShop_HERO_15",
+    "name": "堕落的乔治",
+    "pick_rate": 31.26,
+    "armor": 15
+   },
+   {
+    "dbf_id": 58024,
+    "card_id": "TB_BaconShop_HERO_22",
+    "name": "巫妖王",
+    "pick_rate": 53.38,
+    "armor": 14
+   },
+   {
+    "dbf_id": 126532,
+    "card_id": "BG34_HERO_002",
+    "name": "钟表先生克劳沃斯",
+    "pick_rate": 49.72,
+    "armor": 18
+   },
+   {
+    "dbf_id": 60369,
+    "card_id": "TB_BaconShop_HERO_52",
+    "name": "死亡之翼",
+    "pick_rate": 10.78,
+    "armor": 18
+   },
+   {
+    "dbf_id": 61488,
+    "card_id": "TB_BaconShop_HERO_56",
+    "name": "阿莱克丝塔萨",
+    "pick_rate": 31.99,
+    "armor": 8
+   },
+   {
+    "dbf_id": 71463,
+    "card_id": "BG20_HERO_201",
+    "name": "沃金",
+    "pick_rate": 19.32,
+    "armor": 17
+   },
+   {
+    "dbf_id": 80239,
+    "card_id": "BG22_HERO_002",
+    "name": "德雷克塔尔",
+    "pick_rate": 41.4,
+    "armor": 10
+   },
+   {
+    "dbf_id": 80247,
+    "card_id": "BG22_HERO_003",
+    "name": "范达尔·雷矛",
+    "pick_rate": 42.6,
+    "armor": 10
+   },
+   {
+    "dbf_id": 64403,
+    "card_id": "TB_BaconShop_HERO_76",
+    "name": "奥拉基尔",
+    "pick_rate": 35.71,
+    "armor": 15
+   },
+   {
+    "dbf_id": 103477,
+    "card_id": "BG27_HERO_801",
+    "name": "风暴之王托里姆",
+    "pick_rate": 58.6,
+    "armor": 18
+   },
+   {
+    "dbf_id": 97186,
+    "card_id": "TB_BaconShop_HERO_702",
+    "name": "典狱长",
+    "pick_rate": 26.25,
+    "armor": 10
+   },
+   {
+    "dbf_id": 132608,
+    "card_id": "BG36_HERO_105",
+    "name": "梦魇之王萨维斯",
+    "pick_rate": 77.62,
+    "armor": 6
+   },
+   {
+    "dbf_id": 57634,
+    "card_id": "TB_BaconShop_HERO_08",
+    "name": "伊利丹·怒风",
+    "pick_rate": 38.22,
+    "armor": 18
+   },
+   {
+    "dbf_id": 113310,
+    "card_id": "BG30_HERO_304",
+    "name": "经理马林",
+    "pick_rate": 73.54,
+    "armor": 12
+   },
+   {
+    "dbf_id": 98726,
+    "card_id": "BG25_HERO_103",
+    "name": "塔隆·血魔",
+    "pick_rate": 56.48,
+    "armor": 14
+   },
+   {
+    "dbf_id": 120649,
+    "card_id": "BG32_HERO_002",
+    "name": "扣子",
+    "pick_rate": 69.28,
+    "armor": 16
+   },
+   {
+    "dbf_id": 57944,
+    "card_id": "TB_BaconShop_HERO_16",
+    "name": "挂机的阿凯",
+    "pick_rate": 67.64,
+    "armor": 15
+   },
+   {
+    "dbf_id": 73940,
+    "card_id": "BG21_HERO_000",
+    "name": "凯瑞尔·罗姆",
+    "pick_rate": 27.3,
+    "armor": 10
+   },
+   {
+    "dbf_id": 59397,
+    "card_id": "TB_BaconShop_HERO_34",
+    "name": "帕奇维克",
+    "pick_rate": 38.89,
+    "armor": 0
+   },
+   {
+    "dbf_id": 134502,
+    "card_id": "BG36_HERO_000",
+    "name": "德雷阿佳丝",
+    "pick_rate": 54.46,
+    "armor": 12
+   },
+   {
+    "dbf_id": 132578,
+    "card_id": "BG36_HERO_101",
+    "name": "特莱斯塔斯，寄生之魂",
+    "pick_rate": 73.56,
+    "armor": 15
+   },
+   {
+    "dbf_id": 71458,
+    "card_id": "BG20_HERO_103",
+    "name": "亡语者布莱克松",
+    "pick_rate": 36.83,
+    "armor": 18
+   },
+   {
+    "dbf_id": 59807,
+    "card_id": "TB_BaconShop_HERO_37",
+    "name": "加拉克苏斯大王",
+    "pick_rate": 59.14,
+    "armor": 15
+   }
+  ],
+  "TOP_50_PERCENT": [
+   {
+    "dbf_id": 118509,
+    "card_id": "BG31_HERO_801",
+    "name": "吉姆·雷诺",
+    "pick_rate": 15.42,
+    "armor": 16
+   },
+   {
+    "dbf_id": 97813,
+    "card_id": "BG25_HERO_100",
+    "name": "普崔塞德教授",
+    "pick_rate": 12.69,
+    "armor": 12
+   },
+   {
+    "dbf_id": 57633,
+    "card_id": "TB_BaconShop_HERO_01",
+    "name": "艾德温·范克里夫",
+    "pick_rate": 6.13,
+    "armor": 15
+   },
+   {
+    "dbf_id": 118510,
+    "card_id": "BG31_HERO_802",
+    "name": "阿塔尼斯",
+    "pick_rate": 14.78,
+    "armor": 18
+   },
+   {
+    "dbf_id": 60372,
+    "card_id": "TB_BaconShop_HERO_55",
+    "name": "菌菇术士弗洛格尔",
+    "pick_rate": 16.94,
+    "armor": 12
+   },
+   {
+    "dbf_id": 101345,
+    "card_id": "BG25_HERO_105",
+    "name": "乐队经理精英牛头人酋长",
+    "pick_rate": 32.44,
+    "armor": 16
+   },
+   {
+    "dbf_id": 68129,
+    "card_id": "BG20_HERO_242",
+    "name": "古夫·符文图腾",
+    "pick_rate": 30.22,
+    "armor": 12
+   },
+   {
+    "dbf_id": 134504,
+    "card_id": "BG36_HERO_002",
+    "name": "基希克斯",
+    "pick_rate": 35.74,
+    "armor": 8
+   },
+   {
+    "dbf_id": 58435,
+    "card_id": "TB_BaconShop_HERO_27",
+    "name": "辛达苟萨",
+    "pick_rate": 30.64,
+    "armor": 10
+   },
+   {
+    "dbf_id": 101130,
+    "card_id": "BG26_HERO_101",
+    "name": "霍格船长",
+    "pick_rate": 25.77,
+    "armor": 14
+   },
+   {
+    "dbf_id": 57892,
+    "card_id": "TB_BaconShop_HERO_11",
+    "name": "炎魔之王拉格纳罗斯",
+    "pick_rate": 9.13,
+    "armor": 15
+   },
+   {
+    "dbf_id": 74631,
+    "card_id": "BG20_HERO_280",
+    "name": "库尔特鲁斯·陨烬",
+    "pick_rate": 16.0,
+    "armor": 16
+   },
+   {
+    "dbf_id": 59831,
+    "card_id": "TB_BaconShop_HERO_39",
+    "name": "疯狂金字塔",
+    "pick_rate": 12.78,
+    "armor": 14
+   },
+   {
+    "dbf_id": 60367,
+    "card_id": "TB_BaconShop_HERO_50",
+    "name": "苔丝·格雷迈恩",
+    "pick_rate": 34.03,
+    "armor": 17
+   },
+   {
+    "dbf_id": 57891,
+    "card_id": "TB_BaconShop_HERO_10",
+    "name": "贸易亲王加里维克斯",
+    "pick_rate": 35.81,
+    "armor": 5
+   },
+   {
+    "dbf_id": 120358,
+    "card_id": "BG31_HERO_811",
+    "name": "刀锋女王凯瑞甘",
+    "pick_rate": 5.71,
+    "armor": 14
+   },
+   {
+    "dbf_id": 61910,
+    "card_id": "TB_BaconShop_HERO_59",
+    "name": "阿兰娜·逐星",
+    "pick_rate": 24.89,
+    "armor": 12
+   },
+   {
+    "dbf_id": 67553,
+    "card_id": "TB_BaconShop_HERO_95",
+    "name": "格雷布",
+    "pick_rate": 31.44,
+    "armor": 16
+   },
+   {
+    "dbf_id": 57947,
+    "card_id": "TB_BaconShop_HERO_18",
+    "name": "海盗帕奇斯",
+    "pick_rate": 24.07,
+    "armor": 19
+   },
+   {
+    "dbf_id": 92960,
+    "card_id": "BG24_HERO_100",
+    "name": "德纳修斯大帝",
+    "pick_rate": 73.99,
+    "armor": 11
+   },
+   {
+    "dbf_id": 57946,
+    "card_id": "TB_BaconShop_HERO_17",
+    "name": "米尔菲丝·法力风暴",
+    "pick_rate": 29.49,
+    "armor": 15
+   },
+   {
+    "dbf_id": 70956,
+    "card_id": "BG20_HERO_101",
+    "name": "泽瑞拉",
+    "pick_rate": 27.24,
+    "armor": 14
+   },
+   {
+    "dbf_id": 70838,
+    "card_id": "BG20_HERO_100",
+    "name": "洛卡拉",
+    "pick_rate": 8.55,
+    "armor": 18
+   },
+   {
+    "dbf_id": 117409,
+    "card_id": "BG31_HERO_005",
+    "name": "克隆大师泽里克",
+    "pick_rate": 51.05,
+    "armor": 12
+   },
+   {
+    "dbf_id": 60366,
+    "card_id": "TB_BaconShop_HERO_49",
+    "name": "米尔豪斯·法力风暴",
+    "pick_rate": 12.56,
+    "armor": 16
+   },
+   {
+    "dbf_id": 60362,
+    "card_id": "TB_BaconShop_HERO_45",
+    "name": "至尊盗王拉法姆",
+    "pick_rate": 24.23,
+    "armor": 15
+   },
+   {
+    "dbf_id": 63601,
+    "card_id": "TB_BaconShop_HERO_71",
+    "name": "詹迪斯·巴罗夫",
+    "pick_rate": 17.62,
+    "armor": 18
+   },
+   {
+    "dbf_id": 76521,
+    "card_id": "BG21_HERO_030",
+    "name": "斯尼德",
+    "pick_rate": 13.9,
+    "armor": 15
+   },
+   {
+    "dbf_id": 63604,
+    "card_id": "TB_BaconShop_HERO_74",
+    "name": "林地守护者欧穆",
+    "pick_rate": 39.26,
+    "armor": 6
+   },
+   {
+    "dbf_id": 86013,
+    "card_id": "BG23_HERO_201",
+    "name": "厄祖玛特",
+    "pick_rate": 8.47,
+    "armor": 15
+   },
+   {
+    "dbf_id": 61489,
+    "card_id": "TB_BaconShop_HERO_57",
+    "name": "诺兹多姆",
+    "pick_rate": 20.12,
+    "armor": 13
+   },
+   {
+    "dbf_id": 74646,
+    "card_id": "BG20_HERO_282",
+    "name": "塔姆辛·罗姆",
+    "pick_rate": 11.99,
+    "armor": 10
+   },
+   {
+    "dbf_id": 86291,
+    "card_id": "BG23_HERO_305",
+    "name": "劫匪之王托瓦格尔",
+    "pick_rate": 19.18,
+    "armor": 16
+   },
+   {
+    "dbf_id": 61914,
+    "card_id": "TB_BaconShop_HERO_62",
+    "name": "玛维·影歌",
+    "pick_rate": 15.2,
+    "armor": 18
+   },
+   {
+    "dbf_id": 129684,
+    "card_id": "BG35_HERO_001",
+    "name": "吉恩，狼人国王",
+    "pick_rate": 59.67,
+    "armor": 7
+   },
+   {
+    "dbf_id": 61490,
+    "card_id": "TB_BaconShop_HERO_58",
+    "name": "玛里苟斯",
+    "pick_rate": 19.46,
+    "armor": 17
+   },
+   {
+    "dbf_id": 126537,
+    "card_id": "BG34_HERO_001",
+    "name": "时光扭曲者克罗米",
+    "pick_rate": 24.94,
+    "armor": 14
+   },
+   {
+    "dbf_id": 61912,
+    "card_id": "TB_BaconShop_HERO_60",
+    "name": "凯尔萨斯·逐日者",
+    "pick_rate": 13.93,
+    "armor": 18
+   },
+   {
+    "dbf_id": 64485,
+    "card_id": "TB_BaconShop_HERO_91",
+    "name": "了不起的杰弗里斯",
+    "pick_rate": 35.46,
+    "armor": 17
+   },
+   {
+    "dbf_id": 58534,
+    "card_id": "TB_BaconShop_HERO_28",
+    "name": "永恒者托奇",
+    "pick_rate": 34.64,
+    "armor": 15
+   },
+   {
+    "dbf_id": 76562,
+    "card_id": "BG21_HERO_010",
+    "name": "斯卡布斯·刀油",
+    "pick_rate": 30.86,
+    "armor": 18
+   },
+   {
+    "dbf_id": 71454,
+    "card_id": "BG20_HERO_102",
+    "name": "萨鲁法尔大王",
+    "pick_rate": 16.31,
+    "armor": 15
+   },
+   {
+    "dbf_id": 80832,
+    "card_id": "BG22_HERO_200",
+    "name": "伊妮·积雷",
+    "pick_rate": 24.28,
+    "armor": 15
+   },
+   {
+    "dbf_id": 79615,
+    "card_id": "BG22_HERO_004",
+    "name": "瓦尔登·晨拥",
+    "pick_rate": 24.35,
+    "armor": 18
+   },
+   {
+    "dbf_id": 63319,
+    "card_id": "TB_BaconShop_HERO_70",
+    "name": "比格沃斯先生",
+    "pick_rate": 20.4,
+    "armor": 19
+   },
+   {
+    "dbf_id": 60214,
+    "card_id": "TB_BaconShop_HERO_43",
+    "name": "恐龙大师布莱恩",
+    "pick_rate": 48.47,
+    "armor": 18
+   },
+   {
+    "dbf_id": 82110,
+    "card_id": "BG22_HERO_305",
+    "name": "奥妮克希亚",
+    "pick_rate": 14.2,
+    "armor": 10
+   },
+   {
+    "dbf_id": 75702,
+    "card_id": "BG20_HERO_283",
+    "name": "狂风之翼",
+    "pick_rate": 31.31,
+    "armor": 10
+   },
+   {
+    "dbf_id": 116920,
+    "card_id": "BG32_HERO_001",
+    "name": "森林之王塞纳留斯",
+    "pick_rate": 55.8,
+    "armor": 13
+   },
+   {
+    "dbf_id": 62266,
+    "card_id": "TB_BaconShop_HERO_67",
+    "name": "钩牙船长",
+    "pick_rate": 19.97,
+    "armor": 14
+   },
+   {
+    "dbf_id": 77516,
+    "card_id": "BG21_HERO_020",
+    "name": "厨师曲奇",
+    "pick_rate": 28.89,
+    "armor": 8
+   },
+   {
+    "dbf_id": 81569,
+    "card_id": "BG22_HERO_201",
+    "name": "费林大使",
+    "pick_rate": 57.09,
+    "armor": 14
+   },
+   {
+    "dbf_id": 64475,
+    "card_id": "TB_BaconShop_HERO_78",
+    "name": "齐恩瓦拉",
+    "pick_rate": 35.35,
+    "armor": 15
+   },
+   {
+    "dbf_id": 58535,
+    "card_id": "TB_BaconShop_HERO_29",
+    "name": "克苏恩",
+    "pick_rate": 9.18,
+    "armor": 20
+   },
+   {
+    "dbf_id": 105314,
+    "card_id": "BG28_HERO_400",
+    "name": "蛇眼",
+    "pick_rate": 54.16,
+    "armor": 8
+   },
+   {
+    "dbf_id": 60213,
+    "card_id": "TB_BaconShop_HERO_42",
+    "name": "伊莉斯·逐星",
+    "pick_rate": 23.1,
+    "armor": 15
+   },
+   {
+    "dbf_id": 64480,
+    "card_id": "TB_BaconShop_HERO_90",
+    "name": "希拉斯·暗月",
+    "pick_rate": 27.08,
+    "armor": 16
+   },
+   {
+    "dbf_id": 105434,
+    "card_id": "BG28_HERO_801",
+    "name": "荷利戴医生",
+    "pick_rate": 19.25,
+    "armor": 14
+   },
+   {
+    "dbf_id": 57893,
+    "card_id": "TB_BaconShop_HERO_12",
+    "name": "鼠王",
+    "pick_rate": 26.16,
+    "armor": 14
+   },
+   {
+    "dbf_id": 63602,
+    "card_id": "TB_BaconShop_HERO_72",
+    "name": "巴罗夫领主",
+    "pick_rate": 28.75,
+    "armor": 14
+   },
+   {
+    "dbf_id": 64400,
+    "card_id": "TB_BaconShop_HERO_75",
+    "name": "拉卡尼休",
+    "pick_rate": 21.31,
+    "armor": 10
+   },
+   {
+    "dbf_id": 66196,
+    "card_id": "TB_BaconShop_HERO_92",
+    "name": "亚煞极",
+    "pick_rate": 20.35,
+    "armor": 20
+   },
+   {
+    "dbf_id": 71908,
+    "card_id": "BG20_HERO_202",
+    "name": "阮大师",
+    "pick_rate": 62.83,
+    "armor": 10
+   },
+   {
+    "dbf_id": 60212,
+    "card_id": "TB_BaconShop_HERO_41",
+    "name": "雷诺·杰克逊",
+    "pick_rate": 61.02,
+    "armor": 12
+   },
+   {
+    "dbf_id": 127696,
+    "card_id": "BG34_HERO_000",
+    "name": "无限巨龙姆诺兹多",
+    "pick_rate": 54.71,
+    "armor": 12
+   },
+   {
+    "dbf_id": 96870,
+    "card_id": "BG24_HERO_204",
+    "name": "强化机器人",
+    "pick_rate": 28.8,
+    "armor": 14
+   },
+   {
+    "dbf_id": 58027,
+    "card_id": "TB_BaconShop_HERO_23",
+    "name": "沙德沃克",
+    "pick_rate": 38.89,
+    "armor": 10
+   },
+   {
+    "dbf_id": 129173,
+    "card_id": "BG34_HERO_004",
+    "name": "米罗克",
+    "pick_rate": 59.09,
+    "armor": 8
+   },
+   {
+    "dbf_id": 105431,
+    "card_id": "BG28_HERO_800",
+    "name": "泰瑟兰·血望者",
+    "pick_rate": 12.59,
+    "armor": 18
+   },
+   {
+    "dbf_id": 60370,
+    "card_id": "TB_BaconShop_HERO_53",
+    "name": "伊瑟拉",
+    "pick_rate": 20.13,
+    "armor": 17
+   },
+   {
+    "dbf_id": 116926,
+    "card_id": "BG31_HERO_003",
+    "name": "预言者努波顿",
+    "pick_rate": 26.27,
+    "armor": 15
+   },
+   {
+    "dbf_id": 67356,
+    "card_id": "TB_BaconShop_HERO_94",
+    "name": "提克特斯",
+    "pick_rate": 33.96,
+    "armor": 17
+   },
+   {
+    "dbf_id": 57924,
+    "card_id": "TB_BaconShop_HERO_14",
+    "name": "瓦托格尔女王",
+    "pick_rate": 13.01,
+    "armor": 14
+   },
+   {
+    "dbf_id": 59814,
+    "card_id": "TB_BaconShop_HERO_38",
+    "name": "穆克拉",
+    "pick_rate": 13.54,
+    "armor": 16
+   },
+   {
+    "dbf_id": 79719,
+    "card_id": "BG22_HERO_001",
+    "name": "布鲁坎",
+    "pick_rate": 14.34,
+    "armor": 15
+   },
+   {
+    "dbf_id": 117425,
+    "card_id": "BG31_HERO_006",
+    "name": "大主教奥萨尔",
+    "pick_rate": 16.1,
+    "armor": 15
+   },
+   {
+    "dbf_id": 99033,
+    "card_id": "BG26_HERO_104",
+    "name": "摇滚教父沃恩",
+    "pick_rate": 28.87,
+    "armor": 15
+   },
+   {
+    "dbf_id": 71916,
+    "card_id": "BG20_HERO_301",
+    "name": "吞噬者穆坦努斯",
+    "pick_rate": 25.17,
+    "armor": 20
+   },
+   {
+    "dbf_id": 60211,
+    "card_id": "TB_BaconShop_HERO_40",
+    "name": "芬利·莫格顿爵士",
+    "pick_rate": 53.34,
+    "armor": 14
+   },
+   {
+    "dbf_id": 59203,
+    "card_id": "TB_BaconShop_HERO_33",
+    "name": "馆长",
+    "pick_rate": 23.21,
+    "armor": 16
+   },
+   {
+    "dbf_id": 77987,
+    "card_id": "BG22_HERO_000",
+    "name": "塔维什·雷矛",
+    "pick_rate": 26.78,
+    "armor": 14
+   },
+   {
+    "dbf_id": 103500,
+    "card_id": "BG26_HERO_102",
+    "name": "因葛，钢铁颂歌",
+    "pick_rate": 23.06,
+    "armor": 10
+   },
+   {
+    "dbf_id": 62268,
+    "card_id": "TB_BaconShop_HERO_68",
+    "name": "天空上尉库拉格",
+    "pick_rate": 25.19,
+    "armor": 14
+   },
+   {
+    "dbf_id": 66483,
+    "card_id": "TB_BaconShop_HERO_93",
+    "name": "恩佐斯",
+    "pick_rate": 27.23,
+    "armor": 12
+   },
+   {
+    "dbf_id": 122925,
+    "card_id": "BG33_HERO_001",
+    "name": "洛，在世传奇",
+    "pick_rate": 34.36,
+    "armor": 19
+   },
+   {
+    "dbf_id": 58044,
+    "card_id": "TB_BaconShop_HERO_25",
+    "name": "巫妖巴兹亚尔",
+    "pick_rate": 22.62,
+    "armor": 18
+   },
+   {
+    "dbf_id": 60369,
+    "card_id": "TB_BaconShop_HERO_52",
+    "name": "死亡之翼",
+    "pick_rate": 7.51,
+    "armor": 18
+   },
+   {
+    "dbf_id": 59806,
+    "card_id": "TB_BaconShop_HERO_36",
+    "name": "舞者达瑞尔",
+    "pick_rate": 17.54,
+    "armor": 18
+   },
+   {
+    "dbf_id": 59805,
+    "card_id": "TB_BaconShop_HERO_35",
+    "name": "尤格-萨隆",
+    "pick_rate": 35.4,
+    "armor": 10
+   },
+   {
+    "dbf_id": 58021,
+    "card_id": "TB_BaconShop_HERO_21",
+    "name": "伟大的阿卡扎曼扎拉克",
+    "pick_rate": 28.08,
+    "armor": 12
+   },
+   {
+    "dbf_id": 62242,
+    "card_id": "TB_BaconShop_HERO_64",
+    "name": "尤朵拉船长",
+    "pick_rate": 45.11,
+    "armor": 14
+   },
+   {
+    "dbf_id": 57635,
+    "card_id": "TB_BaconShop_HERO_02",
+    "name": "迦拉克隆",
+    "pick_rate": 49.95,
+    "armor": 18
+   },
+   {
+    "dbf_id": 126532,
+    "card_id": "BG34_HERO_002",
+    "name": "钟表先生克劳沃斯",
+    "pick_rate": 46.81,
+    "armor": 18
+   },
+   {
+    "dbf_id": 84867,
+    "card_id": "BG23_HERO_303",
+    "name": "摩洛克·福尔摩斯",
+    "pick_rate": 29.98,
+    "armor": 12
+   },
+   {
+    "dbf_id": 57929,
+    "card_id": "TB_BaconShop_HERO_15",
+    "name": "堕落的乔治",
+    "pick_rate": 24.32,
+    "armor": 15
+   },
+   {
+    "dbf_id": 89293,
+    "card_id": "BG23_HERO_306",
+    "name": "希尔瓦娜斯·风行者",
+    "pick_rate": 54.8,
+    "armor": 10
+   },
+   {
+    "dbf_id": 58024,
+    "card_id": "TB_BaconShop_HERO_22",
+    "name": "巫妖王",
+    "pick_rate": 50.57,
+    "armor": 14
+   },
+   {
+    "dbf_id": 64403,
+    "card_id": "TB_BaconShop_HERO_76",
+    "name": "奥拉基尔",
+    "pick_rate": 31.01,
+    "armor": 15
+   },
+   {
+    "dbf_id": 80247,
+    "card_id": "BG22_HERO_003",
+    "name": "范达尔·雷矛",
+    "pick_rate": 37.87,
+    "armor": 10
+   },
+   {
+    "dbf_id": 57634,
+    "card_id": "TB_BaconShop_HERO_08",
+    "name": "伊利丹·怒风",
+    "pick_rate": 35.02,
+    "armor": 18
+   },
+   {
+    "dbf_id": 103477,
+    "card_id": "BG27_HERO_801",
+    "name": "风暴之王托里姆",
+    "pick_rate": 52.19,
+    "armor": 18
+   },
+   {
+    "dbf_id": 71463,
+    "card_id": "BG20_HERO_201",
+    "name": "沃金",
+    "pick_rate": 16.35,
+    "armor": 17
+   },
+   {
+    "dbf_id": 132608,
+    "card_id": "BG36_HERO_105",
+    "name": "梦魇之王萨维斯",
+    "pick_rate": 77.64,
+    "armor": 6
+   },
+   {
+    "dbf_id": 61488,
+    "card_id": "TB_BaconShop_HERO_56",
+    "name": "阿莱克丝塔萨",
+    "pick_rate": 27.02,
+    "armor": 8
+   },
+   {
+    "dbf_id": 80239,
+    "card_id": "BG22_HERO_002",
+    "name": "德雷克塔尔",
+    "pick_rate": 36.57,
+    "armor": 10
+   },
+   {
+    "dbf_id": 113310,
+    "card_id": "BG30_HERO_304",
+    "name": "经理马林",
+    "pick_rate": 73.91,
+    "armor": 12
+   },
+   {
+    "dbf_id": 120649,
+    "card_id": "BG32_HERO_002",
+    "name": "扣子",
+    "pick_rate": 66.07,
+    "armor": 16
+   },
+   {
+    "dbf_id": 97186,
+    "card_id": "TB_BaconShop_HERO_702",
+    "name": "典狱长",
+    "pick_rate": 23.33,
+    "armor": 10
+   },
+   {
+    "dbf_id": 73940,
+    "card_id": "BG21_HERO_000",
+    "name": "凯瑞尔·罗姆",
+    "pick_rate": 26.46,
+    "armor": 10
+   },
+   {
+    "dbf_id": 71458,
+    "card_id": "BG20_HERO_103",
+    "name": "亡语者布莱克松",
+    "pick_rate": 30.57,
+    "armor": 18
+   },
+   {
+    "dbf_id": 98726,
+    "card_id": "BG25_HERO_103",
+    "name": "塔隆·血魔",
+    "pick_rate": 57.23,
+    "armor": 14
+   },
+   {
+    "dbf_id": 57944,
+    "card_id": "TB_BaconShop_HERO_16",
+    "name": "挂机的阿凯",
+    "pick_rate": 69.93,
+    "armor": 15
+   },
+   {
+    "dbf_id": 132578,
+    "card_id": "BG36_HERO_101",
+    "name": "特莱斯塔斯，寄生之魂",
+    "pick_rate": 71.55,
+    "armor": 15
+   },
+   {
+    "dbf_id": 59397,
+    "card_id": "TB_BaconShop_HERO_34",
+    "name": "帕奇维克",
+    "pick_rate": 35.89,
+    "armor": 0
+   },
+   {
+    "dbf_id": 134502,
+    "card_id": "BG36_HERO_000",
+    "name": "德雷阿佳丝",
+    "pick_rate": 49.65,
+    "armor": 12
+   },
+   {
+    "dbf_id": 59807,
+    "card_id": "TB_BaconShop_HERO_37",
+    "name": "加拉克苏斯大王",
+    "pick_rate": 58.23,
+    "armor": 15
+   }
+  ],
+  "TOP_1_PERCENT": [
+   {
+    "dbf_id": 67553,
+    "card_id": "TB_BaconShop_HERO_95",
+    "name": "格雷布",
+    "pick_rate": 17.85,
+    "armor": 16
+   },
+   {
+    "dbf_id": 57947,
+    "card_id": "TB_BaconShop_HERO_18",
+    "name": "海盗帕奇斯",
+    "pick_rate": 15.62,
+    "armor": 19
+   },
+   {
+    "dbf_id": 105434,
+    "card_id": "BG28_HERO_801",
+    "name": "荷利戴医生",
+    "pick_rate": 7.95,
+    "armor": 14
+   },
+   {
+    "dbf_id": 101130,
+    "card_id": "BG26_HERO_101",
+    "name": "霍格船长",
+    "pick_rate": 15.92,
+    "armor": 14
+   },
+   {
+    "dbf_id": 134504,
+    "card_id": "BG36_HERO_002",
+    "name": "基希克斯",
+    "pick_rate": 18.41,
+    "armor": 8
+   },
+   {
+    "dbf_id": 101345,
+    "card_id": "BG25_HERO_105",
+    "name": "乐队经理精英牛头人酋长",
+    "pick_rate": 29.31,
+    "armor": 16
+   },
+   {
+    "dbf_id": 66196,
+    "card_id": "TB_BaconShop_HERO_92",
+    "name": "亚煞极",
+    "pick_rate": 11.06,
+    "armor": 20
+   },
+   {
+    "dbf_id": 68129,
+    "card_id": "BG20_HERO_242",
+    "name": "古夫·符文图腾",
+    "pick_rate": 14.27,
+    "armor": 12
+   },
+   {
+    "dbf_id": 57893,
+    "card_id": "TB_BaconShop_HERO_12",
+    "name": "鼠王",
+    "pick_rate": 14.15,
+    "armor": 14
+   },
+   {
+    "dbf_id": 76562,
+    "card_id": "BG21_HERO_010",
+    "name": "斯卡布斯·刀油",
+    "pick_rate": 22.65,
+    "armor": 18
+   },
+   {
+    "dbf_id": 71458,
+    "card_id": "BG20_HERO_103",
+    "name": "亡语者布莱克松",
+    "pick_rate": 20.0,
+    "armor": 18
+   },
+   {
+    "dbf_id": 127696,
+    "card_id": "BG34_HERO_000",
+    "name": "无限巨龙姆诺兹多",
+    "pick_rate": 39.88,
+    "armor": 12
+   },
+   {
+    "dbf_id": 79719,
+    "card_id": "BG22_HERO_001",
+    "name": "布鲁坎",
+    "pick_rate": 7.53,
+    "armor": 15
+   },
+   {
+    "dbf_id": 58534,
+    "card_id": "TB_BaconShop_HERO_28",
+    "name": "永恒者托奇",
+    "pick_rate": 14.04,
+    "armor": 15
+   },
+   {
+    "dbf_id": 60367,
+    "card_id": "TB_BaconShop_HERO_50",
+    "name": "苔丝·格雷迈恩",
+    "pick_rate": 19.21,
+    "armor": 17
+   },
+   {
+    "dbf_id": 66483,
+    "card_id": "TB_BaconShop_HERO_93",
+    "name": "恩佐斯",
+    "pick_rate": 23.19,
+    "armor": 12
+   },
+   {
+    "dbf_id": 61914,
+    "card_id": "TB_BaconShop_HERO_62",
+    "name": "玛维·影歌",
+    "pick_rate": 11.89,
+    "armor": 18
+   },
+   {
+    "dbf_id": 64400,
+    "card_id": "TB_BaconShop_HERO_75",
+    "name": "拉卡尼休",
+    "pick_rate": 12.24,
+    "armor": 10
+   },
+   {
+    "dbf_id": 126537,
+    "card_id": "BG34_HERO_001",
+    "name": "时光扭曲者克罗米",
+    "pick_rate": 23.15,
+    "armor": 14
+   },
+   {
+    "dbf_id": 58027,
+    "card_id": "TB_BaconShop_HERO_23",
+    "name": "沙德沃克",
+    "pick_rate": 24.95,
+    "armor": 10
+   },
+   {
+    "dbf_id": 60213,
+    "card_id": "TB_BaconShop_HERO_42",
+    "name": "伊莉斯·逐星",
+    "pick_rate": 15.51,
+    "armor": 15
+   },
+   {
+    "dbf_id": 63319,
+    "card_id": "TB_BaconShop_HERO_70",
+    "name": "比格沃斯先生",
+    "pick_rate": 10.01,
+    "armor": 19
+   },
+   {
+    "dbf_id": 92960,
+    "card_id": "BG24_HERO_100",
+    "name": "德纳修斯大帝",
+    "pick_rate": 68.38,
+    "armor": 11
+   },
+   {
+    "dbf_id": 73940,
+    "card_id": "BG21_HERO_000",
+    "name": "凯瑞尔·罗姆",
+    "pick_rate": 26.25,
+    "armor": 10
+   },
+   {
+    "dbf_id": 64480,
+    "card_id": "TB_BaconShop_HERO_90",
+    "name": "希拉斯·暗月",
+    "pick_rate": 13.74,
+    "armor": 16
+   },
+   {
+    "dbf_id": 63604,
+    "card_id": "TB_BaconShop_HERO_74",
+    "name": "林地守护者欧穆",
+    "pick_rate": 36.45,
+    "armor": 6
+   },
+   {
+    "dbf_id": 105314,
+    "card_id": "BG28_HERO_400",
+    "name": "蛇眼",
+    "pick_rate": 45.28,
+    "armor": 8
+   },
+   {
+    "dbf_id": 89293,
+    "card_id": "BG23_HERO_306",
+    "name": "希尔瓦娜斯·风行者",
+    "pick_rate": 47.47,
+    "armor": 10
+   },
+   {
+    "dbf_id": 57635,
+    "card_id": "TB_BaconShop_HERO_02",
+    "name": "迦拉克隆",
+    "pick_rate": 31.43,
+    "armor": 18
+   },
+   {
+    "dbf_id": 81569,
+    "card_id": "BG22_HERO_201",
+    "name": "费林大使",
+    "pick_rate": 43.37,
+    "armor": 14
+   },
+   {
+    "dbf_id": 77516,
+    "card_id": "BG21_HERO_020",
+    "name": "厨师曲奇",
+    "pick_rate": 16.2,
+    "armor": 8
+   },
+   {
+    "dbf_id": 70956,
+    "card_id": "BG20_HERO_101",
+    "name": "泽瑞拉",
+    "pick_rate": 21.36,
+    "armor": 14
+   },
+   {
+    "dbf_id": 103500,
+    "card_id": "BG26_HERO_102",
+    "name": "因葛，钢铁颂歌",
+    "pick_rate": 19.85,
+    "armor": 10
+   },
+   {
+    "dbf_id": 60366,
+    "card_id": "TB_BaconShop_HERO_49",
+    "name": "米尔豪斯·法力风暴",
+    "pick_rate": 8.89,
+    "armor": 16
+   },
+   {
+    "dbf_id": 75702,
+    "card_id": "BG20_HERO_283",
+    "name": "狂风之翼",
+    "pick_rate": 27.81,
+    "armor": 10
+   },
+   {
+    "dbf_id": 62242,
+    "card_id": "TB_BaconShop_HERO_64",
+    "name": "尤朵拉船长",
+    "pick_rate": 46.7,
+    "armor": 14
+   },
+   {
+    "dbf_id": 129173,
+    "card_id": "BG34_HERO_004",
+    "name": "米罗克",
+    "pick_rate": 57.46,
+    "armor": 8
+   },
+   {
+    "dbf_id": 61489,
+    "card_id": "TB_BaconShop_HERO_57",
+    "name": "诺兹多姆",
+    "pick_rate": 10.72,
+    "armor": 13
+   },
+   {
+    "dbf_id": 57924,
+    "card_id": "TB_BaconShop_HERO_14",
+    "name": "瓦托格尔女王",
+    "pick_rate": 9.99,
+    "armor": 14
+   },
+   {
+    "dbf_id": 58435,
+    "card_id": "TB_BaconShop_HERO_27",
+    "name": "辛达苟萨",
+    "pick_rate": 34.05,
+    "armor": 10
+   },
+   {
+    "dbf_id": 99033,
+    "card_id": "BG26_HERO_104",
+    "name": "摇滚教父沃恩",
+    "pick_rate": 21.46,
+    "armor": 15
+   },
+   {
+    "dbf_id": 71908,
+    "card_id": "BG20_HERO_202",
+    "name": "阮大师",
+    "pick_rate": 68.25,
+    "armor": 10
+   },
+   {
+    "dbf_id": 64403,
+    "card_id": "TB_BaconShop_HERO_76",
+    "name": "奥拉基尔",
+    "pick_rate": 17.64,
+    "armor": 15
+   },
+   {
+    "dbf_id": 77987,
+    "card_id": "BG22_HERO_000",
+    "name": "塔维什·雷矛",
+    "pick_rate": 15.96,
+    "armor": 14
+   },
+   {
+    "dbf_id": 129684,
+    "card_id": "BG35_HERO_001",
+    "name": "吉恩，狼人国王",
+    "pick_rate": 47.86,
+    "armor": 7
+   },
+   {
+    "dbf_id": 57634,
+    "card_id": "TB_BaconShop_HERO_08",
+    "name": "伊利丹·怒风",
+    "pick_rate": 21.66,
+    "armor": 18
+   },
+   {
+    "dbf_id": 120649,
+    "card_id": "BG32_HERO_002",
+    "name": "扣子",
+    "pick_rate": 53.4,
+    "armor": 16
+   },
+   {
+    "dbf_id": 134502,
+    "card_id": "BG36_HERO_000",
+    "name": "德雷阿佳丝",
+    "pick_rate": 33.67,
+    "armor": 12
+   },
+   {
+    "dbf_id": 64485,
+    "card_id": "TB_BaconShop_HERO_91",
+    "name": "了不起的杰弗里斯",
+    "pick_rate": 18.47,
+    "armor": 17
+   },
+   {
+    "dbf_id": 117409,
+    "card_id": "BG31_HERO_005",
+    "name": "克隆大师泽里克",
+    "pick_rate": 60.1,
+    "armor": 12
+   },
+   {
+    "dbf_id": 103477,
+    "card_id": "BG27_HERO_801",
+    "name": "风暴之王托里姆",
+    "pick_rate": 29.33,
+    "armor": 18
+   },
+   {
+    "dbf_id": 61910,
+    "card_id": "TB_BaconShop_HERO_59",
+    "name": "阿兰娜·逐星",
+    "pick_rate": 14.58,
+    "armor": 12
+   },
+   {
+    "dbf_id": 80247,
+    "card_id": "BG22_HERO_003",
+    "name": "范达尔·雷矛",
+    "pick_rate": 18.54,
+    "armor": 10
+   },
+   {
+    "dbf_id": 71916,
+    "card_id": "BG20_HERO_301",
+    "name": "吞噬者穆坦努斯",
+    "pick_rate": 9.43,
+    "armor": 20
+   },
+   {
+    "dbf_id": 57944,
+    "card_id": "TB_BaconShop_HERO_16",
+    "name": "挂机的阿凯",
+    "pick_rate": 65.48,
+    "armor": 15
+   },
+   {
+    "dbf_id": 122925,
+    "card_id": "BG33_HERO_001",
+    "name": "洛，在世传奇",
+    "pick_rate": 26.14,
+    "armor": 19
+   },
+   {
+    "dbf_id": 116926,
+    "card_id": "BG31_HERO_003",
+    "name": "预言者努波顿",
+    "pick_rate": 25.08,
+    "armor": 15
+   },
+   {
+    "dbf_id": 67356,
+    "card_id": "TB_BaconShop_HERO_94",
+    "name": "提克特斯",
+    "pick_rate": 21.77,
+    "armor": 17
+   },
+   {
+    "dbf_id": 86291,
+    "card_id": "BG23_HERO_305",
+    "name": "劫匪之王托瓦格尔",
+    "pick_rate": 14.49,
+    "armor": 16
+   },
+   {
+    "dbf_id": 62266,
+    "card_id": "TB_BaconShop_HERO_67",
+    "name": "钩牙船长",
+    "pick_rate": 16.44,
+    "armor": 14
+   },
+   {
+    "dbf_id": 96870,
+    "card_id": "BG24_HERO_204",
+    "name": "强化机器人",
+    "pick_rate": 22.17,
+    "armor": 14
+   },
+   {
+    "dbf_id": 126532,
+    "card_id": "BG34_HERO_002",
+    "name": "钟表先生克劳沃斯",
+    "pick_rate": 33.68,
+    "armor": 18
+   },
+   {
+    "dbf_id": 79615,
+    "card_id": "BG22_HERO_004",
+    "name": "瓦尔登·晨拥",
+    "pick_rate": 10.44,
+    "armor": 18
+   },
+   {
+    "dbf_id": 60214,
+    "card_id": "TB_BaconShop_HERO_43",
+    "name": "恐龙大师布莱恩",
+    "pick_rate": 32.84,
+    "armor": 18
+   },
+   {
+    "dbf_id": 117425,
+    "card_id": "BG31_HERO_006",
+    "name": "大主教奥萨尔",
+    "pick_rate": 11.57,
+    "armor": 15
+   },
+   {
+    "dbf_id": 132578,
+    "card_id": "BG36_HERO_101",
+    "name": "特莱斯塔斯，寄生之魂",
+    "pick_rate": 55.03,
+    "armor": 15
+   },
+   {
+    "dbf_id": 59397,
+    "card_id": "TB_BaconShop_HERO_34",
+    "name": "帕奇维克",
+    "pick_rate": 31.29,
+    "armor": 0
+   },
+   {
+    "dbf_id": 116920,
+    "card_id": "BG32_HERO_001",
+    "name": "森林之王塞纳留斯",
+    "pick_rate": 60.27,
+    "armor": 13
+   },
+   {
+    "dbf_id": 60212,
+    "card_id": "TB_BaconShop_HERO_41",
+    "name": "雷诺·杰克逊",
+    "pick_rate": 69.89,
+    "armor": 12
+   },
+   {
+    "dbf_id": 60211,
+    "card_id": "TB_BaconShop_HERO_40",
+    "name": "芬利·莫格顿爵士",
+    "pick_rate": 54.51,
+    "armor": 14
+   },
+   {
+    "dbf_id": 57929,
+    "card_id": "TB_BaconShop_HERO_15",
+    "name": "堕落的乔治",
+    "pick_rate": 9.56,
+    "armor": 15
+   },
+   {
+    "dbf_id": 132608,
+    "card_id": "BG36_HERO_105",
+    "name": "梦魇之王萨维斯",
+    "pick_rate": 76.33,
+    "armor": 6
+   },
+   {
+    "dbf_id": 80239,
+    "card_id": "BG22_HERO_002",
+    "name": "德雷克塔尔",
+    "pick_rate": 16.75,
+    "armor": 10
+   },
+   {
+    "dbf_id": 58021,
+    "card_id": "TB_BaconShop_HERO_21",
+    "name": "伟大的阿卡扎曼扎拉克",
+    "pick_rate": 24.86,
+    "armor": 12
+   },
+   {
+    "dbf_id": 113310,
+    "card_id": "BG30_HERO_304",
+    "name": "经理马林",
+    "pick_rate": 74.41,
+    "armor": 12
+   },
+   {
+    "dbf_id": 59805,
+    "card_id": "TB_BaconShop_HERO_35",
+    "name": "尤格-萨隆",
+    "pick_rate": 34.95,
+    "armor": 10
+   },
+   {
+    "dbf_id": 98726,
+    "card_id": "BG25_HERO_103",
+    "name": "塔隆·血魔",
+    "pick_rate": 54.17,
+    "armor": 14
+   },
+   {
+    "dbf_id": 63602,
+    "card_id": "TB_BaconShop_HERO_72",
+    "name": "巴罗夫领主",
+    "pick_rate": 38.21,
+    "armor": 14
+   },
+   {
+    "dbf_id": 62268,
+    "card_id": "TB_BaconShop_HERO_68",
+    "name": "天空上尉库拉格",
+    "pick_rate": 32.59,
+    "armor": 14
+   },
+   {
+    "dbf_id": 60362,
+    "card_id": "TB_BaconShop_HERO_45",
+    "name": "至尊盗王拉法姆",
+    "pick_rate": 16.92,
+    "armor": 15
+   },
+   {
+    "dbf_id": 84867,
+    "card_id": "BG23_HERO_303",
+    "name": "摩洛克·福尔摩斯",
+    "pick_rate": 41.36,
+    "armor": 12
+   },
+   {
+    "dbf_id": 71463,
+    "card_id": "BG20_HERO_201",
+    "name": "沃金",
+    "pick_rate": 10.67,
+    "armor": 17
+   },
+   {
+    "dbf_id": 61490,
+    "card_id": "TB_BaconShop_HERO_58",
+    "name": "玛里苟斯",
+    "pick_rate": 11.61,
+    "armor": 17
+   },
+   {
+    "dbf_id": 61912,
+    "card_id": "TB_BaconShop_HERO_60",
+    "name": "凯尔萨斯·逐日者",
+    "pick_rate": 9.67,
+    "armor": 18
+   },
+   {
+    "dbf_id": 57891,
+    "card_id": "TB_BaconShop_HERO_10",
+    "name": "贸易亲王加里维克斯",
+    "pick_rate": 50.2,
+    "armor": 5
+   },
+   {
+    "dbf_id": 58024,
+    "card_id": "TB_BaconShop_HERO_22",
+    "name": "巫妖王",
+    "pick_rate": 37.21,
+    "armor": 14
+   },
+   {
+    "dbf_id": 64475,
+    "card_id": "TB_BaconShop_HERO_78",
+    "name": "齐恩瓦拉",
+    "pick_rate": 18.07,
+    "armor": 15
+   },
+   {
+    "dbf_id": 105431,
+    "card_id": "BG28_HERO_800",
+    "name": "泰瑟兰·血望者",
+    "pick_rate": 10.88,
+    "armor": 18
+   },
+   {
+    "dbf_id": 76521,
+    "card_id": "BG21_HERO_030",
+    "name": "斯尼德",
+    "pick_rate": 12.34,
+    "armor": 15
+   },
+   {
+    "dbf_id": 97186,
+    "card_id": "TB_BaconShop_HERO_702",
+    "name": "典狱长",
+    "pick_rate": 22.09,
+    "armor": 10
+   },
+   {
+    "dbf_id": 59807,
+    "card_id": "TB_BaconShop_HERO_37",
+    "name": "加拉克苏斯大王",
+    "pick_rate": 59.37,
+    "armor": 15
+   },
+   {
+    "dbf_id": 82110,
+    "card_id": "BG22_HERO_305",
+    "name": "奥妮克希亚",
+    "pick_rate": 10.3,
+    "armor": 10
+   }
+  ]
+ }
+}

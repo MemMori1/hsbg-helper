@@ -524,8 +524,8 @@ def test_pending_choice_carries_source_and_size():
     assert not pc.is_dark_gift
 
 
-def test_pending_choice_of_mulligan_is_not_marked_local_choice():
-    """起手换牌的 Source 是 GameEntity，不应被当成饰品/黑赐。"""
+def test_mulligan_choice_is_neither_trinket_nor_dark_gift():
+    """起手换牌 / 开局英雄选择的 Source 是 GameEntity，不应被当成饰品/黑赐。"""
     p, b = _local_builder()
     head = _choice("id=1 Player=测试玩家#1234 TaskList=7 "
                    "ChoiceType=MULLIGAN CountMin=1 CountMax=1")
@@ -543,6 +543,83 @@ def test_pending_choice_from_other_player_is_not_local():
     head = _choice("id=9 Player=对手玩家 TaskList=1 ChoiceType=GENERAL "
                    "CountMin=1 CountMax=1")
     _feed(p, b, [head, C_TRINKET_SOURCE, C_T0], flush=False)
+    pc = b.state.pending_choice
+    assert pc is not None and pc.is_local is False
+
+
+def test_pending_choice_name_match_still_wins_when_the_name_is_known():
+    """名字锁定后仍走名字比对（老路径没变）。"""
+    p, b = _local_builder()
+    _feed(p, b, [C_TRINKET_HEAD, C_TRINKET_SOURCE, C_T0], flush=False)
+    assert b.state.pending_choice.is_local is True
+
+
+# ---------------------------------------------------------------------------
+# 开局英雄选择的本地认定（S1）：发生在**本地玩家名锁定之前**
+# `CURRENT_PLAYER` 切到本地玩家要等选完英雄（实测约 30–50 s 后），而三选一
+# 在开局约 0.6 s 就弹了 —— 此时靠选项实体的归属（CONTROLLER）认本地。
+# ---------------------------------------------------------------------------
+
+HERO_PICK_HEAD = _choice(
+    "id=1 Player=测试玩家#1234 TaskList=7 ChoiceType=MULLIGAN "
+    "CountMin=1 CountMax=1")
+HERO_PICK_SRC = _choice("Source=GameEntity")
+
+
+def _anon_builder():
+    """本地身份已认出（GameAccountId → `PLAYER_ID=6`），但**名字还没锁定**。
+
+    复刻实测里英雄选择的窗口期：`L_LOCAL_MAIN` 只取前 4 行（英雄实体 +
+    `PLAYER_ID`/`CONTROLLER`），不喂名字锁定那两行。
+    """
+    p, b = PowerLogParser(), StateBuilder()
+    _feed(p, b, [L_CREATE, L_GAMEENTITY, "", L_PLAYER_LOCAL,
+                 L_LOCAL_HERO_ENTITY, "", L_HERO_LOCAL, ""] + L_LOCAL_MAIN[:4])
+    return p, b
+
+
+def _hero_option(entity_id, controller, seat=6, card_id="BG22_HERO_004",
+                 name="瓦尔登·晨拥"):
+    """造一个候选英雄实体 + 对应的选项行（形态照抄真实日志）。"""
+    create = [
+        _line(f"FULL_ENTITY - Creating ID={entity_id} CardID={card_id}",
+              indent=5),
+        _line(f"tag=CONTROLLER value={controller}", indent=9),
+        _line("tag=CARDTYPE value=HERO", indent=9),
+        _line("tag=ZONE value=HAND", indent=9),
+        "",
+    ]
+    opt = _choice(
+        f"Entities[0]=[entityName={name} id={entity_id} zone=HAND zonePos=1 "
+        f"cardId={card_id} player={seat}]")
+    return create, opt
+
+
+def test_hero_pick_is_local_via_option_ownership_before_the_name_locks():
+    """名字没锁定时退路：选项实体**全部**归本地座位（CONTROLLER=6）→ 认。"""
+    p, b = _anon_builder()
+    create, opt = _hero_option(113, controller=6)
+    _feed(p, b, create + [HERO_PICK_HEAD, HERO_PICK_SRC, opt], flush=False)
+    pc = b.state.pending_choice
+    assert pc is not None and pc.kind == "MULLIGAN"
+    assert pc.is_local is True
+
+
+def test_hero_options_controlled_by_another_seat_are_not_local():
+    """窗口期内选项实体不归本地座位 → 不认（宁可漏报也不误报）。"""
+    p, b = _anon_builder()
+    create, opt = _hero_option(213, controller=8, seat=8)
+    _feed(p, b, create + [HERO_PICK_HEAD, HERO_PICK_SRC, opt], flush=False)
+    pc = b.state.pending_choice
+    assert pc is not None and pc.is_local is False
+
+
+def test_hero_options_with_missing_entities_are_not_local():
+    """日志中途开始（选项实体查不到）→ 退路也不认，只是不显示。"""
+    p, b = _anon_builder()
+    opt = _choice("Entities[0]=[entityName=瓦尔登·晨拥 id=999 zone=HAND "
+                  "zonePos=1 cardId=BG22_HERO_004 player=6]")
+    _feed(p, b, [HERO_PICK_HEAD, HERO_PICK_SRC, opt], flush=False)
     pc = b.state.pending_choice
     assert pc is not None and pc.is_local is False
 

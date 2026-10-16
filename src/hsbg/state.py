@@ -724,11 +724,39 @@ class StateBuilder:
 
         `Player=` 给的是**账号名**（实测 `测试玩家#1234`），而本地玩家名是
         在跑盘面时从 `CURRENT_PLAYER` + 英雄实体反推出来的，所以两边要对名字。
-        ⚠️ 名字还没认出来时**返回 False**（宁可漏报也不误报成"你的选择"）。
+        ⚠️ 名字还没认出来时走**实体归属退路**；两条路都不成立才返回 False
+        （宁可漏报也不误报成"你的选择"）。
         """
-        if not pc.player or not self._local_player_name:
+        if not pc.player:
             return False
-        return pc.player == self._local_player_name
+        if self._local_player_name:
+            return pc.player == self._local_player_name
+        # 名字还没锁定 —— 实测**开局英雄选择**就发生在这个窗口里：
+        # `CURRENT_PLAYER` 切到本地玩家要等选完英雄（实测约 30–50 s 后），
+        # 而三选一在开局约 0.6 s 就弹了。此时退一步用选项实体的控制者认。
+        return self._options_belong_to_local(pc)
+
+    def _options_belong_to_local(self, pc: PendingChoice) -> bool:
+        """退路判据：选项实体是否**全部**归本地座位控制。
+
+        实测英雄选项实体带 `CONTROLLER=1`，与本地账号玩家实体（CREATE_GAME
+        里 `GameAccountId` 非 0 的那个）的 `CONTROLLER/PLAYER_ID` 一致。
+        ⚠️ 要求"全部 + 每个都查得到控制者"：任何一个查不到（日志中途开始）
+        就不认 —— 宁可漏报，也不把别人的选择挂成本地玩家的。
+        """
+        local_pid = self._resolve_local_player()
+        if local_pid is None or not pc.options:
+            return False
+        for o in pc.options:
+            if o.entity_id is None:
+                return False
+            ent = self._state.entities.get(o.entity_id)
+            if ent is None:
+                return False
+            ctrl = ent.controller if ent.controller is not None else ent.player_id
+            if ctrl != local_pid:
+                return False
+        return True
 
     def _on_choice_result(self, ev) -> None:
         """`SendChoices()` —— 玩家实际选了什么。

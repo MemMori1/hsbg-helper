@@ -21,6 +21,7 @@ from .provider import (Advisor, Answer, JevK5Advisor, ModelUnavailable,
 from .rules import (AdviceReport, RulesEngine, clean_mechanics,
                     evaluate_state)
 from .state import Entity, GameState, Seat, ShopSlot
+from .heroes import HeroStats
 from .trinkets import TrinketStats
 
 
@@ -438,7 +439,8 @@ def consult(st: GameState, db: Optional[CardDB] = None,
             engine: Optional[RulesEngine] = None,
             limit: int = 12,
             db_en: Optional[CardDB] = None,
-            trinket_stats: Optional[TrinketStats] = None) -> Advice:
+            trinket_stats: Optional[TrinketStats] = None,
+            hero_stats: Optional[HeroStats] = None) -> Advice:
     """规则 + 模型的总入口。
 
     ⚠️ 模型不可用时不抛异常：返回 `provider="rules-only"` 并在 `note` 里说明，
@@ -451,14 +453,16 @@ def consult(st: GameState, db: Optional[CardDB] = None,
 
     `trinket_stats` 是 HSReplay 饰品实证表（`trinkets.TrinketStats`）：给了它
     饰品四选一才有推荐，而 evidence 里的选项行也会带上实证统计。为 None 时
-    一切照旧（该题只有卡文，模型自己判）。
+    一切照旧（该题只有卡文，模型自己判）。`hero_stats`（`heroes.HeroStats`）
+    对开局英雄选择起同样的作用。
     """
     if db is None and resolver is not None:
         db = getattr(resolver, "db", None)
     if db_en is None and resolver is not None:
         db_en = getattr(resolver, "db_en", None)
     rep = (engine or RulesEngine(db, db_en=db_en,
-                                 trinket_stats=trinket_stats)).evaluate(st)
+                                 trinket_stats=trinket_stats,
+                                 hero_stats=hero_stats)).evaluate(st)
     adv = Advice(report=rep)
     adv.evidence = build_evidence(st, db=db, resolver=resolver, report=rep,
                                   db_en=db_en)

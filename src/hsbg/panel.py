@@ -82,13 +82,14 @@ class ModelAdvisorRunner:
 
     def __init__(self, advisor, ttl: float = DEFAULT_MODEL_TTL,
                  limit: int = DEFAULT_BUY_LIMIT,
-                 trinket_stats=None) -> None:
+                 trinket_stats=None, hero_stats=None) -> None:
         self.advisor = advisor
         self.ttl = ttl
         self.limit = limit
-        #: HSReplay 饰品实证表：`consult` 要用它给待选题面带上实证统计
+        #: HSReplay 实证表：`consult` 要用它给待选题面带上实证统计
         #: （见 `advisor.consult`）。None = 模型只看到卡文。
         self.trinket_stats = trinket_stats
+        self.hero_stats = hero_stats
         self._cache = _ModelCache()
         self._lock = threading.Lock()
 
@@ -123,7 +124,8 @@ class ModelAdvisorRunner:
             try:
                 adv = consult(snapshot, resolver=resolver, advisor=self.advisor,
                               limit=self.limit, engine=None,
-                              trinket_stats=self.trinket_stats)
+                              trinket_stats=self.trinket_stats,
+                              hero_stats=self.hero_stats)
                 with self._lock:
                     self._cache.advice = adv
                     self._cache.computed_at = time.time()
@@ -264,12 +266,12 @@ def build_frame(st: GameState,
                 stale: bool = False,
                 error: str = "",
                 model_note: str = "",
-                trinket_stats=None) -> PanelFrame:
+                trinket_stats=None, hero_stats=None) -> PanelFrame:
     """把盘面 + 规则结果 +（可选的）模型意见拼成一帧。
 
     `report` 为空时自己跑一次规则引擎；`advice` 为空时只输出规则部分。
-    `trinket_stats`（HSReplay 实证表）只在自跑规则时用到 —— 调用方带了
-    `report` 就说明它已经算过（并已把实证分填进 report）。
+    `trinket_stats` / `hero_stats`（HSReplay 实证表）只在自跑规则时用到 ——
+    调用方带了 `report` 就说明它已经算过（并已把实证分填进 report）。
     """
     from .rules import evaluate_state  # 局部导入，避免 rules ↔ panel 循环引用
 
@@ -280,7 +282,8 @@ def build_frame(st: GameState,
     db_en = resolver.db_en if resolver is not None else None
     if report is None:
         report = evaluate_state(st, db, db_en=db_en,
-                                trinket_stats=trinket_stats)
+                                trinket_stats=trinket_stats,
+                                hero_stats=hero_stats)
 
     seat = st.local_seat
     frame = PanelFrame(

@@ -574,6 +574,12 @@ def _trinket_stats():
     return load_or_none()
 
 
+def _hero_stats():
+    """HSReplay 英雄实证表（可选增强）。文件缺失/损坏时返回 None，全链路照常。"""
+    from .heroes import load_or_none
+    return load_or_none()
+
+
 def cmd_cards(args: argparse.Namespace) -> int:
     """卡牌数据层自检：条目数 / 种族 / 星级 / 与日志自举名的交叉校验。"""
     from .cards import DEFAULT_CARD_DB_PATH, CardResolver
@@ -873,7 +879,7 @@ def cmd_advise(args: argparse.Namespace) -> int:
         print(render_state(st, resolver, color=not args.no_color))
     adv = consult(st, db=db, resolver=resolver,
                   advisor=advisor_from_args(args), limit=args.limit,
-                  trinket_stats=_trinket_stats())
+                  trinket_stats=_trinket_stats(), hero_stats=_hero_stats())
     print()
     print(_render_advice(adv, st, resolver, color=not args.no_color))
     if args.show_evidence:
@@ -889,7 +895,7 @@ def _empty_state():
     return GameState()
 
 
-def _frame_for(builder, resolver, runner, args, trinket_stats=None):
+def _frame_for(builder, resolver, runner, args, trinket_stats=None, hero_stats=None):
     """基于当前 builder 造一帧：规则每帧重算，模型意见只走缓存。"""
     from .panel import build_frame
     from .rules import evaluate_state
@@ -897,7 +903,8 @@ def _frame_for(builder, resolver, runner, args, trinket_stats=None):
     st = builder.state
     report = evaluate_state(st, resolver.db if resolver else None,
                             db_en=getattr(resolver, "db_en", None) if resolver else None,
-                            trinket_stats=trinket_stats)
+                            trinket_stats=trinket_stats,
+                            hero_stats=hero_stats)
     runner.maybe_refresh(st, resolver, report)
     return build_frame(st, resolver, report=report,
                        advice=runner.current(st), model_note=runner.note)
@@ -950,13 +957,15 @@ def cmd_panel(args: argparse.Namespace) -> int:
     from .state import StateBuilder
 
     resolver = _resolver(args)
-    #: HSReplay 饰品实证表：加载一次，规则帧与模型题面共用（见 `trinkets.py`）。
+    #: HSReplay 实证表：加载一次，规则帧与模型题面共用（见 `trinkets.py`/`heroes.py`）。
     stats = _trinket_stats()
+    hero_stats = _hero_stats()
     runner = ModelAdvisorRunner(
         advisor_from_panel_args(args),
         ttl=getattr(args, "model_ttl", 12.0),
         limit=getattr(args, "limit", 12),
         trinket_stats=stats,
+        hero_stats=hero_stats,
     )
     builder = StateBuilder()
     #: P7 复盘录制器；只在跟随模式启用（`--until-line` 是单帧调试，录了只有垃圾）。
@@ -979,7 +988,8 @@ def cmd_panel(args: argparse.Namespace) -> int:
             report = evaluate_state(st, resolver.db if resolver else None,
                                     db_en=getattr(resolver, "db_en", None)
                                     if resolver else None,
-                                    trinket_stats=stats)
+                                    trinket_stats=stats,
+                                    hero_stats=hero_stats)
             runner.maybe_refresh(st, resolver, report)
             # 单帧模式：给模型一点时间，尽量把意见一起输出。
             # ⚠️ 不能把 `runner.note`（"模型思考中…"）当成"有答案"，
@@ -1007,7 +1017,7 @@ def cmd_panel(args: argparse.Namespace) -> int:
 
         def emit_one() -> None:
             """造一帧 → 先喂录制器，再发面板（录制绝不影响出帧）。"""
-            fr = _frame_for(builder, resolver, runner, args, stats)
+            fr = _frame_for(builder, resolver, runner, args, stats, hero_stats)
             _record_frame(recorder, fr, builder.state, resolver)
             _emit_frame(fr)
 

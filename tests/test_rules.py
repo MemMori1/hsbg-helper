@@ -94,6 +94,15 @@ _CARDS = [
          attack=None, health=None, cost=None, race=None, races=(),
          mechanics=("DIVINE_SHIELD", "WINDFURY"),
          text="<b>圣盾</b>。<b>风怒</b>", pool_minion=False),
+    # 开局英雄选择的候选（S1）：实测卡号都带 `_HERO`（`BG22_HERO_004` 一类），
+    # 规则层就靠这个特征把「英雄选择」和普通起手换牌区分开。
+    Card(card_id="BG_T_HERO1", name="英雄一号", type="HERO", tech_level=None,
+         attack=None, health=30, cost=None, race=None, races=(),
+         mechanics=(), text="英雄技能：开局获得一枚铸币。", pool_minion=False),
+    Card(card_id="BG_T_HERO2", name="英雄二号", type="HERO", tech_level=None,
+         attack=None, health=30, cost=None, race=None, races=(),
+         mechanics=(), text="英雄技能：被动，你的随从获得+1攻击力。",
+         pool_minion=False),
 ]
 
 
@@ -768,9 +777,9 @@ def test_dark_gift_ignores_the_mechanism_toggle_card():
 
 
 # ---------------------------------------------------------------------------
-# 待选（饰品四选一 / 黑赐三选一）
-# ⚠️ 只有**饰品**有 HSReplay 实证分（见 `trinkets.py`）；黑赐与发现类没有样本，
-# 仍然只做展示 + 一行特征提示，不打分。
+# 待选（英雄选择 / 饰品四选一 / 黑赐三选一）
+# ⚠️ 英雄与饰品有 HSReplay 实证分（`heroes.py` / `trinkets.py`）；黑赐与发现类
+# 没有样本，仍然只做展示 + 一行特征提示，不打分。
 # ---------------------------------------------------------------------------
 
 from hsbg.state import ChoiceOption, PendingChoice, Trinket, DarkGiftRecord  # noqa: E402
@@ -1048,6 +1057,128 @@ def test_dark_gift_and_other_choices_are_never_scored():
     assert rep2.pending_choice.kind == "other"
     assert rep2.pending_choice.recommended is None
     assert rep2.pending_choice.options[0].score is None
+
+
+# ---------------------------------------------------------------------------
+# 英雄实证分（S1 开局英雄选择）：选取率百分位打分 + 给推荐
+# ---------------------------------------------------------------------------
+
+from hsbg.heroes import HeroStats  # noqa: E402
+
+
+def _hero_pc(card_ids):
+    """实测形态：`ChoiceType=MULLIGAN` + `Source=GameEntity` + 全英雄选项。"""
+    pc = PendingChoice(choice_id=1, kind="MULLIGAN", source_card_id="",
+                       source_name="", player="我", is_local=True)
+    for i, cid in enumerate(card_ids):
+        pc.options.append(ChoiceOption(index=i, entity_id=4000 + i,
+                                       card_id=cid, name="日志名%d" % i,
+                                       zone="HAND"))
+    return pc
+
+
+def _hero_stats(rows=None):
+    """手撮英雄实证表（不碰生成物 `data/heroes_hsreplay.json`）。"""
+    if rows is None:
+        rows = [
+            {"card_id": "BG_T_HERO1", "name": "英雄一号",
+             "pick_rate": 70.0, "armor": 6},
+            {"card_id": "BG_T_HERO2", "name": "英雄二号",
+             "pick_rate": 20.0, "armor": 16},
+        ]
+    return HeroStats.from_rows(rows, bracket="ALL")
+
+
+def test_hero_pick_is_recognised_and_listed_with_card_names():
+    """`ChoiceType=MULLIGAN` + 卡号带 `_HERO` = 英雄选择，不是起手换牌。"""
+    pc = _hero_pc(["BG_T_HERO1", "BG_T_HERO2"])
+    rep = evaluate_state(_choice_state(pc), _db())
+    adv = rep.pending_choice
+    assert adv is not None and adv.kind == "hero"
+    assert adv.display_title == "英雄选择"
+    assert adv.title_en == "Hero selection"       # 喂模型必须全英文（ADR-4）
+    assert [o.label for o in adv.options] == ["英雄一号", "英雄二号"]
+    assert adv.options[0].kind == "hero"
+
+
+def test_hero_options_get_scores_and_the_best_is_recommended():
+    # 弱的一号在前、强的在后 —— 推荐必须认的是选项对象本身
+    pc = _hero_pc(["BG_T_HERO2", "BG_T_HERO1"])
+    rep = evaluate_state(_choice_state(pc), _db(), hero_stats=_hero_stats())
+    adv = rep.pending_choice
+    assert all(o.score is not None for o in adv.options)
+    assert adv.options[1].score > adv.options[0].score
+    assert adv.options[1].score == 10.0          # 全表最高 = 百分位 1.0
+    assert adv.options[0].score == 0.0           # 全表最低 = 百分位 0
+    assert adv.recommended is adv.options[1]
+    assert adv.recommended.label == "英雄一号"
+    assert adv.options[1].score_note == "选取率70% · 护甲6"
+    assert adv.options[1].score_note_en == "picked 70%, armor 6"
+    assert adv.recommend_note == ""              # 数据齐全，没有缺口提示
+    assert adv.recommend_text.startswith("规则推荐 英雄一号")
+
+
+def test_hero_note_en_puts_the_stats_before_the_card_text():
+    """喂模型的一行里实证统计要排在英雄技能文本前面（后者偏长会吃掉统计）。"""
+    pc = _hero_pc(["BG_T_HERO1"])
+    rep = evaluate_state(_choice_state(pc), _db(), hero_stats=_hero_stats())
+    note_en = rep.pending_choice.options[0].note_en
+    assert note_en.startswith("picked 70%, armor 6")
+    assert "英雄技能" in note_en                    # 卡文兜底排在后面
+
+
+def test_hero_pick_decision_box_fires_even_outside_recruit():
+    """⚠️ 英雄选择在 `STEP=BEGIN_MULLIGAN`（实测，非招募期），决策框不能掉进
+    "战斗阶段，等结算"的兜底里 —— 它卡着游戏，必须先于阶段判定。"""
+    pc = _hero_pc(["BG_T_HERO2", "BG_T_HERO1"])
+    st = _state(step="BEGIN_MULLIGAN")
+    st.pending_choice = pc
+    rep = evaluate_state(st, _db(), hero_stats=_hero_stats())
+    box = rep.decision
+    assert box.trigger == "pending_choice"
+    assert box.action == "选择" and box.target == "英雄选择"
+    assert box.urgency == "now"
+    assert "规则推荐 英雄一号" in box.reason
+    assert "推荐 英雄一号" in rep.warnings[0].text
+    assert rep.warnings[0].level == "info"       # 待选只是提醒，不是警告
+
+
+def test_hero_scoring_degrades_to_display_only_without_stats():
+    """没有实证表（老行为）：只展示不推荐，决策框退回英雄专用文案。"""
+    pc = _hero_pc(["BG_T_HERO1", "BG_T_HERO2"])
+    st = _state(step="BEGIN_MULLIGAN")
+    st.pending_choice = pc
+    rep = evaluate_state(st, _db())              # 不传 hero_stats
+    adv = rep.pending_choice
+    assert adv.recommended is None and adv.recommend_text == ""
+    assert all(o.score is None and o.score_note == "" for o in adv.options)
+    assert rep.decision.reason == "选好英雄再开局"
+    assert "推荐" not in rep.warnings[0].text
+
+
+def test_hero_partial_stats_recommend_with_a_caveat():
+    """新补丁刚上的英雄 HSReplay 还没统计到：缺口必须写进推荐里。"""
+    pc = _hero_pc(["BG_T_HERO1", "BG_T_HERO2"])
+    stats = _hero_stats(rows=[{"card_id": "BG_T_HERO2", "name": "英雄二号",
+                               "pick_rate": 20.0, "armor": 16}])
+    rep = evaluate_state(_choice_state(pc), _db(), hero_stats=stats)
+    adv = rep.pending_choice
+    assert adv.options[0].score is None          # 没数据 ≠ 0 分
+    assert adv.recommended is adv.options[1]
+    assert adv.recommend_note == "1 项无实证数据"
+    assert "1 项无实证数据" in adv.recommend_text
+    assert "1 项无实证数据" in rep.decision.reason
+
+
+def test_hero_pick_is_never_scored_by_trinket_stats():
+    """⚠️ 两类实证表各管各家：饰品表里恰好有同名卡也不能给英雄打分。"""
+    stats = _stats(rows=[{"card_id": "BG_T_HERO1", "tier": "s",
+                          "pick_rate": 46.0, "avg_final_placement": 3.2}])
+    pc = _hero_pc(["BG_T_HERO1", "BG_T_HERO2"])
+    rep = evaluate_state(_choice_state(pc), _db(), trinket_stats=stats)
+    assert rep.pending_choice.kind == "hero"
+    assert rep.pending_choice.recommended is None
+    assert all(o.score is None for o in rep.pending_choice.options)
 
 
 # --------------------------------------------------------------------------
