@@ -5,8 +5,9 @@
 > **红线：只看不动。** 本工具读游戏日志、给建议，**绝不模拟鼠标键盘、绝不注入游戏**。
 > 架构上不给执行层留任何接口（见 `docs/需求分析.md` §2.3）。
 
-当前进度：**P0–P6 + P8–P14 已完成**。日志解析 → 盘面重建 → 卡牌数据 → 规则引擎 →
-JevK5 模型顾问 → Swift 悬浮框，整条链路已打通；开局英雄选择 / 饰品四选一 /
+当前进度：**P0–P6 + P8–P14 已完成，模型顾问已迁到独立插件仓库 `llm-odds`（M2）**。
+日志解析 → 盘面重建 → 卡牌数据 → 规则引擎 → 模型顾问（llm-odds 插件，直连留作
+退路）→ Swift 悬浮框，整条链路已打通；开局英雄选择 / 饰品四选一 /
 黑赐三选一 / 三连奖励等"待选"也已接入（规则展示 + 模型出概率），**英雄选择与
 饰品四选一另有 HSReplay 实证推荐**（见 `src/hsbg/heroes.py` / `src/hsbg/trinkets.py`）。
 
@@ -21,18 +22,20 @@ cd hsbg-helper
 ./hsbg check           # 用真实日志做 11 项自检
 ./hsbg parse --limit 20   # 解析最新日志的前 20 行事件
 ./hsbg state --until-line 92000   # 看第 92000 行时的完整盘面
-./hsbg advise          # 规则建议 + JevK5 模型意见
+./hsbg advise          # 规则建议 + 模型意见（llm-odds 插件）
 ./hsbg serve start   # 拉起 JevK5 本地推理服务（llama-server）
 ./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行；跟随模式自动录像）
 ./hsbg replay          # 复盘回放：列出/回看自动落盘的对局
-./run-tests            # 跑单元测试（356 个）
+./run-tests            # 跑单元测试（375 个）
 ```
 
 **零依赖**：纯 Python 标准库，跑在本机自带的 `/usr/bin/python3`（3.9.6），不需要 venv、
 不需要 pip install。`./hsbg` 和 `./run-tests` 是包了 `PYTHONPATH=src` 的 bash 包装器。
 
 **模型层可选**：`./hsbg advise` 不启动模型时自动降级为「只有规则建议」，不会报错。
-只有在你想要 JevK5 的第二意见时才需要 `./hsbg serve start`。
+只有在你想要 JevK5 的第二意见时才需要 `./hsbg serve start`（它拉起的 llama-server
+与插件仓库 llm-odds 的默认档位指向同一服务 `127.0.0.1:8090`）。模型咨询走
+**llm-odds 插件**，找不到插件时退回本仓旧直连实现（见下文 §12b）。
 
 ---
 
@@ -47,7 +50,7 @@ cd hsbg-helper
 | `./hsbg state` | **重放日志并渲染某一时刻的完整盘面** | `--until-line N`、`--cards-db` |
 | `./hsbg watch` | 实时跟随并逐帧重绘盘面 | `--head N`、`--limit N` |
 | `./hsbg cards` | 查看/校验卡牌库 | `--verify` |
-| `./hsbg advise` | **规则引擎 + JevK5 的建议** | `--until-line N`、`--no-model`、`--quiet`、`--show-evidence` |
+| `./hsbg advise` | **规则引擎 + 模型意见（llm-odds 插件）** | `--until-line N`、`--no-model`、`--quiet`、`--show-evidence` |
 | `./hsbg serve` | JevK5 服务状态 / 启动 / 停止 | `start`、`stop` |
 | `./hsbg panel` | **悬浮框数据源**：一帧一行 JSON（跟随模式自动把每局录进 `replays/`） | `--until-line N`（单帧）、`--interval S`、`--no-model`、`--no-replay` |
 | `./hsbg replay` | **复盘回放（P7）**：列出/回看自动落盘的对局 | `0`（0=最新）/`last`/文件路径、`--replay-dir` |
@@ -70,7 +73,7 @@ cd hsbg-helper
 商店
   考虑 无面行动者  4/2  4星  15.5分  与场面同族（3 只）；场面已满
 升本  4本 → 5本  费用 10（金币不够）  不升  金币不足（要 10，只有 9）
-模型意见（jevk5）
+模型意见（llm-odds）
   只买一张的话：复映无人机（商店第 2 项）  P=0.36，用时 0.76s
   逐张买入意愿（按可能性排序）：
     蓝色扩音机（商店第 1 项）  不买  P(买)=0.46
@@ -109,7 +112,8 @@ cd hsbg-helper
 | `src/hsbg/rules.py` | **规则引擎**：商店打分、升本、三连、血线预警、饰品实证推荐（纯规则，可离线单测） |
 | `src/hsbg/trinkets.py` | **饰品实证数据**：读 HSReplay tier/选取率/平均名次 → 打分（`data/trinkets_hsreplay.json`，`tools/fetch_hsreplay.py` 拉取） |
 | `src/hsbg/heroes.py` | **英雄实证数据（S1）**：读 HSReplay 选取率/护甲 → 百分位打分（`data/heroes_hsreplay.json`，`tools/fetch_hsreplay.py --heroes` 拉取） |
-| `src/hsbg/provider.py` | **JevK5 协议**：prompt 模板、字母 logprob 读法、概率校准 |
+| `src/hsbg/provider.py` | **JevK5 协议**：prompt 模板、字母 logprob 读法、概率校准（M4-lite：直连留作插件缺席的退路） |
+| `src/hsbg/model_client.py` | **模型插件桥（M2）**：找 llm-odds → 子进程 JSON 契约（`ask-many`）；插件缺席才退回旧直连 |
 | `src/hsbg/advisor.py` | **盘面 → 英文 evidence + 类型化提问**，`consult()` 总入口 |
 | `src/hsbg/model_server.py` | 找 llama-server / GGUF，启停 JevK5 服务 |
 | `src/hsbg/render.py` | 文本盘面渲染 |
@@ -121,7 +125,7 @@ cd hsbg-helper
 | `tools/winlist.swift` | 打印所有在屏窗口的矩形/owner（调窗口几何时用） |
 | `tools/trace_decisions.py` | **逐回合打印决策框**，用来对照大神的运营节奏复盘规则 |
 | `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表）、`trinkets_hsreplay.json`（饰品实证）、`heroes_hsreplay.json`（英雄实证） |
-| `tests/` | 零依赖测试运行器 + 356 个测试 |
+| `tests/` | 零依赖测试运行器 + 375 个测试 |
 
 ---
 
@@ -293,6 +297,28 @@ user 消息是一个 JSON：
 （"凑三连该不该买" → C，与规则引擎判断一致）。**JevK5 是 English-only**，
 所以 `advisor.build_evidence()` 里做了盘面 → 英文的翻译层。
 
+### 12b. 模型从哪来：llm-odds 插件优先（M2）
+
+模型层已从本仓**抽出成独立插件仓库** `llm-odds`（与本仓并列的目录；契约与设计见
+它的 `docs/DESIGN.md`）。本仓不再自己拼 prompt / 读 logprob，而是按 JSON 契约把
+「英文 evidence + 类型化提问」喂给插件子进程：
+
+```text
+./hsbg advise → model_client.OddsAdvisor → llm-odds ask-many -   # 一个子进程跑完全部题
+```
+
+插件发现顺序：`HSBG_ODDS_BIN` → `PATH` 上的 `llm-odds` → 兄弟目录
+`../llm-odds/bin/llm-odds`。相关环境变量：
+
+| 变量 | 作用 |
+|---|---|
+| `HSBG_ODDS_BIN` | 插件可执行文件路径（最高优先级） |
+| `HSBG_ODDS_PROFILE` | 模型档位名（下发给插件 `params.profile`） |
+| `HSBG_ODDS_REGISTRY` | 模型注册表路径（转成插件的 `LLM_ODDS_REGISTRY`） |
+
+**M4-lite：旧的直连实现保留但不再演进**，只在插件完全找不到时当退路；两条路的
+输出曾逐字节对照验收 —— 同一盘面 prompt 700 字符完全一致、概率最大差 0.000e+00。
+
 ### 13. 酒馆等级在 `PLAYER_TECH_LEVEL`，不是 `TECH_LEVEL`
 
 `TECH_LEVEL` 在战棋里是**随从星级**和升本按钮的目标档位；玩家自己的等级写在
@@ -377,7 +403,7 @@ tier / 选取率 / 终局平均名次（`data/trinkets_hsreplay.json`，由 `too
 凭卡文猜分数只会误导，所以"该选哪个"完全靠 JevK5 做 `choice` 题：
 
 ```
-模型意见（jevk5）
+模型意见（llm-odds）
   伦德尔标签  P=0.35，用时 1.08s
     概率分布：伦德尔标签 35% · 朝圣小鬼标签 28% · 战鼓 21% · 爱心吊坠 16%
 ```

@@ -687,9 +687,19 @@ def test_slot_label_speaks_in_display_order_not_slot_ids():
 def test_advisor_from_args_respects_no_model():
     args = types.SimpleNamespace(no_model=True)
     assert A.advisor_from_args(args) is None
+
+
+def test_advisor_from_args_falls_back_to_jevk5_without_plugin():
+    """插件缺席（find_llm_odds → None）时退回旧直连实现（M4-lite 退路）。"""
+    from hsbg import model_client as MC
     args = types.SimpleNamespace(no_model=False, model_url=None,
                                  model_size="2b", model_timeout=30.0)
-    a = A.advisor_from_args(args)
+    orig = MC.find_llm_odds
+    MC.find_llm_odds = lambda: None
+    try:
+        a = A.advisor_from_args(args)
+    finally:
+        MC.find_llm_odds = orig
     assert a is not None and a.name == "jevk5"
     assert a.client.url == P.DEFAULT_URL
     assert a.client.timeout == 30.0

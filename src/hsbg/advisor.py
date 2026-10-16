@@ -473,7 +473,9 @@ def consult(st: GameState, db: Optional[CardDB] = None,
             adv.note = "模型服务不可用（%s）" % advisor.name
             return adv
         questions = build_questions(st, rep, limit=limit)
-        adv.answers = [advisor.decide(adv.evidence, q) for q in questions]
+        # 一次问一串：插件（llm-odds）会在一个子进程里跑 ask-many；
+        # 旧的直连实现默认逐题（provider.Advisor.decide_many 的默认实现）。
+        adv.answers = advisor.decide_many(adv.evidence, questions)
         adv.provider = advisor.name
     except ModelUnavailable as e:
         adv.note = "模型调用失败：%s" % e
@@ -625,9 +627,22 @@ def _pick_shop_text(raw: str, report: Optional[AdviceReport],
 
 
 def advisor_from_args(args) -> Optional[Advisor]:
-    """按 CLI 参数造一个 advisor；`--no-model` 或不可用时返回 None。"""
+    """按 CLI 参数造一个 advisor；`--no-model` 或不可用时返回 None。
+
+    优先 llm-odds 插件（`HSBG_ODDS_BIN` → PATH → 兄弟目录）；找不到插件时
+    退回旧的直连实现（M4-lite：保留作插件缺席的退路，不再演进）。
+    """
     if getattr(args, "no_model", False):
         return None
+    try:
+        from .model_client import OddsAdvisor, find_llm_odds
+        bin_path = find_llm_odds()
+    except Exception:
+        bin_path = None
+    if bin_path:
+        return OddsAdvisor(
+            bin_path=bin_path,
+            timeout=getattr(args, "model_timeout", 60.0) or 60.0)
     size = getattr(args, "model_size", None)
     if not size:
         # 没显式指定档位时，就从"实际会被 llama-server 加载的那个 GGUF"推出来 ——

@@ -357,6 +357,11 @@ class Advisor:
     def decide(self, state: str, question: Question) -> Answer:
         raise NotImplementedError
 
+    def decide_many(self, state: str,
+                    questions: Sequence[Question]) -> List[Answer]:
+        """按顺序问一串问题（默认逐题；子类可覆写成批处理/一个子进程）。"""
+        return [self.decide(state, q) for q in questions]
+
     def close(self) -> None:
         pass
 
@@ -375,3 +380,7 @@ class JevK5Advisor(Advisor):
 
     def decide(self, state: str, question: Question) -> Answer:
         return self.client.decide(state, question)
+
+    def decide_many(self, state: str,
+                    questions: Sequence[Question]) -> List[Answer]:
+        return self.client.decide_many(state, questions)
