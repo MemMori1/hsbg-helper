@@ -23,8 +23,9 @@ cd hsbg-helper
 ./hsbg state --until-line 92000   # 看第 92000 行时的完整盘面
 ./hsbg advise          # 规则建议 + JevK5 模型意见
 ./hsbg serve start   # 拉起 JevK5 本地推理服务（llama-server）
-./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行）
-./run-tests            # 跑单元测试（323 个）
+./hsbg panel --no-model   # 悬浮框的数据源（JSON Lines，一帧一行；跟随模式自动录像）
+./hsbg replay          # 复盘回放：列出/回看自动落盘的对局
+./run-tests            # 跑单元测试（335 个）
 ```
 
 **零依赖**：纯 Python 标准库，跑在本机自带的 `/usr/bin/python3`（3.9.6），不需要 venv、
@@ -48,7 +49,8 @@ cd hsbg-helper
 | `./hsbg cards` | 查看/校验卡牌库 | `--verify` |
 | `./hsbg advise` | **规则引擎 + JevK5 的建议** | `--until-line N`、`--no-model`、`--quiet`、`--show-evidence` |
 | `./hsbg serve` | JevK5 服务状态 / 启动 / 停止 | `start`、`stop` |
-| `./hsbg panel` | **悬浮框数据源**：一帧一行 JSON | `--until-line N`（单帧）、`--interval S`、`--no-model` |
+| `./hsbg panel` | **悬浮框数据源**：一帧一行 JSON（跟随模式自动把每局录进 `replays/`） | `--until-line N`（单帧）、`--interval S`、`--no-model`、`--no-replay` |
+| `./hsbg replay` | **复盘回放（P7）**：列出/回看自动落盘的对局 | `0`（0=最新）/`last`/文件路径、`--replay-dir` |
 
 `--json` 输出 JSON Lines，方便直接管道给别的程序。
 
@@ -111,13 +113,14 @@ cd hsbg-helper
 | `src/hsbg/model_server.py` | 找 llama-server / GGUF，启停 JevK5 服务 |
 | `src/hsbg/render.py` | 文本盘面渲染 |
 | `src/hsbg/panel.py` | **悬浮框帧契约**：`PanelFrame`、`ModelAdvisorRunner`（模型调用与帧率解耦） |
+| `src/hsbg/replay.py` | **复盘回放（P7）**：面板帧按局去重落盘 + 回看渲染 |
 | `native/FloatingPanel/` | **Swift 悬浮框**（AppKit，`build.sh` 直编出 `.app`） |
-| `src/hsbg/cli.py` | 十个子命令 |
+| `src/hsbg/cli.py` | 十一个子命令 |
 | `tools/verify_attr_rule.py` | 归属规则的语义自证（靠 `ENTITY_ID` 判对错，不靠数数） |
 | `tools/winlist.swift` | 打印所有在屏窗口的矩形/owner（调窗口几何时用） |
 | `tools/trace_decisions.py` | **逐回合打印决策框**，用来对照大神的运营节奏复盘规则 |
 | `data/` | `cards_zhCN.json` / `cards_enUS.json`（各 1.2 MB 卡表）、`names_zhCN.json`（日志自举名表）、`trinkets_hsreplay.json`（饰品实证） |
-| `tests/` | 零依赖测试运行器 + 323 个测试 |
+| `tests/` | 零依赖测试运行器 + 335 个测试 |
 
 ---
 
@@ -788,10 +791,36 @@ CLI 侧一直是无条件打印的，两边口径不一致。改成 `if row.scor
 
 ---
 
+## 复盘回放（P7）：面板自动录像，`hsbg replay` 回看
+
+悬浮框跑的就是 `hsbg panel` 的跟随模式。录制器挂在这个帧循环上：**开着悬浮框
+打游戏就自动录像**，一局一个 JSON 落在 `replays/`（已 gitignore；目录可用
+`HSBG_REPLAY_DIR` 或 `--replay-dir` 改）。
+
+三个设计决策（都有实测支撑，细节见需求分析 §11.16）：
+
+- **分界 = 回合回卷**：`turn` 12 → 1 就是新局（`StateBuilder` 在新号
+  `CREATE_GAME` 时重建状态）；判断必须在更新内部记忆之前，否则新局的空
+  `choice_log` 会盖掉正要落盘的旧局数据。
+- **周期落盘（15s）+ 原子重写**：App 退出走的是 SIGTERM，Python 的 `finally`
+  不会执行 —— 只在局终写盘的话，中途被杀 = 整局白录。实测强杀后磁盘上仍保留
+  最近一次 checkpoint。
+- **帧去重**：面板每 0.4s 无条件出帧，绝大多数帧逐字节相同；按整帧 JSON 去重。
+  文件头有 `partial`（true = 还没看到下一局开始）。
+
+```bash
+./hsbg replay        # 列表（新→旧，[未完] = 没录到收尾）
+./hsbg replay 0      # 看最新一局（0=最新；也支持 last / 文件路径）
+```
+
+输出：英雄/回合数、选一历史（饰品/黑赐…）、逐回合帧行（金币/血量/商店/决策框/待选★）。
+
+---
+
 ## 测试
 
 ```bash
-./run-tests          # 全部（323 个）
+./run-tests          # 全部（335 个）
 ./run-tests -v       # 逐个打印
 ./run-tests -k tag   # 只跑名字含 "tag" 的
 ```

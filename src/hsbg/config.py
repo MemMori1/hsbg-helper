@@ -25,6 +25,15 @@ DEFAULT_LOG_ROOT = Path(
 #: 会话目录前缀，后面跟 YYYY_MM_DD_HH_MM_SS。
 SESSION_DIR_PREFIX = "Hearthstone_"
 
+#: 复盘录像目录（P7）。面板跟随模式把每局落盘到这里，`hsbg replay` 回看。
+#: 可用环境变量 HSBG_REPLAY_DIR 覆盖（便于测试与换机）。
+DEFAULT_REPLAY_DIR = Path(
+    os.environ.get(
+        "HSBG_REPLAY_DIR",
+        str(Path(__file__).resolve().parent.parent.parent / "replays"),
+    )
+)
+
 #: 我们主要关心的日志文件名。
 POWER_LOG_NAME = "Power.log"
 

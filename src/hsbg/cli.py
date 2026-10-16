@@ -540,7 +540,20 @@ def build_parser() -> argparse.ArgumentParser:
     pn.add_argument("--model-url", default=None, help="llama-server 地址")
     pn.add_argument("--model-size", default="2b", help="校准温度档位：2b/4b/4b-v0.2/9b")
     pn.add_argument("--model-timeout", type=float, default=60.0, help="单题超时秒数")
+    pn.add_argument("--no-replay", action="store_true",
+                    help="关闭复盘录制（跟随模式默认把每局落盘到 replays/）")
+    pn.add_argument("--replay-dir", default=None,
+                    help="复盘落盘目录（缺省 replays/，可用 HSBG_REPLAY_DIR 覆盖）")
     pn.set_defaults(func=cmd_panel)
+
+    # P7：复盘回放
+    rp = sub.add_parser("replay", help="复盘回放：列出/回看自动落盘的对局（P7）")
+    rp.add_argument("target", nargs="?",
+                    help="序号（0=最新）/ last / 文件路径；省略=列出全部")
+    rp.add_argument("--replay-dir", default=None,
+                    help="复盘目录（缺省 replays/，可用 HSBG_REPLAY_DIR 覆盖）")
+    rp.add_argument("--no-color", action="store_true", help="禁用 ANSI 颜色")
+    rp.set_defaults(func=cmd_replay)
 
     return p
 
@@ -900,12 +913,33 @@ def _emit_frame(frame) -> None:
     sys.stdout.flush()
 
 
+def _record_frame(recorder, frame, st, resolver) -> None:
+    """把一帧喂给复盘录制器（P7）。hero 优先卡表名，认不出退回日志名。
+
+    ⚠️ 传的是 `frame.to_dict()`（面板 JSON 契约）而不是 `PanelFrame` 对象：
+    录像文件与 Swift 面板看到的是同一套字段，回看端不需要再理解模型层。
+    """
+    if recorder is None:
+        return
+    seat = getattr(st, "local_seat", None)
+    hero_card_id = getattr(seat, "hero_card_id", "") if seat is not None else ""
+    hero = ""
+    if resolver is not None and hero_card_id:
+        hero = resolver.name_of(hero_card_id) or ""
+    if not hero and seat is not None:
+        hero = getattr(seat, "hero_name", "") or ""
+    recorder.note(frame.to_dict(),
+                  choices=getattr(st, "choice_log", None),
+                  hero=hero, hero_card_id=hero_card_id or "")
+
+
 def cmd_panel(args: argparse.Namespace) -> int:
     """给 Swift 悬浮框喂数据：一行一帧 JSON（P6 的数据契约）。
 
     两种模式：
       - `--until-line N`：重放到第 N 行，输出**一帧**后退出（调试/测试用）。
       - 默认：重放整份日志到当前时刻，再**跟随最新会话**按 `--interval` 持续刷帧。
+        跟随模式会把每局自动录进 `replays/`（P7，`--no-replay` 关闭）。
 
     ⚠️ 模型调用绝不阻塞刷帧：一帧几十毫秒，一问模型几百毫秒。规则结果每帧都新算，
     模型意见由后台线程算好后补进后续帧（见 `panel.ModelAdvisorRunner`），
@@ -925,6 +959,8 @@ def cmd_panel(args: argparse.Namespace) -> int:
         trinket_stats=stats,
     )
     builder = StateBuilder()
+    #: P7 复盘录制器；只在跟随模式启用（`--until-line` 是单帧调试，录了只有垃圾）。
+    recorder = None
 
     try:
         if args.until_line:
@@ -961,12 +997,26 @@ def cmd_panel(args: argparse.Namespace) -> int:
             return 0
 
         # ---- 跟随模式 ----
+        # P7：自动录制每局（`replays/`），面板开着就攒数据。
+        from .replay import ReplayRecorder
+
+        recorder = ReplayRecorder(
+            out_dir=Path(args.replay_dir) if getattr(args, "replay_dir", None) else None,
+            enabled=not getattr(args, "no_replay", False),
+        )
+
+        def emit_one() -> None:
+            """造一帧 → 先喂录制器，再发面板（录制绝不影响出帧）。"""
+            fr = _frame_for(builder, resolver, runner, args, stats)
+            _record_frame(recorder, fr, builder.state, resolver)
+            _emit_frame(fr)
+
         # 1) 先把历史重放完，否则面板一开始是空的。
         current_path = args.path or latest_power_log(DEFAULT_LOG_ROOT)
         if current_path is not None:
             for ev in iter_file(current_path):
                 builder.apply(ev)
-            _emit_frame(_frame_for(builder, resolver, runner, args, stats))
+            emit_one()
 
         # 2) 从文件末尾开始跟随；会话轮换时整体重建。
         tailer = LogTailer(log_root=DEFAULT_LOG_ROOT)
@@ -990,11 +1040,49 @@ def cmd_panel(args: argparse.Namespace) -> int:
             now = time.time()
             if now >= next_frame:
                 next_frame = now + interval
-                _emit_frame(_frame_for(builder, resolver, runner, args, stats))
+                emit_one()
     except KeyboardInterrupt:
         return 0
     finally:
         runner.close()
+        if recorder is not None:
+            recorder.flush()
+
+
+def cmd_replay(args: argparse.Namespace) -> int:
+    """复盘回放（P7）：列出/回看自动落盘的对局。
+
+    数据由 `hsbg panel` 跟随模式录制（见 `replay.py` 模块头）；这里只读不写。
+    """
+    from .config import DEFAULT_REPLAY_DIR
+    from .replay import list_replays, load_replay, render_replay, resolve_target
+
+    out_dir = Path(args.replay_dir) if getattr(args, "replay_dir", None) else DEFAULT_REPLAY_DIR
+
+    if getattr(args, "target", None) is None:
+        items = list_replays(out_dir)
+        if not items:
+            print("（还没录到对局 —— 开着悬浮框打一局就会自动落盘到）")
+            print("  %s" % out_dir)
+            return 0
+        print(_dim("录到 %d 局（%s）" % (len(items), out_dir)))
+        for i, it in enumerate(items):
+            tail = " · %d 次选一" % it["choices"] if it["choices"] else ""
+            mark = _dim(" [未完]") if it["partial"] else ""
+            print("  [%d] %s  %s  %d 回合 · %d 帧%s%s" % (
+                i, (it["started_at"] or "?")[:16], it["hero"],
+                it["turns"], it["frames"], tail, mark))
+        print(_dim("\n看某一局：./hsbg replay 0 ｜ last ｜ <文件路径>"))
+        return 0
+
+    try:
+        path = resolve_target(args.target, out_dir)
+        doc = load_replay(path)
+    except (FileNotFoundError, ValueError) as exc:
+        print("看不了：%s" % exc)
+        return 1
+    print(render_replay(doc, color=(not getattr(args, "no_color", False)) and _TTY))
+    return 0
 
 
 def advisor_from_panel_args(args):
